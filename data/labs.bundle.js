@@ -47,6 +47,11 @@
           "mosaic",
           "stack",
           "board"
+        ],
+        "carousel": [
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "speaker": {
@@ -63,6 +68,9 @@
           "story",
           "story-card",
           "story-poster"
+        ],
+        "carousel": [
+          "manifesto"
         ]
       },
       "org": {
@@ -148,6 +156,11 @@
           "mosaic",
           "stack",
           "board"
+        ],
+        "carousel": [
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "speaker": {
@@ -164,6 +177,9 @@
           "story",
           "story-card",
           "story-poster"
+        ],
+        "carousel": [
+          "manifesto"
         ]
       },
       "org": {
@@ -255,6 +271,11 @@
           "mosaic",
           "stack",
           "board"
+        ],
+        "carousel": [
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "speaker": {
@@ -271,6 +292,9 @@
           "story",
           "story-card",
           "story-poster"
+        ],
+        "carousel": [
+          "manifesto"
         ]
       },
       "org": {
