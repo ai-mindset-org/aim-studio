@@ -1182,8 +1182,14 @@
     },
 
     // ══════════ MULTI-LAB REGISTRY ══════════
-    labs: {
-      'x26': {
+    // Brand tokens are sourced from data/labs/<id>.json (bundled into
+    // window.AIMStudioLabTokens by data/labs.bundle.js).
+    // Run `npm run build:labs` after editing JSONs to regenerate the bundle.
+    // Inline blocks below are a fallback when the bundle is unavailable.
+    labs: (function buildLabs() {
+      var externalTokens = (typeof globalThis !== 'undefined' && globalThis.AIMStudioLabTokens) || {};
+
+      var x26Fallback = {
         id: 'x26',
         name: 'Spring Lab {x26}',
         eyebrow: 'AI MINDSET · SPRING LAB X26',
@@ -1199,34 +1205,9 @@
         dates: '27 APR – 25 MAY 2026',
         footer: 'x26 / spring / batch:03',
         sub: '4 weeks · text / image / audio / code · workshops + focus + creative shipping',
-        featuredIds: ['anca-stavenski', 'arseny-popov', 'olya-eremina', 'tonya-zhukova', 'ilya-gindin', 'sereja-ris', 'nomusicians', 'oleg-tserbaev', 'evgeniy-volnov', 'stanislav-glazov', 'alexander-povaliaev'],
-        defaultFormats: {
-          generic: 'wide',
-          speaker: 'wide',
-          org: 'wide',
-        },
-        formatStyles: {
-          generic: {
-            wide: ['field', 'mosaic', 'roster', 'dense', 'strips', 'cards'],
-            square: ['mosaic', 'stack', 'board'],
-          },
-          speaker: {
-            wide: ['aimnative', 'surname'],
-            square: ['portrait', 'quote', 'signal'],
-            story: ['story', 'story-card', 'story-poster'],
-          },
-          org: {
-            wide: ['plaque', 'poster', 'rail', 'digest'],
-            square: ['panel', 'orbit'],
-          },
-        },
-        genericStyles: ['field', 'mosaic', 'roster', 'dense', 'strips', 'cards'],
-        speakerStyles: ['aimnative', 'surname', 'portrait', 'quote', 'signal', 'story', 'story-card', 'story-poster'],
-        orgStyles: ['plaque', 'poster', 'rail', 'digest', 'panel', 'orbit'],
-        orgCards: x26OrgCards.concat(x26SessionCards),
-        speakers: speakers,
-      },
-      's3': {
+      };
+
+      var s3Fallback = {
         id: 's3',
         name: 'AI-Native Sprint S3',
         eyebrow: 'AI Mindset × CybOS',
@@ -1243,34 +1224,27 @@
         dates: '2 MAY – 25 MAY 2026',
         footer: 'ai-native.aimindset.org',
         sub: '4 weeks · setup / systems / vertical focus · curators + guest speakers + closing artifacts',
-        featuredIds: ['sereja-ris', 'stepan-gershuni', 'denis-smirnov', 'seva-ustinov', 'alexander-povaliaev'],
-        heroId: 'sereja-ris',
-        defaultFormats: {
-          generic: 'wide',
-          speaker: 'wide',
-          org: 'wide',
-        },
-        formatStyles: {
-          generic: {
-            wide: ['field', 'mosaic', 'roster', 'cards'],
-            square: ['mosaic', 'stack', 'board'],
-          },
-          speaker: {
-            wide: ['aimnative', 'surname'],
-            square: ['portrait', 'quote', 'signal'],
-            story: ['story', 'story-card', 'story-poster'],
-          },
-          org: {
-            wide: ['plaque', 'poster', 'rail', 'digest'],
-            square: ['panel', 'orbit'],
-          },
-        },
-        genericStyles: ['field', 'mosaic', 'roster', 'cards'],
-        speakerStyles: ['aimnative', 'surname'],
-        orgStyles: ['plaque', 'poster', 'rail', 'digest'],
-        orgCards: s3OrgCards,
-        speakers: s3Speakers,
-      },
-    },
+      };
+
+      var labs = {
+        'x26': Object.assign({}, x26Fallback, externalTokens.x26 || {}, {
+          orgCards: x26OrgCards.concat(x26SessionCards),
+          speakers: speakers,
+        }),
+        's3': Object.assign({}, s3Fallback, externalTokens.s3 || {}, {
+          orgCards: s3OrgCards,
+          speakers: s3Speakers,
+        }),
+      };
+
+      if (externalTokens.core) {
+        labs.core = Object.assign({}, externalTokens.core, {
+          orgCards: [],
+          speakers: [],
+        });
+      }
+
+      return labs;
+    })(),
   };
 });

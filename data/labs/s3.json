@@ -1,0 +1,60 @@
+{
+  "id": "s3",
+  "name": "AI-Native Sprint S3",
+  "eyebrow": "AI Mindset × CybOS",
+  "title": "ai-native sprint",
+  "accentTitle": "{s3}",
+  "accent": "#8ddff2",
+  "accentRgb": "141,223,242",
+  "accentName": "s3 blue",
+  "secondaryAccent": "#f0b84b",
+  "secondaryAccentRgb": "240,184,75",
+  "recordPaletteLegend": "host cyan · practice amber · guest blue",
+  "family": "ainative",
+  "photoBase": "./speakers-ainative",
+  "dates": "2 MAY – 25 MAY 2026",
+  "footer": "ai-native.aimindset.org",
+  "sub": "4 weeks · setup / systems / vertical focus · curators + guest speakers + closing artifacts",
+  "fonts": {
+    "mono": "'IBM Plex Mono', monospace",
+    "display": "'Space Grotesk', sans-serif",
+    "googleFontsHref": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+  },
+  "weekAccents": {
+    "W1": "#4dc9d4",
+    "W2": "#38d9a9",
+    "W3": "#ff3b8b",
+    "W4": "#fcbb00"
+  },
+  "featuredIds": [
+    "sereja-ris",
+    "stepan-gershuni",
+    "denis-smirnov",
+    "seva-ustinov",
+    "alexander-povaliaev"
+  ],
+  "heroId": "sereja-ris",
+  "defaultFormats": {
+    "generic": "wide",
+    "speaker": "wide",
+    "org": "wide"
+  },
+  "formatStyles": {
+    "generic": {
+      "wide": ["field", "mosaic", "roster", "cards"],
+      "square": ["mosaic", "stack", "board"]
+    },
+    "speaker": {
+      "wide": ["aimnative", "surname"],
+      "square": ["portrait", "quote", "signal"],
+      "story": ["story", "story-card", "story-poster"]
+    },
+    "org": {
+      "wide": ["plaque", "poster", "rail", "digest"],
+      "square": ["panel", "orbit"]
+    }
+  },
+  "genericStyles": ["field", "mosaic", "roster", "cards"],
+  "speakerStyles": ["aimnative", "surname"],
+  "orgStyles": ["plaque", "poster", "rail", "digest"]
+}
