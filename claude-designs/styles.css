@@ -1,0 +1,141 @@
+/* AIM Studio · Claude Designs shared styles
+ * Mirrors token shape from data/labs/*.json. Default theme = core (mauve).
+ * Switch theme by setting [data-lab="x26"] / [data-lab="s3"] / [data-lab="core"]
+ * on a parent element.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background: #0a0a0f;
+  color: #f5f5f7;
+  font-family: 'IBM Plex Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Default: core / mauve evergreen */
+:root {
+  --bg: #0a0a0f;
+  --fg: #f5f5f7;
+  --fg-muted: rgba(245, 245, 247, 0.55);
+  --fg-dim: rgba(245, 245, 247, 0.32);
+  --accent: #a78bfa;
+  --accent-rgb: 167, 139, 250;
+  --accent-name: 'core mauve';
+  --secondary-accent: #fbbf24;
+  --secondary-accent-rgb: 251, 191, 36;
+  --week-1: #a78bfa;
+  --week-2: #60a5fa;
+  --week-3: #4ade80;
+  --week-4: #fbbf24;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+  --border: rgba(245, 245, 247, 0.08);
+  --border-strong: rgba(245, 245, 247, 0.18);
+}
+
+/* x26 — Spring Lab, green */
+[data-lab="x26"] {
+  --accent: #16a34a;
+  --accent-rgb: 22, 163, 74;
+  --accent-name: 'x26 green';
+  --secondary-accent: #fbbf24;
+  --secondary-accent-rgb: 251, 191, 36;
+  --week-1: #fbbf24;
+  --week-2: #a78bfa;
+  --week-3: #60a5fa;
+  --week-4: #4ade80;
+  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+}
+
+/* s3 — AI-Native Sprint, cyan/blue */
+[data-lab="s3"] {
+  --accent: #8ddff2;
+  --accent-rgb: 141, 223, 242;
+  --accent-name: 's3 blue';
+  --secondary-accent: #f0b84b;
+  --secondary-accent-rgb: 240, 184, 75;
+  --week-1: #4dc9d4;
+  --week-2: #38d9a9;
+  --week-3: #ff3b8b;
+  --week-4: #fcbb00;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+}
+
+/* core — explicit override (matches :root defaults) */
+[data-lab="core"] {
+  --accent: #a78bfa;
+  --accent-rgb: 167, 139, 250;
+  --accent-name: 'core mauve';
+  --secondary-accent: #fbbf24;
+  --secondary-accent-rgb: 251, 191, 36;
+  --week-1: #a78bfa;
+  --week-2: #60a5fa;
+  --week-3: #4ade80;
+  --week-4: #fbbf24;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'IBM Plex Mono', monospace;
+}
+
+/* Shared component primitives */
+.aim-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.aim-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--fg);
+}
+
+.aim-title-accent {
+  color: var(--accent);
+}
+
+.aim-sub {
+  font-family: var(--font-mono);
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+
+.aim-footer {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.aim-dates-badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+[contenteditable="true"]:focus {
+  outline: 1px dashed rgba(var(--accent-rgb), 0.6);
+  outline-offset: 4px;
+}
