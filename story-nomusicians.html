@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nomusicians Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <script src="./data/speakers.js"></script>
+  <style>
+    :root {
+      --bg-0: #05110b;
+      --bg-1: #07170f;
+      --bg-2: #020503;
+      --paper: rgba(10, 22, 15, 0.76);
+      --paper-strong: rgba(14, 30, 21, 0.94);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #eef4ef;
+      --muted: rgba(225, 236, 229, 0.72);
+      --dim: rgba(209, 224, 216, 0.5);
+      --accent: #16a34a;
+      --accent-rgb: 22, 163, 74;
+      --accent-soft: rgba(22, 163, 74, 0.14);
+      --quote-bg: rgba(17, 39, 28, 0.8);
+      --shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
+      --radius: 28px;
+      --story-w: 1080px;
+      --story-h: 1920px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #020604;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .story {
+      position: relative;
+      width: var(--story-w);
+      height: var(--story-h);
+      overflow: hidden;
+      border-radius: 40px;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% 16%, rgba(var(--accent-rgb), 0.28), transparent 22%),
+        radial-gradient(circle at 84% 24%, rgba(var(--accent-rgb), 0.16), transparent 20%),
+        radial-gradient(circle at 28% 62%, rgba(var(--accent-rgb), 0.1), transparent 30%),
+        linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 38%, var(--bg-2) 100%);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .story::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(var(--accent-rgb), 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--accent-rgb), 0.08) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .story::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at center, transparent 56%, rgba(0, 0, 0, 0.38) 100%);
+      pointer-events: none;
+    }
+
+    .glow {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(28px);
+      opacity: 0.55;
+      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.7), transparent 70%);
+      pointer-events: none;
+    }
+
+    .glow.g1 { width: 280px; height: 280px; left: 48px; top: 140px; }
+    .glow.g2 { width: 220px; height: 220px; right: 120px; top: 420px; opacity: 0.32; }
+    .glow.g3 { width: 240px; height: 240px; left: 180px; bottom: 260px; opacity: 0.26; }
+
+    .fern {
+      position: absolute;
+      width: 300px;
+      height: 620px;
+      opacity: 0.16;
+      fill: none;
+      stroke: rgba(202, 232, 211, 0.46);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+
+    .fern.left { left: -10px; top: 180px; transform: rotate(-8deg); }
+    .fern.right { right: -20px; top: 60px; transform: scaleX(-1) rotate(-10deg); opacity: 0.12; }
+
+    .circuit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.38;
+    }
+
+    .corners {
+      position: absolute;
+      inset: 22px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      pointer-events: none;
+    }
+
+    .corner-mark {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border-color: rgba(var(--accent-rgb), 0.72);
+      border-style: solid;
+      border-width: 0;
+      pointer-events: none;
+    }
+
+    .corner-mark.tl { top: 28px; left: 28px; border-top-width: 2px; border-left-width: 2px; }
+    .corner-mark.tr { top: 28px; right: 28px; border-top-width: 2px; border-right-width: 2px; }
+    .corner-mark.bl { bottom: 28px; left: 28px; border-bottom-width: 2px; border-left-width: 2px; }
+    .corner-mark.br { bottom: 28px; right: 28px; border-bottom-width: 2px; border-right-width: 2px; }
+
+    .brand-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 18px;
+      background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.85), rgba(255, 255, 255, 0.06), rgba(var(--accent-rgb), 0.65));
+      opacity: 0.85;
+      z-index: 5;
+    }
+
+    .brand-leaf {
+      position: absolute;
+      right: 42px;
+      bottom: 22px;
+      width: 130px;
+      height: 48px;
+      opacity: 0.46;
+      z-index: 6;
+    }
+
+    .story-inner {
+      position: relative;
+      z-index: 4;
+      display: grid;
+      height: 100%;
+      padding: 86px 72px 72px;
+      gap: 28px;
+    }
+
+    .story-header {
+      grid-area: header;
+      align-self: start;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      font-size: 20px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(194, 226, 205, 0.92);
+    }
+
+    .name-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .story-title {
+      margin: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 96px;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      max-width: 680px;
+    }
+
+    .story-kicker {
+      margin: 14px 0 0;
+      font-size: 18px;
+      line-height: 1.6;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .story-subtitle {
+      margin: 18px 0 0;
+      font-size: 26px;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 820px;
+    }
+
+    .story-photo {
+      grid-area: photo;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+      min-height: 320px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .story-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      filter: grayscale(1) contrast(1.08) brightness(0.95);
+    }
+
+    .story-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, transparent 0%, rgba(3, 8, 5, 0.1) 40%, rgba(3, 8, 5, 0.6) 100%);
+      pointer-events: none;
+    }
+
+    .photo-label {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 20, 14, 0.48);
+      backdrop-filter: blur(12px);
+      font-size: 16px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(240, 248, 243, 0.88);
+    }
+
+    .story-quote {
+      grid-area: quote;
+      align-self: start;
+      padding: 28px 28px 30px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(var(--accent-rgb), 0.04)),
+        var(--quote-bg);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    .quote-label {
+      margin: 0 0 12px;
+      font-size: 15px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(197, 224, 205, 0.68);
+    }
+
+    .quote-copy {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.6;
+      color: rgba(241, 247, 243, 0.98);
+    }
+
+    .story-meta {
+      grid-area: meta;
+      display: grid;
+      gap: 22px;
+      align-content: end;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chip {
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(var(--accent-rgb), 0.08);
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(230, 241, 234, 0.94);
+    }
+
+    .footer-copy {
+      font-size: 21px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(210, 231, 218, 0.92);
+    }
+
+    .micro-copy {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--dim);
+      max-width: 780px;
+    }
+
+    .layout-elegant-stack .story-inner {
+      grid-template-areas:
+        "header"
+        "photo"
+        "quote"
+        "meta";
+      grid-template-rows: auto 520px auto 1fr;
+    }
+
+    .layout-portrait-top .story-inner {
+      grid-template-areas:
+        "photo"
+        "header"
+        "quote"
+        "meta";
+      grid-template-rows: 500px auto auto 1fr;
+    }
+
+    .layout-blueprint .story-inner {
+      grid-template-columns: minmax(0, 1fr) 318px;
+      grid-template-areas:
+        "header photo"
+        "quote photo"
+        "meta meta";
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .layout-blueprint .story-photo {
+      min-height: auto;
+      height: 760px;
+      align-self: end;
+    }
+
+    .layout-blueprint .story-title {
+      font-size: 90px;
+      max-width: 560px;
+    }
+
+    .layout-blueprint .story-subtitle {
+      max-width: 560px;
+    }
+
+    .layout-signal .story-inner {
+      grid-template-columns: minmax(0, 1fr) 340px;
+      grid-template-areas:
+        "header header"
+        "quote photo"
+        "meta meta";
+      grid-template-rows: auto 760px 1fr;
+    }
+
+    .layout-signal .story-photo {
+      height: 760px;
+      align-self: start;
+    }
+
+    .layout-signal .story-quote {
+      height: 100%;
+      display: grid;
+      align-content: center;
+    }
+
+    .layout-poster .story-inner {
+      grid-template-areas:
+        "photo"
+        "header"
+        "quote"
+        "meta";
+      grid-template-rows: 430px auto auto 1fr;
+    }
+
+    .layout-poster .story-photo {
+      min-height: 430px;
+    }
+
+    .layout-poster .story-photo img {
+      object-position: center 26%;
+    }
+
+    .layout-poster .story-title {
+      font-size: 104px;
+    }
+
+    .layout-human-note .story-inner {
+      grid-template-columns: minmax(0, 1fr) 310px;
+      grid-template-areas:
+        "header photo"
+        "quote photo"
+        "meta meta";
+      grid-template-rows: auto auto 1fr;
+    }
+
+    .layout-human-note .story-photo {
+      height: 660px;
+      align-self: start;
+    }
+
+    .layout-human-note .story-quote {
+      padding: 34px 34px 36px;
+      background:
+        linear-gradient(180deg, rgba(var(--accent-rgb), 0.06), rgba(255, 255, 255, 0.03)),
+        rgba(9, 19, 13, 0.84);
+    }
+
+    .theme-blue {
+      --accent: #60a5fa;
+      --accent-rgb: 96, 165, 250;
+      --quote-bg: rgba(12, 22, 33, 0.82);
+      --bg-0: #06111b;
+      --bg-1: #07131a;
+      --bg-2: #020507;
+    }
+
+    .theme-mint {
+      --accent: #4ade80;
+      --accent-rgb: 74, 222, 128;
+    }
+
+    .theme-gold {
+      --accent: #fbbf24;
+      --accent-rgb: 251, 191, 36;
+      --quote-bg: rgba(26, 20, 8, 0.82);
+    }
+
+    .theme-emerald {
+      --accent: #16a34a;
+      --accent-rgb: 22, 163, 74;
+    }
+
+    .theme-teal {
+      --accent: #2dd4bf;
+      --accent-rgb: 45, 212, 191;
+      --quote-bg: rgba(7, 24, 22, 0.84);
+    }
+  </style>
+</head>
+<body>
+  <main id="storyRoot" class="story"></main>
+
+  <script>
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function speakerRecord() {
+      const data = window.X26BannerData || window.X26BannerGeneratorData || {};
+      const lab = data.labs && data.labs.x26 ? data.labs.x26 : {};
+      const speakers = Array.isArray(lab.speakers) ? lab.speakers : [];
+      return speakers.find(function (item) { return item.id === 'nomusicians'; }) || {
+        name: 'Nomusicians',
+        focus: 'generative sound · improvisation with AI',
+        analysis: 'AI как инструмент для случайности, импровизации и нового музыкального языка.',
+        signal: 'generative sound · performance · creativity',
+        telegram: '@nomusicians',
+        photo: 'sergey-rakitin.jpg'
+      };
+    }
+
+    function storyVariants(speaker) {
+      return [
+        {
+          id: '01-elegant-stack',
+          theme: 'emerald',
+          layout: 'elegant-stack',
+          eyebrow: 'SPRING LAB [X26] · W3 GUEST',
+          title: speaker.name,
+          kicker: 'sergey rakitin · guest lecture',
+          subtitle: speaker.focus,
+          quoteLabel: 'session hook',
+          quote: speaker.analysis,
+          chips: ['audio / improv', '15 may 2026', speaker.telegram],
+          footer: speaker.signal,
+          micro: 'w3 guest around music, code and improvisation. promo-ready version without internal ops markers.',
+          photoLabel: 'w3 guest'
+        },
+        {
+          id: '02-human-layer',
+          theme: 'mint',
+          layout: 'human-note',
+          eyebrow: 'GUEST LECTURE · FIELD EXPERIENCE',
+          title: speaker.name,
+          kicker: 'music × code × AI',
+          subtitle: 'не tutorial, а открытый разговор про музыку рядом с AI.',
+          quoteLabel: 'from the call',
+          quote: 'это больше про человека, нежели про технологию.',
+          chips: ['field experience', 'guest format', 'x26 week 3'],
+          footer: 'human layer · improvisation · sound',
+          micro: 'эта версия держит более человеческий и less tool-centric угол, который прозвучал в разговоре.',
+          photoLabel: 'human layer'
+        },
+        {
+          id: '03-blueprint-question',
+          theme: 'blue',
+          layout: 'blueprint',
+          eyebrow: 'CONVERSATION THREAD · 27 MAR 2026',
+          title: speaker.name,
+          kicker: 'what music becomes near AI',
+          subtitle: 'что такое музыка для человека — и что с ней может произойти рядом с AI.',
+          quoteLabel: 'positioning',
+          quote: 'больше поговорить про то, что такое для тебя музыка и как ты считаешь, что с этим может произойти.',
+          chips: ['open lecture', 'w3 audio', 'conversation-based'],
+          footer: 'music · imagination · machine',
+          micro: 'здесь акцент смещён в сторону вопроса и исследовательского tension, а не в сторону конкретного инструмента.',
+          photoLabel: 'research note'
+        },
+        {
+          id: '04-signal-format',
+          theme: 'teal',
+          layout: 'signal',
+          eyebrow: 'LIVE DEMO / PERFORMANCE WELCOME',
+          title: speaker.name,
+          kicker: 'guest slot · open format',
+          subtitle: 'если к маю появится интересный стек — он войдёт в сессию. если нет — это тоже ок.',
+          quoteLabel: 'format',
+          quote: 'гостевой формат, где можно вплести live demo, performance и generative sound без тяжёлой подготовки.',
+          chips: ['live demo', 'performance', 'no heavy prep'],
+          footer: 'open format · improvisation',
+          micro: 'версия для более техничного анонса: показывает свободу формата, но не превращает лекцию в обещание туториала.',
+          photoLabel: 'open format'
+        },
+        {
+          id: '05-poster-language',
+          theme: 'gold',
+          layout: 'poster',
+          eyebrow: 'NOMUSICIANS · SERGEY RAKITIN',
+          title: speaker.name,
+          kicker: 'guest lecture · x26 spring lab',
+          subtitle: 'музыка, код и случайность.',
+          quoteLabel: 'poster line',
+          quote: 'AI становится партнёром по импровизации, а не только инструментом продакшна.',
+          chips: ['spring lab x26', 'w3 guest', 'new musical language'],
+          footer: 'generative sound · new musical language',
+          micro: 'самая постерная версия из пятёрки — с коротким сильным тезисом и самым жёстким визуальным контрастом.',
+          photoLabel: 'poster cut'
+        }
+      ];
+    }
+
+    function queryVariant(variants) {
+      const params = new URLSearchParams(window.location.search);
+      const byId = params.get('variant');
+      const byIndex = Number(params.get('index'));
+
+      if (byId) {
+        const exact = variants.find(function (item) { return item.id === byId; });
+        if (exact) return exact;
+      }
+
+      if (Number.isFinite(byIndex) && byIndex > 0 && byIndex <= variants.length) {
+        return variants[byIndex - 1];
+      }
+
+      return variants[0];
+    }
+
+    function chipMarkup(chips) {
+      return chips.map(function (chip) {
+        return '<span class="chip">' + escapeHtml(chip) + '</span>';
+      }).join('');
+    }
+
+    function fernMarkup(side) {
+      return '' +
+        '<svg class="fern ' + side + '" viewBox="0 0 220 520" aria-hidden="true">' +
+          '<path d="M108 16C108 88 108 166 108 504" />' +
+          '<path d="M108 70C76 56 56 38 40 14" />' +
+          '<path d="M108 98C74 92 48 78 28 56" />' +
+          '<path d="M108 128C74 128 44 116 18 92" />' +
+          '<path d="M108 164C72 168 42 158 14 138" />' +
+          '<path d="M108 202C70 212 38 204 10 186" />' +
+          '<path d="M108 246C72 258 42 254 18 238" />' +
+          '<path d="M108 294C76 306 48 306 28 294" />' +
+          '<path d="M108 344C78 356 56 360 36 354" />' +
+          '<path d="M108 394C82 406 64 414 46 416" />' +
+          '<path d="M108 446C88 454 72 464 58 482" />' +
+        '</svg>';
+    }
+
+    function circuitMarkup() {
+      return '' +
+        '<svg class="circuit" viewBox="0 0 1080 1920" aria-hidden="true">' +
+          '<g stroke="rgba(220,236,228,0.22)" stroke-width="2" fill="none">' +
+            '<path d="M72 132h180l54 54h126" />' +
+            '<path d="M820 160h130v260h70" />' +
+            '<path d="M88 1520h240l72-72h172" />' +
+            '<path d="M628 1486h154l58-58h132" />' +
+            '<path d="M842 786h92v184h82" />' +
+          '</g>' +
+          '<g fill="rgba(240,248,243,0.56)">' +
+            '<circle cx="252" cy="132" r="5" />' +
+            '<circle cx="432" cy="186" r="5" />' +
+            '<circle cx="950" cy="160" r="5" />' +
+            '<circle cx="400" cy="1448" r="5" />' +
+            '<circle cx="840" cy="1428" r="5" />' +
+            '<circle cx="934" cy="970" r="5" />' +
+          '</g>' +
+        '</svg>';
+    }
+
+    function brandLeafMarkup() {
+      return '' +
+        '<svg class="brand-leaf" viewBox="0 0 160 60" aria-hidden="true">' +
+          '<g fill="none" stroke="rgba(220,236,228,0.8)" stroke-width="1.7" stroke-linecap="round">' +
+            '<path d="M12 44c16-6 28-16 36-30" />' +
+            '<path d="M46 16c16 6 26 18 32 34" />' +
+            '<path d="M46 16c-4 14-4 24 0 32" />' +
+            '<path d="M64 28c10 0 20 4 30 14" />' +
+            '<path d="M94 42c8-10 18-16 30-18" />' +
+            '<path d="M124 24c0 10 8 20 22 30" />' +
+          '</g>' +
+        '</svg>';
+    }
+
+    function render(variant, speaker) {
+      const root = document.getElementById('storyRoot');
+      const photoPath = './speakers/' + encodeURIComponent(speaker.photo || 'sergey-rakitin.jpg');
+      const title = escapeHtml(variant.title || speaker.name);
+      const kicker = variant.kicker ? '<p class="story-kicker">' + escapeHtml(variant.kicker) + '</p>' : '';
+      const micro = variant.micro ? '<div class="micro-copy">' + escapeHtml(variant.micro) + '</div>' : '';
+
+      root.className = 'story theme-' + escapeHtml(variant.theme) + ' layout-' + escapeHtml(variant.layout);
+      root.innerHTML = '' +
+        '<div class="glow g1"></div>' +
+        '<div class="glow g2"></div>' +
+        '<div class="glow g3"></div>' +
+        fernMarkup('left') +
+        fernMarkup('right') +
+        circuitMarkup() +
+        '<div class="corners"></div>' +
+        '<div class="corner-mark tl"></div>' +
+        '<div class="corner-mark tr"></div>' +
+        '<div class="corner-mark bl"></div>' +
+        '<div class="corner-mark br"></div>' +
+        '<div class="story-inner">' +
+          '<header class="story-header">' +
+            '<p class="eyebrow">' + escapeHtml(variant.eyebrow) + '</p>' +
+            '<div class="name-row">' +
+              '<h1 class="story-title">' + title + '</h1>' +
+            '</div>' +
+            kicker +
+            '<p class="story-subtitle">' + escapeHtml(variant.subtitle) + '</p>' +
+          '</header>' +
+          '<section class="story-photo">' +
+            '<img src="' + photoPath + '" alt="' + title + '">' +
+            '<div class="photo-label">' + escapeHtml(variant.photoLabel) + '</div>' +
+          '</section>' +
+          '<blockquote class="story-quote">' +
+            '<p class="quote-label">' + escapeHtml(variant.quoteLabel) + '</p>' +
+            '<p class="quote-copy">' + escapeHtml(variant.quote) + '</p>' +
+          '</blockquote>' +
+          '<footer class="story-meta">' +
+            '<div class="chip-row">' + chipMarkup(variant.chips || []) + '</div>' +
+            '<div class="footer-copy">' + escapeHtml(variant.footer) + '</div>' +
+            micro +
+          '</footer>' +
+        '</div>' +
+        brandLeafMarkup() +
+        '<div class="brand-bar"></div>';
+    }
+
+    function waitForImage(image) {
+      return new Promise(function (resolve) {
+        if (!image) {
+          resolve();
+          return;
+        }
+        if (image.complete) {
+          resolve();
+          return;
+        }
+        image.addEventListener('load', resolve, { once: true });
+        image.addEventListener('error', resolve, { once: true });
+      });
+    }
+
+    async function init() {
+      const speaker = speakerRecord();
+      const variants = storyVariants(speaker);
+      const variant = queryVariant(variants);
+      render(variant, speaker);
+
+      const image = document.querySelector('.story-photo img');
+      await Promise.all([
+        document.fonts ? document.fonts.ready.catch(function () {}) : Promise.resolve(),
+        waitForImage(image)
+      ]);
+
+      document.getElementById('storyRoot').dataset.ready = 'true';
+      window.storyRenderReady = true;
+      window.storyVariants = variants.map(function (item) { return item.id; });
+    }
+
+    init();
+  </script>
+</body>
+</html>

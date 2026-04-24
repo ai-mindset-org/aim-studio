@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1200px; height: 630px; overflow: hidden; background: #0a0a0f; font-family: 'IBM Plex Mono', monospace; color: #ededf0; }
+
+.wrap { width: 1200px; height: 630px; position: relative; overflow: hidden; }
+
+/* AIM red brand accent */
+.grid {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(220,60,60,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(220,60,60,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+.bracket { position: absolute; width: 32px; height: 32px; opacity: 0.3; z-index: 20; }
+.tl { top: 18px; left: 18px; border-top: 2px solid #dc3c3c; border-left: 2px solid #dc3c3c; }
+.tr { top: 18px; right: 18px; border-top: 2px solid #dc3c3c; border-right: 2px solid #dc3c3c; }
+.bl { bottom: 18px; left: 18px; border-bottom: 2px solid #dc3c3c; border-left: 2px solid #dc3c3c; }
+.br { bottom: 18px; right: 18px; border-bottom: 2px solid #dc3c3c; border-right: 2px solid #dc3c3c; }
+
+/* Mosaic right */
+.mosaic-tile { position: absolute; overflow: hidden; }
+.mosaic-tile img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.mosaic-fade {
+    position: absolute; top: 0; bottom: 0; z-index: 4;
+    background: linear-gradient(90deg, #0a0a0f 0%, rgba(10,10,15,0.92) 40%, transparent 100%);
+}
+
+/* AIM logo bar */
+.aim-bar {
+    position: absolute; top: 50px; left: 50px; z-index: 15;
+    display: flex; align-items: center; gap: 10px;
+}
+.aim-dot { width: 10px; height: 10px; background: #dc3c3c; border-radius: 50%; box-shadow: 0 0 12px rgba(220,60,60,0.5); }
+.aim-name { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(220,60,60,0.8); }
+
+.content {
+    position: relative; z-index: 10;
+    padding: 95px 50px 50px; height: 100%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    max-width: 560px;
+}
+h1 { font-size: 48px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
+h1 span { color: #dc3c3c; }
+.sub { font-size: 12px; color: #808088; margin-top: 14px; letter-spacing: 0.05em; line-height: 1.6; }
+.labs { display: flex; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+.lab-tag {
+    padding: 4px 10px; border: 1px solid rgba(220,60,60,0.25);
+    background: rgba(220,60,60,0.06); color: rgba(220,60,60,0.8);
+    font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    border-radius: 3px;
+}
+.footer {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-size: 10px; color: #555;
+}
+.footer .url { color: rgba(220,60,60,0.5); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="grid"></div>
+    <div class="bracket tl"></div><div class="bracket tr"></div>
+    <div class="bracket bl"></div><div class="bracket br"></div>
+
+    <!-- Mosaic tiles -->
+    <div class="mosaic-tile" style="left:500px;top:0;width:280px;height:210px;"><img src="speakers/alexander-povaliaev.png" style="filter:grayscale(1) brightness(0.5) contrast(1.3);"></div>
+    <div class="mosaic-tile" style="left:783px;top:0;width:140px;height:103px;"><img src="speakers/arseny-popov.jpg" style="filter:grayscale(1) brightness(0.8) contrast(1.1);"></div>
+    <div class="mosaic-tile" style="left:926px;top:0;width:274px;height:103px;"><img src="speakers/tonya-zhukova.jpg" style="filter:grayscale(1) brightness(0.4) contrast(1.4);"></div>
+    <div class="mosaic-tile" style="left:783px;top:106px;width:210px;height:104px;"><img src="speakers/anca-stavenski.jpg" style="filter:grayscale(1) brightness(0.7) contrast(1.15);"></div>
+    <div class="mosaic-tile" style="left:996px;top:106px;width:204px;height:104px;"><img src="speakers/ilya-gindin.png" style="filter:grayscale(1) brightness(0.55) contrast(1.3);"></div>
+    <div class="mosaic-tile" style="left:500px;top:213px;width:200px;height:210px;"><img src="speakers/evgeniy-volnov.jpg" style="filter:grayscale(1) brightness(0.4) contrast(1.35);"></div>
+    <div class="mosaic-tile" style="left:703px;top:213px;width:250px;height:102px;"><img src="speakers/sergey-rakitin.jpg" style="filter:grayscale(1) brightness(0.8) contrast(1.1);"></div>
+    <div class="mosaic-tile" style="left:956px;top:213px;width:244px;height:210px;"><img src="speakers/sereja-ris.jpg" style="filter:grayscale(1) brightness(0.7) contrast(1.15);"></div>
+    <div class="mosaic-tile" style="left:703px;top:318px;width:250px;height:105px;"><img src="speakers/stanislav-glazov.jpg" style="filter:grayscale(1) brightness(0.6) contrast(1.2);"></div>
+    <div class="mosaic-tile" style="left:500px;top:426px;width:340px;height:204px;"><img src="speakers-ainative/stepan-gershuni.jpg" style="filter:grayscale(1) brightness(0.5) contrast(1.3);"></div>
+    <div class="mosaic-tile" style="left:843px;top:426px;width:177px;height:204px;"><img src="speakers-ainative/dima-khanarin.jpg" style="filter:grayscale(1) brightness(0.75) contrast(1.15);"></div>
+    <div class="mosaic-tile" style="left:1023px;top:426px;width:177px;height:204px;"><img src="speakers-ainative/bayram-annakov.jpg" style="filter:grayscale(1) brightness(0.85) contrast(1.05);"></div>
+
+    <div class="mosaic-fade" style="left:420px;width:200px;"></div>
+
+    <!-- AIM branding -->
+    <div class="aim-bar">
+        <div class="aim-dot"></div>
+        <div class="aim-name">AI Mindset</div>
+    </div>
+
+    <div class="content">
+        <div>
+            <h1>speaker banner<br><span>generator</span></h1>
+            <div class="sub">multi-lab speaker banners · editable text · custom photos · 3 cover styles · PNG @2x export</div>
+            <div class="labs">
+                <span class="lab-tag">SPRING LAB X26</span>
+                <span class="lab-tag">AI-NATIVE SPRINT</span>
+                <span class="lab-tag">GRID · MOSAIC · DENSE</span>
+            </div>
+        </div>
+        <div class="footer">
+            <span>AI Mindset · speaker banner generator</span>
+            <span class="url">x26-banners.netlify.app</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

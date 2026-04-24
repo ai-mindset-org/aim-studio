@@ -1,0 +1,8 @@
+node_modules/
+export/
+.tmp-*/
+.DS_Store
+*.bak-*
+.env
+.env.local
+.netlify/
