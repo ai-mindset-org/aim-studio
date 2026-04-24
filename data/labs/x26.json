@@ -1,0 +1,64 @@
+{
+  "id": "x26",
+  "name": "Spring Lab {x26}",
+  "eyebrow": "AI MINDSET · SPRING LAB X26",
+  "title": "spring lab",
+  "accentTitle": "{x26}",
+  "accent": "#16a34a",
+  "accentRgb": "22,163,74",
+  "accentName": "x26 green",
+  "secondaryAccent": "#fbbf24",
+  "secondaryAccentRgb": "251,191,36",
+  "recordPaletteLegend": "W1 gold · W2 violet · W3 blue · W4 green",
+  "photoBase": "./speakers",
+  "dates": "27 APR – 25 MAY 2026",
+  "footer": "x26 / spring / batch:03",
+  "sub": "4 weeks · text / image / audio / code · workshops + focus + creative shipping",
+  "fonts": {
+    "mono": "'Space Mono', monospace",
+    "display": "'Space Grotesk', sans-serif",
+    "googleFontsHref": "https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+  },
+  "weekAccents": {
+    "W1": "#fbbf24",
+    "W2": "#a78bfa",
+    "W3": "#60a5fa",
+    "W4": "#4ade80"
+  },
+  "featuredIds": [
+    "anca-stavenski",
+    "arseny-popov",
+    "olya-eremina",
+    "tonya-zhukova",
+    "ilya-gindin",
+    "sereja-ris",
+    "nomusicians",
+    "oleg-tserbaev",
+    "evgeniy-volnov",
+    "stanislav-glazov",
+    "alexander-povaliaev"
+  ],
+  "defaultFormats": {
+    "generic": "wide",
+    "speaker": "wide",
+    "org": "wide"
+  },
+  "formatStyles": {
+    "generic": {
+      "wide": ["field", "mosaic", "roster", "dense", "strips", "cards"],
+      "square": ["mosaic", "stack", "board"]
+    },
+    "speaker": {
+      "wide": ["aimnative", "surname"],
+      "square": ["portrait", "quote", "signal"],
+      "story": ["story", "story-card", "story-poster"]
+    },
+    "org": {
+      "wide": ["plaque", "poster", "rail", "digest"],
+      "square": ["panel", "orbit"]
+    }
+  },
+  "genericStyles": ["field", "mosaic", "roster", "dense", "strips", "cards"],
+  "speakerStyles": ["aimnative", "surname", "portrait", "quote", "signal", "story", "story-card", "story-poster"],
+  "orgStyles": ["plaque", "poster", "rail", "digest", "panel", "orbit"]
+}

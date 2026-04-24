@@ -1,0 +1,52 @@
+{
+  "id": "core",
+  "name": "AI Mindset {core}",
+  "eyebrow": "AI MINDSET · EVERGREEN",
+  "title": "ai mindset",
+  "accentTitle": "{core}",
+  "accent": "#a78bfa",
+  "accentRgb": "167,139,250",
+  "accentName": "core mauve",
+  "secondaryAccent": "#fbbf24",
+  "secondaryAccentRgb": "251,191,36",
+  "recordPaletteLegend": "evergreen — single mauve accent for cross-cohort content",
+  "photoBase": "./speakers",
+  "dates": "evergreen",
+  "footer": "aimindset.org",
+  "sub": "evergreen brand · workshops · founder os · communities · cross-cohort content",
+  "fonts": {
+    "mono": "'JetBrains Mono', monospace",
+    "display": "'IBM Plex Mono', monospace",
+    "googleFontsHref": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+  },
+  "weekAccents": {
+    "W1": "#a78bfa",
+    "W2": "#60a5fa",
+    "W3": "#4ade80",
+    "W4": "#fbbf24"
+  },
+  "featuredIds": [],
+  "defaultFormats": {
+    "generic": "wide",
+    "speaker": "wide",
+    "org": "wide"
+  },
+  "formatStyles": {
+    "generic": {
+      "wide": ["field", "mosaic", "roster", "cards"],
+      "square": ["mosaic", "stack", "board"]
+    },
+    "speaker": {
+      "wide": ["aimnative", "surname"],
+      "square": ["portrait", "quote", "signal"],
+      "story": ["story", "story-card", "story-poster"]
+    },
+    "org": {
+      "wide": ["plaque", "poster", "rail", "digest"],
+      "square": ["panel", "orbit"]
+    }
+  },
+  "genericStyles": ["field", "mosaic", "roster", "cards"],
+  "speakerStyles": ["aimnative", "surname"],
+  "orgStyles": ["plaque", "poster", "rail", "digest"]
+}

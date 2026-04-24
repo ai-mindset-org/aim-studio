@@ -631,6 +631,7 @@
     <strong>route:</strong> type → format/size → card style
 </div>
 
+<script src="./data/labs.bundle.js"></script>
 <script src="./data/speakers.js"></script>
 <script>
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
@@ -639,7 +640,34 @@ if (!DATA) throw new Error('X26BannerData missing');
 var LABS = DATA.labs || {};
 var LAB_ALIASES = DATA.labAliases || {};
 var currentLabId = 'x26';
-var SPEAKERS = DATA.speakers || [];
+
+// For evergreen labs (e.g. core) with no speaker roster, provide stub speakers so
+// layouts that iterate a fixed grid (mosaic, strips, dense) still render. Stubs
+// have id 'placeholder-N' and no photo, so hasPhoto/photoSrc return null and
+// downstream code uses the placeholderSurface (typography + abstract pattern).
+function placeholderSpeakers(count, lab) {
+    var accent = (lab && lab.accent) || (LAB && LAB.accent) || '#a78bfa';
+    var out = [];
+    for (var i = 0; i < count; i++) {
+        out.push({
+            id: 'placeholder-' + i,
+            name: '',
+            short: '',
+            type: 'placeholder',
+            modality: 'placeholder',
+            accent: accent,
+            placeholder: true,
+        });
+    }
+    return out;
+}
+
+function speakersForLab(lab) {
+    var arr = (lab && Array.isArray(lab.speakers)) ? lab.speakers : [];
+    return arr.length > 0 ? arr : placeholderSpeakers(12, lab);
+}
+
+var SPEAKERS = speakersForLab(LABS['x26']);
 var PHOTO_BASE = './speakers';
 var LAB = LABS['x26'] || {};
 
@@ -1309,7 +1337,7 @@ async function setLab(labId) {
     if (!resolvedLabId) return;
     currentLabId = resolvedLabId;
     LAB = LABS[resolvedLabId];
-    SPEAKERS = LAB.speakers || [];
+    SPEAKERS = speakersForLab(LAB);
     PHOTO_BASE = LAB.photoBase || './speakers';
     spIdx = 0;
     accentMode = normalizeAccentModeValue(accentMode);
@@ -1356,7 +1384,7 @@ function makeBW(img, brightness) {
 }
 
 async function preloadImages() {
-    var promises = SPEAKERS.map(function(s) {
+    var promises = SPEAKERS.filter(function(s) { return s && s.photo; }).map(function(s) {
         return new Promise(function(resolve) {
             var img = new Image();
             img.onload = function() {
@@ -1387,11 +1415,13 @@ async function preloadImages() {
 }
 
 function photoSrc(s) {
+    if (!s || !s.id) return null;
     return customPhotos[s.id] || imageCache[s.id] || null;
 }
 
 function bwSrc(s, tone) {
     // tone: 'vdark', 'dark', 'mid', 'light'
+    if (!s || !s.id) return null;
     if (bwCache[s.id] && bwCache[s.id][tone]) return bwCache[s.id][tone];
     return photoSrc(s);
 }
@@ -4045,7 +4075,7 @@ window.addEventListener('resize', fitPreview);
     // Inline lab setup (not calling setLab to avoid double render)
     currentLabId = labId;
     LAB = LABS[labId];
-    SPEAKERS = LAB.speakers || [];
+    SPEAKERS = speakersForLab(LAB);
     PHOTO_BASE = LAB.photoBase || './speakers';
     accentMode = normalizeAccentModeValue(accentMode);
     ensureOrgSelection();

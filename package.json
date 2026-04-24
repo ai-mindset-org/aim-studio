@@ -1,8 +1,13 @@
 {
-  "name": "x26-banner-generator",
+  "name": "aim-studio",
   "private": true,
   "type": "module",
   "scripts": {
+    "build:labs": "node ./scripts/build-labs.mjs",
+    "prebuild": "npm run build:labs",
+    "build": "npm run build:labs",
+    "predev": "npm run build:labs",
+    "dev": "python3 -m http.server 8765",
     "export": "node ./scripts/export.mjs all",
     "export:generic": "node ./scripts/export.mjs generic",
     "export:speaker": "node ./scripts/export.mjs speaker",
@@ -12,6 +17,7 @@
     "export:all": "node ./scripts/export.mjs all",
     "export:x26": "node ./scripts/export.mjs all --lab x26",
     "export:s3": "node ./scripts/export.mjs all --lab s3",
+    "export:core": "node ./scripts/export.mjs all --lab core",
     "export:nomusicians-stories": "node ./scripts/export-nomusicians-stories.mjs",
     "test:smoke": "node ./scripts/smoke-download.mjs --all",
     "test:smoke:x26": "node ./scripts/smoke-download.mjs --lab x26",
