@@ -657,7 +657,35 @@
         drop photo here or click to upload
         <input type="file" id="photoInput" accept="image/*">
     </div>
+    <button class="ai-bg-btn" id="aiBgBtn" onclick="openAiBgModal()" style="font-family: var(--mono); font-size: 11px; padding: 6px 14px; border: 1px solid rgba(var(--accent-rgb),0.2); background: rgba(var(--accent-rgb),0.06); color: var(--accent); cursor: pointer;">✨ generate bg</button>
     <button class="photo-reset" id="photoReset" style="display:none" onclick="resetPhoto()">reset to default</button>
+</div>
+
+<!-- AI background generation modal -->
+<div id="aiBgBackdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9998;" onclick="closeAiBgModal(event)"></div>
+<div id="aiBgModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--bg); border:1px solid var(--accent); padding:20px; z-index:9999; width:min(520px, 92vw); font-family:var(--mono); color:var(--text); box-shadow:0 24px 64px rgba(0,0,0,0.6);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <strong style="font-size:12px; letter-spacing:0.08em; color:var(--accent);">✨ AI BACKGROUND</strong>
+        <button onclick="closeAiBgModal()" style="background:transparent; border:none; color:var(--dim); font-size:16px; cursor:pointer;">×</button>
+    </div>
+    <label style="display:block; font-size:10px; color:var(--dim); margin-bottom:6px; letter-spacing:0.06em;">PROMPT</label>
+    <textarea id="aiBgPrompt" placeholder="describe the background you want" style="width:100%; min-height:90px; box-sizing:border-box; padding:10px; font-family:var(--mono); font-size:12px; background:rgba(var(--accent-rgb),0.04); border:1px solid rgba(var(--accent-rgb),0.2); color:var(--text); resize:vertical; margin-bottom:12px;"></textarea>
+    <label style="display:block; font-size:10px; color:var(--dim); margin-bottom:6px; letter-spacing:0.06em;">STYLE</label>
+    <select id="aiBgStyle" style="width:100%; padding:8px 10px; font-family:var(--mono); font-size:12px; background:rgba(var(--accent-rgb),0.04); border:1px solid rgba(var(--accent-rgb),0.2); color:var(--text); margin-bottom:12px;">
+        <option value="plain">plain (no prefix)</option>
+        <option value="biological">biological — cellular / microscope</option>
+        <option value="terminal">terminal — CRT / oscilloscope</option>
+        <option value="glitch">glitch — RGB shift / decay</option>
+        <option value="botanical">botanical — engraving + PCB</option>
+        <option value="blueprint">blueprint — schematic</option>
+        <option value="evergreen">evergreen — mauve gradient</option>
+    </select>
+    <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--dim); margin-bottom:14px; cursor:pointer;">
+        <input type="checkbox" id="aiBgNoCache"> regenerate (no cache)
+    </label>
+    <div id="aiBgError" style="display:none; padding:8px 10px; background:rgba(220,80,80,0.1); border:1px solid rgba(220,80,80,0.3); color:#ff8a8a; font-size:11px; margin-bottom:12px;"></div>
+    <div id="aiBgNotice" style="display:none; padding:8px 10px; background:rgba(var(--accent-rgb),0.08); border:1px solid rgba(var(--accent-rgb),0.2); color:var(--dim); font-size:11px; margin-bottom:12px;"></div>
+    <button id="aiBgSubmit" onclick="submitAiBg()" style="width:100%; padding:10px; font-family:var(--mono); font-size:12px; border:1px solid var(--accent); background:rgba(var(--accent-rgb),0.12); color:var(--accent); cursor:pointer; letter-spacing:0.06em;">GENERATE</button>
 </div>
 
 <div class="preview-wrap">
@@ -4087,6 +4115,101 @@ dropZone.addEventListener('drop', function(e) {
     e.preventDefault(); dropZone.classList.remove('drag-over');
     if (e.dataTransfer.files[0]) handlePhotoFile(e.dataTransfer.files[0]);
 });
+
+// ── AI Background Generation ───
+function aiBgCacheKey(payload) { return 'aim-studio-bg-cache:' + JSON.stringify(payload); }
+function openAiBgModal() {
+    document.getElementById('aiBgError').style.display = 'none';
+    document.getElementById('aiBgNotice').style.display = 'none';
+    document.getElementById('aiBgBackdrop').style.display = 'block';
+    document.getElementById('aiBgModal').style.display = 'block';
+    setTimeout(function() { document.getElementById('aiBgPrompt').focus(); }, 0);
+}
+function closeAiBgModal(e) {
+    if (e && e.target && e.target.id !== 'aiBgBackdrop' && e.currentTarget !== e.target && e.type === 'click') return;
+    document.getElementById('aiBgBackdrop').style.display = 'none';
+    document.getElementById('aiBgModal').style.display = 'none';
+}
+function showAiBgError(msg) {
+    var el = document.getElementById('aiBgError');
+    el.textContent = msg; el.style.display = 'block';
+    document.getElementById('aiBgNotice').style.display = 'none';
+}
+function showAiBgNotice(msg) {
+    var el = document.getElementById('aiBgNotice');
+    el.textContent = msg; el.style.display = 'block';
+    document.getElementById('aiBgError').style.display = 'none';
+}
+function applyAiBgDataUrl(dataUrl) {
+    var speakerId = SPEAKERS[spIdx] ? SPEAKERS[spIdx].id : null;
+    if (!speakerId) {
+        showAiBgError('No active speaker — switch to speaker mode first.');
+        return false;
+    }
+    customPhotos[speakerId] = dataUrl;
+    if (typeof updateResetBtn === 'function') updateResetBtn();
+    render();
+    return true;
+}
+async function submitAiBg() {
+    var prompt = document.getElementById('aiBgPrompt').value.trim();
+    var style = document.getElementById('aiBgStyle').value;
+    var noCache = document.getElementById('aiBgNoCache').checked;
+    var lab = currentLabId;
+    if (!prompt) { showAiBgError('prompt is required'); return; }
+
+    var btn = document.getElementById('aiBgSubmit');
+    var originalText = btn.textContent;
+    var key = aiBgCacheKey({ prompt: prompt, style: style, lab: lab });
+
+    // Cache lookup
+    if (!noCache) {
+        try {
+            var cached = localStorage.getItem(key);
+            if (cached) {
+                if (applyAiBgDataUrl(cached)) {
+                    showAiBgNotice('cached result applied');
+                    setTimeout(closeAiBgModal, 600);
+                }
+                return;
+            }
+        } catch (e) { /* ignore localStorage errors */ }
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'generating...';
+    document.getElementById('aiBgError').style.display = 'none';
+    document.getElementById('aiBgNotice').style.display = 'none';
+
+    try {
+        var resp = await fetch('/.netlify/functions/generate-bg', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: prompt, style: style, lab: lab }),
+        });
+        var contentType = resp.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+            throw new Error('AI bg generation requires Netlify deploy. Run `netlify dev` instead, or deploy first.');
+        }
+        var data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || ('HTTP ' + resp.status));
+        if (!data.dataUrl) throw new Error('No image returned');
+        try { localStorage.setItem(key, data.dataUrl); } catch (e) { /* quota */ }
+        if (applyAiBgDataUrl(data.dataUrl)) {
+            showAiBgNotice('generated and applied');
+            setTimeout(closeAiBgModal, 600);
+        }
+    } catch (err) {
+        var msg = (err && err.message) || String(err);
+        if (msg === 'Failed to fetch' || /NetworkError|TypeError/i.test(msg)) {
+            msg = 'AI bg generation requires Netlify deploy. Run `netlify dev` instead, or deploy first.';
+        }
+        showAiBgError(msg);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+    }
+}
 
 // ── Download ───
 async function downloadPNG() {
