@@ -46,12 +46,14 @@
   "formatStyles": {
     "generic": {
       "wide": ["field", "mosaic", "roster", "dense", "strips", "cards"],
-      "square": ["mosaic", "stack", "board"]
+      "square": ["mosaic", "stack", "board"],
+      "carousel": ["manifesto", "headline", "splash"]
     },
     "speaker": {
       "wide": ["aimnative", "surname"],
       "square": ["portrait", "quote", "signal"],
-      "story": ["story", "story-card", "story-poster"]
+      "story": ["story", "story-card", "story-poster"],
+      "carousel": ["manifesto"]
     },
     "org": {
       "wide": ["plaque", "poster", "rail", "digest"],
