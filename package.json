@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build:labs": "node ./scripts/build-labs.mjs",
+    "sync:designs": "node ./scripts/sync-claude-designs.mjs",
     "prebuild": "npm run build:labs",
     "build": "npm run build:labs",
     "predev": "npm run build:labs",
