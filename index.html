@@ -2173,7 +2173,7 @@ function renderOrgTopic(card) {
         copyMarkup =
             '<div style="position:absolute;left:84px;top:74px;width:760px;z-index:7;display:flex;flex-direction:column;gap:22px;">' +
                 '<div contenteditable="true" spellcheck="false" style="color:' + accent + ';font-size:13px;font-weight:600;letter-spacing:0.34em;text-transform:uppercase;opacity:0.92;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
-                '<h1 contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;color:#f4fff6;font-size:' + titleSize + 'px;line-height:0.88;letter-spacing:-0.03em;text-transform:uppercase;max-width:780px;">' + escapeHtml(card.title) + '</h1>' +
+                '<h1 contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;color:#f4fff6;font-size:' + titleSize + 'px;line-height:0.96;padding:6px 0 4px;letter-spacing:-0.03em;text-transform:uppercase;max-width:780px;">' + escapeHtml(card.title) + '</h1>' +
                 '<div style="max-width:720px;padding:22px 26px;border-radius:28px;background:radial-gradient(circle at 92% 16%,rgba(' + accentRgb + ',0.12),transparent 22%),linear-gradient(180deg,rgba(7,17,11,0.72),rgba(7,17,11,0.36));border:1px solid rgba(220,252,231,0.14);backdrop-filter:blur(16px);box-shadow:0 18px 48px rgba(0,0,0,0.24);">' +
                     '<div contenteditable="true" spellcheck="false" style="color:rgba(234,255,238,0.88);font-size:31px;line-height:1.28;letter-spacing:0;">' + escapeHtml(card.subtitle) + '</div>' +
                 '</div>' +
@@ -2188,7 +2188,7 @@ function renderOrgTopic(card) {
             '<div style="position:absolute;left:84px;top:72px;width:560px;bottom:92px;z-index:7;display:flex;flex-direction:column;justify-content:space-between;padding:28px 30px 30px;border-radius:34px;background:radial-gradient(circle at 88% 14%,rgba(' + accentRgb + ',0.12),transparent 24%),linear-gradient(180deg,rgba(7,17,11,0.70),rgba(7,17,11,0.32));border:1px solid rgba(220,252,231,0.14);backdrop-filter:blur(16px);box-shadow:0 18px 48px rgba(0,0,0,0.26);">' +
                 '<div>' +
                     '<div contenteditable="true" spellcheck="false" style="color:' + accent + ';font-size:13px;font-weight:600;letter-spacing:0.32em;text-transform:uppercase;opacity:0.92;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
-                    '<h1 contenteditable="true" spellcheck="false" style="margin-top:18px;font-family:\'Space Grotesk\',sans-serif;color:#f4fff6;font-size:' + titleSize + 'px;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;">' + escapeHtml(card.title) + '</h1>' +
+                    '<h1 contenteditable="true" spellcheck="false" style="margin-top:18px;font-family:\'Space Grotesk\',sans-serif;color:#f4fff6;font-size:' + titleSize + 'px;line-height:0.98;padding-bottom:4px;letter-spacing:-0.03em;text-transform:uppercase;">' + escapeHtml(card.title) + '</h1>' +
                 '</div>' +
                 '<div>' +
                     '<div contenteditable="true" spellcheck="false" style="padding:18px 20px;border-radius:24px;background:rgba(9,18,12,0.42);border:1px solid rgba(220,252,231,0.10);color:rgba(234,255,238,0.86);font-size:27px;line-height:1.28;">' + escapeHtml(card.subtitle) + '</div>' +
@@ -2203,7 +2203,7 @@ function renderOrgTopic(card) {
         copyMarkup =
             '<div style="position:absolute;left:86px;top:82px;width:690px;z-index:7;display:flex;flex-direction:column;gap:18px;padding:34px 40px 32px;border-radius:34px;background:radial-gradient(circle at 88% 14%,rgba(' + accentRgb + ',0.12),transparent 24%),linear-gradient(180deg,rgba(7,17,11,0.66),rgba(7,17,11,0.36));border:1px solid rgba(220,252,231,0.14);backdrop-filter:blur(16px);box-shadow:0 18px 48px rgba(0,0,0,0.26);">' +
                 '<div contenteditable="true" spellcheck="false" style="color:' + accent + ';font-size:13px;font-weight:600;letter-spacing:0.32em;text-transform:uppercase;opacity:0.92;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
-                '<h1 contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;color:#f4fff6;font-size:' + titleSize + 'px;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;">' + escapeHtml(card.title) + '</h1>' +
+                '<h1 contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;color:#f4fff6;font-size:' + titleSize + 'px;line-height:0.98;padding-bottom:4px;letter-spacing:-0.03em;text-transform:uppercase;">' + escapeHtml(card.title) + '</h1>' +
                 '<div contenteditable="true" spellcheck="false" style="color:rgba(230,255,236,0.84);font-size:28px;line-height:1.32;letter-spacing:0;">' + escapeHtml(card.subtitle) + '</div>' +
                 '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">' +
                     badgeMarkup +
@@ -2386,7 +2386,7 @@ function renderWeekCards(record, accent, accentRgb, variant) {
             '<div>' +
                 '<div contenteditable="true" spellcheck="false" style="font-size:' + labelSize + 'px;letter-spacing:0.16em;text-transform:uppercase;color:' + accent + ';">' + escapeHtml(label) + '</div>' +
                 '<div contenteditable="true" spellcheck="false" style="margin-top:10px;font-size:' + metaSize + 'px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(237,237,240,0.46);">' + escapeHtml(meta) + '</div>' +
-                '<div contenteditable="true" spellcheck="false" style="margin-top:18px;font-family:\'Space Grotesk\',sans-serif;font-size:' + titleSize + 'px;line-height:0.98;font-weight:700;letter-spacing:-0.04em;color:#ededf0;text-wrap:balance;">' + escapeHtml(text) + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="margin-top:18px;padding-bottom:6px;font-family:\'Space Grotesk\',sans-serif;font-size:' + titleSize + 'px;line-height:1.06;font-weight:700;letter-spacing:-0.04em;color:#ededf0;text-wrap:balance;">' + escapeHtml(text) + '</div>' +
             '</div>' +
             peopleMarkup +
         '</article>';
@@ -2415,11 +2415,11 @@ function renderOrgWeekDigest(card) {
         '<div style="position:absolute;left:76px;top:70px;bottom:106px;width:500px;z-index:8;display:grid;grid-template-rows:auto auto auto auto 1fr;gap:14px;">' +
             '<div contenteditable="true" spellcheck="false" style="color:' + accent + ';font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;opacity:0.94;">' + escapeHtml(card.eyebrow || LAB.eyebrow || LAB.name || '') + '</div>' +
             '<div style="display:flex;align-items:flex-end;gap:18px;">' +
-                '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + weekTitleSize + 'px;line-height:0.78;font-weight:700;color:#f4fff6;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="padding:8px 0 14px;font-family:\'Space Grotesk\',sans-serif;font-size:' + weekTitleSize + 'px;line-height:0.92;font-weight:700;color:#f4fff6;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
                 '<div contenteditable="true" spellcheck="false" style="margin-bottom:18px;display:inline-flex;align-items:center;padding:12px 18px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.08);color:' + accent + ';font-size:' + scaleWeekValue(13) + 'px;letter-spacing:0.18em;text-transform:uppercase;">' + escapeHtml(card.badge || '') + '</div>' +
             '</div>' +
-            '<div contenteditable="true" spellcheck="false" style="max-width:460px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:0.92;font-weight:700;color:#f0faf2;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(speakerLine) + '</div>' +
-            '<div contenteditable="true" spellcheck="false" style="max-width:430px;font-size:' + subtitleSize + 'px;line-height:1.32;color:rgba(229,239,232,0.82);">' + escapeHtml(dotJoin([card.headline || '', card.subtitle || ''])) + '</div>' +
+            '<div contenteditable="true" spellcheck="false" style="max-width:460px;padding-bottom:6px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:1.04;font-weight:700;color:#f0faf2;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(speakerLine) + '</div>' +
+            '<div contenteditable="true" spellcheck="false" style="max-width:430px;font-size:' + subtitleSize + 'px;line-height:1.38;color:rgba(229,239,232,0.82);">' + escapeHtml(dotJoin([card.headline || '', card.subtitle || ''])) + '</div>' +
             '<div style="display:grid;gap:12px;align-content:end;">' +
                 (chips ? '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">' + chips + '</div>' : '') +
                 '<div contenteditable="true" spellcheck="false" style="max-width:430px;font-size:16px;line-height:1.48;color:rgba(229,239,232,0.72);">спикеры недели · ' + escapeHtml(speakerLine) + '</div>' +
@@ -2454,11 +2454,11 @@ function renderOrgWeek(card) {
             '<div style="position:absolute;left:70px;right:70px;top:66px;height:176px;z-index:8;padding:24px 28px;border-radius:30px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,rgba(10,17,13,0.74),rgba(8,14,10,0.34));backdrop-filter:blur(16px);box-shadow:0 20px 52px rgba(0,0,0,0.28);display:grid;grid-template-columns:180px minmax(0,1fr) 280px;gap:22px;align-items:start;">' +
                 '<div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin:0;color:' + accent + ';font-size:12px;letter-spacing:0.24em;text-transform:uppercase;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:10px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(132) + 'px;line-height:0.82;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:10px;padding:6px 0 12px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(132) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title) + '</div>' +
                 '</div>' +
                 '<div>' +
-                    '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:0.94;font-weight:700;color:#ededf0;letter-spacing:-0.05em;max-width:10ch;text-wrap:balance;">' + escapeHtml(card.headline || '') + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:560px;font-size:' + subtitleSize + 'px;line-height:1.28;color:#d9e4dc;">' + escapeHtml(card.subtitle || '') + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="padding-bottom:8px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:1.04;font-weight:700;color:#ededf0;letter-spacing:-0.05em;max-width:10ch;text-wrap:balance;">' + escapeHtml(card.headline || '') + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:560px;font-size:' + subtitleSize + 'px;line-height:1.34;color:#d9e4dc;">' + escapeHtml(card.subtitle || '') + '</div>' +
                 '</div>' +
                 '<div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding-top:4px;">' +
                     '<div contenteditable="true" spellcheck="false" style="display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.06);color:' + accent + ';font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">' + escapeHtml(card.badge || '') + '</div>' +
@@ -2479,10 +2479,10 @@ function renderOrgWeek(card) {
                     '<div contenteditable="true" spellcheck="false" style="margin:0;color:' + accent + ';font-size:12px;letter-spacing:0.24em;text-transform:uppercase;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
                 '</div>' +
                 '<div style="display:flex;flex-direction:column;align-content:start;min-height:0;">' +
-                    '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(144) + 'px;line-height:0.82;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="padding:6px 0 14px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(144) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title) + '</div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin-top:12px;display:inline-flex;align-items:center;width:max-content;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.06);color:' + accent + ';font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">' + escapeHtml(card.badge || '') + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:18px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.05em;max-width:10ch;text-wrap:balance;">' + escapeHtml(card.headline || '') + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:420px;font-size:' + subtitleSize + 'px;line-height:1.3;color:#d9e4dc;">' + escapeHtml(card.subtitle || '') + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:18px;padding-bottom:8px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:1.02;font-weight:700;color:#ededf0;letter-spacing:-0.05em;max-width:10ch;text-wrap:balance;">' + escapeHtml(card.headline || '') + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:420px;font-size:' + subtitleSize + 'px;line-height:1.36;color:#d9e4dc;">' + escapeHtml(card.subtitle || '') + '</div>' +
                 '</div>' +
                 (chips ? '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">' + chips + '</div>' : '<div></div>') +
             '</div>' +
@@ -2499,10 +2499,10 @@ function renderOrgWeek(card) {
                 '<div contenteditable="true" spellcheck="false" style="margin:0;color:' + accent + ';font-size:12px;letter-spacing:0.24em;text-transform:uppercase;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
             '</div>' +
             '<div style="display:flex;flex-direction:column;align-content:start;min-height:0;">' +
-                '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(138) + 'px;line-height:0.82;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title) + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="padding:6px 0 14px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(138) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title) + '</div>' +
                 '<div contenteditable="true" spellcheck="false" style="margin-top:12px;display:inline-flex;align-items:center;width:max-content;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.06);color:' + accent + ';font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">' + escapeHtml(card.badge || '') + '</div>' +
-                '<div contenteditable="true" spellcheck="false" style="margin-top:18px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.05em;max-width:10ch;text-wrap:balance;">' + escapeHtml(card.headline || '') + '</div>' +
-                '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:372px;font-size:' + subtitleSize + 'px;line-height:1.3;color:#d9e4dc;">' + escapeHtml(card.subtitle || '') + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="margin-top:18px;padding-bottom:8px;font-family:\'Space Grotesk\',sans-serif;font-size:' + headlineSize + 'px;line-height:1.02;font-weight:700;color:#ededf0;letter-spacing:-0.05em;max-width:10ch;text-wrap:balance;">' + escapeHtml(card.headline || '') + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:372px;font-size:' + subtitleSize + 'px;line-height:1.36;color:#d9e4dc;">' + escapeHtml(card.subtitle || '') + '</div>' +
             '</div>' +
             (chips ? '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">' + chips + '</div>' : '<div></div>') +
         '</div>' +
@@ -2636,13 +2636,13 @@ function renderOrgSession(card) {
                 '<div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin:0;color:' + accent + ';font-size:12px;letter-spacing:0.24em;text-transform:uppercase;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
                     '<div style="display:flex;align-items:flex-end;gap:12px;margin-top:12px;">' +
-                        '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(88) + 'px;line-height:0.82;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
+                        '<div contenteditable="true" spellcheck="false" style="padding:6px 0 10px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(88) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
                         '<div contenteditable="true" spellcheck="false" style="margin-bottom:10px;display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.06);color:' + accent + ';font-size:11px;letter-spacing:0.14em;text-transform:uppercase;">' + escapeHtml(publicText(card.sessionLabel, 'session')) + '</div>' +
                     '</div>' +
                 '</div>' +
                 '<div>' +
-                    '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 54 : 64) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:14px;max-width:560px;font-size:' + scaleWeekValue(20) + 'px;line-height:1.3;color:#d9e4dc;">' + escapeHtml(metaLine || lead) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="padding-bottom:6px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 54 : 64) + 'px;line-height:1.04;font-weight:700;color:#ededf0;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:14px;max-width:560px;font-size:' + scaleWeekValue(20) + 'px;line-height:1.36;color:#d9e4dc;">' + escapeHtml(metaLine || lead) + '</div>' +
                 '</div>' +
                 '<div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding-top:4px;">' +
                     '<div contenteditable="true" spellcheck="false" style="display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.06);color:' + accent + ';font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">' + escapeHtml(card.weekBadge || '') + '</div>' +
@@ -2661,13 +2661,13 @@ function renderOrgSession(card) {
             '<div style="position:absolute;left:78px;top:70px;width:486px;bottom:90px;z-index:8;padding:34px 34px 30px;border-radius:34px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,rgba(10,17,13,0.72),rgba(8,14,10,0.30));backdrop-filter:blur(16px);box-shadow:0 20px 52px rgba(0,0,0,0.28);display:grid;grid-template-rows:auto auto 1fr auto;gap:18px;">' +
                 '<div contenteditable="true" spellcheck="false" style="margin:0;color:' + accent + ';font-size:12px;letter-spacing:0.24em;text-transform:uppercase;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
                 '<div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;">' +
-                    '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(94) + 'px;line-height:0.82;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="padding:6px 0 12px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(94) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin-bottom:14px;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.08);color:' + accent + ';font-size:11px;letter-spacing:0.14em;text-transform:uppercase;">' + escapeHtml(publicText(card.sessionLabel, 'session')) + '</div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin-bottom:14px;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.08);color:' + accent + ';font-size:11px;letter-spacing:0.14em;text-transform:uppercase;">' + escapeHtml(card.weekBadge || '') + '</div>' +
                 '</div>' +
                 '<div>' +
-                    '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 56 : 66) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:400px;font-size:' + scaleWeekValue(20) + 'px;line-height:1.3;color:#d9e4dc;">' + escapeHtml(metaLine || lead) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="padding-bottom:6px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 56 : 66) + 'px;line-height:1.02;font-weight:700;color:#ededf0;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:400px;font-size:' + scaleWeekValue(20) + 'px;line-height:1.36;color:#d9e4dc;">' + escapeHtml(metaLine || lead) + '</div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:400px;font-size:16px;line-height:1.5;color:rgba(229,239,232,0.78);">' + escapeHtml(publicText(card.weekHeadline, '')) + '</div>' +
                 '</div>' +
                 (chips ? '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">' + chips + '</div>' : '<div></div>') +
@@ -2684,12 +2684,12 @@ function renderOrgSession(card) {
             '<div style="position:absolute;left:76px;top:70px;bottom:106px;width:468px;z-index:8;display:grid;grid-template-rows:auto auto auto 1fr;gap:14px;">' +
                 '<div contenteditable="true" spellcheck="false" style="color:' + accent + ';font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;opacity:0.94;">' + escapeHtml(card.eyebrow || LAB.eyebrow || LAB.name || '') + '</div>' +
                 '<div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;">' +
-                    '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(92) + 'px;line-height:0.78;font-weight:700;color:#f4fff6;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="padding:8px 0 14px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(92) + 'px;line-height:0.92;font-weight:700;color:#f4fff6;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
                     '<div contenteditable="true" spellcheck="false" style="margin-bottom:14px;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.08);color:' + accent + ';font-size:' + scaleWeekValue(11) + 'px;letter-spacing:0.16em;text-transform:uppercase;">' + escapeHtml(publicText(card.sessionLabel, 'session')) + '</div>' +
                 '</div>' +
                 '<div>' +
-                    '<div contenteditable="true" spellcheck="false" style="max-width:420px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 50 : 58) + 'px;line-height:0.92;font-weight:700;color:#f0faf2;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
-                    '<div contenteditable="true" spellcheck="false" style="margin-top:14px;max-width:400px;font-size:' + scaleWeekValue(20) + 'px;line-height:1.28;color:rgba(229,239,232,0.82);">' + escapeHtml(metaLine || lead) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="max-width:420px;padding-bottom:6px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 50 : 58) + 'px;line-height:1.04;font-weight:700;color:#f0faf2;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
+                    '<div contenteditable="true" spellcheck="false" style="margin-top:14px;max-width:400px;font-size:' + scaleWeekValue(20) + 'px;line-height:1.36;color:rgba(229,239,232,0.82);">' + escapeHtml(metaLine || lead) + '</div>' +
                 '</div>' +
                 '<div style="display:grid;gap:12px;align-content:end;">' +
                     (chips ? '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">' + chips + '</div>' : '') +
@@ -2707,12 +2707,12 @@ function renderOrgSession(card) {
         '<div style="position:absolute;left:78px;top:70px;width:438px;bottom:90px;z-index:8;padding:32px 32px 28px;border-radius:34px;border:1px solid rgba(255,255,255,0.08);background:linear-gradient(180deg,rgba(10,17,13,0.74),rgba(8,14,10,0.34));backdrop-filter:blur(16px);box-shadow:0 20px 52px rgba(0,0,0,0.28);display:grid;grid-template-rows:auto auto 1fr auto;gap:18px;">' +
             '<div contenteditable="true" spellcheck="false" style="margin:0;color:' + accent + ';font-size:12px;letter-spacing:0.24em;text-transform:uppercase;">' + escapeHtml(card.eyebrow || LAB.eyebrow || 'X26 SPRING LAB') + '</div>' +
             '<div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;">' +
-                '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(90) + 'px;line-height:0.82;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="padding:6px 0 12px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(90) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.08em;">' + escapeHtml(card.title || '') + '</div>' +
                 '<div contenteditable="true" spellcheck="false" style="margin-bottom:14px;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.18);background:rgba(' + accentRgb + ',0.06);color:' + accent + ';font-size:11px;letter-spacing:0.14em;text-transform:uppercase;">' + escapeHtml(publicText(card.sessionLabel, 'session')) + '</div>' +
             '</div>' +
             '<div style="display:flex;flex-direction:column;align-content:start;min-height:0;">' +
-                '<div contenteditable="true" spellcheck="false" style="font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 52 : 62) + 'px;line-height:0.92;font-weight:700;color:#ededf0;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
-                '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:360px;font-size:' + scaleWeekValue(19) + 'px;line-height:1.3;color:#d9e4dc;">' + escapeHtml(metaLine || lead) + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="padding-bottom:6px;font-family:\'Space Grotesk\',sans-serif;font-size:' + scaleWeekValue(cleanInlineText(headline).length > 18 ? 52 : 62) + 'px;line-height:1.02;font-weight:700;color:#ededf0;letter-spacing:-0.05em;text-wrap:balance;">' + escapeHtml(headline) + '</div>' +
+                '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:360px;font-size:' + scaleWeekValue(19) + 'px;line-height:1.36;color:#d9e4dc;">' + escapeHtml(metaLine || lead) + '</div>' +
                 '<div contenteditable="true" spellcheck="false" style="margin-top:16px;max-width:360px;font-size:16px;line-height:1.5;color:rgba(229,239,232,0.76);">' + escapeHtml(publicText(card.weekHeadline, '')) + '</div>' +
             '</div>' +
             (chips ? '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">' + chips + '</div>' : '<div></div>') +
