@@ -70,7 +70,9 @@
           "story-poster"
         ],
         "carousel": [
-          "manifesto"
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "org": {
@@ -94,7 +96,10 @@
     ],
     "speakerStyles": [
       "aimnative",
-      "surname"
+      "surname",
+      "manifesto",
+      "headline",
+      "splash"
     ],
     "orgStyles": [
       "plaque",
@@ -179,7 +184,9 @@
           "story-poster"
         ],
         "carousel": [
-          "manifesto"
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "org": {
@@ -203,7 +210,10 @@
     ],
     "speakerStyles": [
       "aimnative",
-      "surname"
+      "surname",
+      "manifesto",
+      "headline",
+      "splash"
     ],
     "orgStyles": [
       "plaque",
@@ -294,7 +304,9 @@
           "story-poster"
         ],
         "carousel": [
-          "manifesto"
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "org": {
@@ -326,7 +338,10 @@
       "signal",
       "story",
       "story-card",
-      "story-poster"
+      "story-poster",
+      "manifesto",
+      "headline",
+      "splash"
     ],
     "orgStyles": [
       "plaque",
