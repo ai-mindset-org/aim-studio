@@ -606,6 +606,9 @@
     <button data-v="cards" onclick="setVariant('cards')">cards</button>
     <button data-v="stack" onclick="setVariant('stack')">stack</button>
     <button data-v="board" onclick="setVariant('board')">board</button>
+    <button data-v="manifesto" onclick="setVariant('manifesto')">manifesto</button>
+    <button data-v="headline" onclick="setVariant('headline')">headline</button>
+    <button data-v="splash" onclick="setVariant('splash')">splash</button>
 </div>
 
 <div class="variant-select" id="paletteSel">
@@ -627,6 +630,9 @@
     <button data-style="story" onclick="setSpeakerStyle('story')">story card</button>
     <button data-style="story-card" onclick="setSpeakerStyle('story-card')">person card</button>
     <button data-style="story-poster" onclick="setSpeakerStyle('story-poster')">lab card</button>
+    <button data-style="manifesto" onclick="setSpeakerStyle('manifesto')">carousel manifesto</button>
+    <button data-style="headline" onclick="setSpeakerStyle('headline')">carousel headline</button>
+    <button data-style="splash" onclick="setSpeakerStyle('splash')">carousel splash</button>
 </div>
 
 <div class="variant-select hidden" id="orgStyleSel">
@@ -1005,7 +1011,7 @@ function syncPaletteCopy() {
     }
     if (paletteNote) {
         if (!supportsRecordPalette()) {
-            paletteNote.innerHTML = '<strong>current:</strong> x26 uses one green lab color across all cards.';
+            paletteNote.innerHTML = '<strong>current:</strong> ' + escapeHtml(currentLabId) + ' uses one ' + escapeHtml(currentLabAccentName()) + ' across all cards.';
         } else if (accentMode === 'week') {
             paletteNote.innerHTML = '<strong>current:</strong> color follows the slot record, not the lab. ' + escapeHtml(recordPaletteLegend()) + '.';
         } else {
