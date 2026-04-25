@@ -3872,6 +3872,158 @@ function renderSpeakerStory(s) {
     return renderSpeakerStoryVertical(s);
 }
 
+// ════════════ SPEAKER CAROUSEL 4:5 (1080×1350) ═══════════
+// Vertical carousel speaker layouts. Photo MUST be prominently visible
+// (lighter filters than wide layouts). Three variants:
+//   manifesto — photo top half + text bottom half (default)
+//   headline  — large surname center, photo as faint watermark
+//   splash    — photo top 60% + text-only bottom 40% with fact pills
+
+function renderSpeakerCarouselManifesto(s) {
+    var accent = speakerAccent(s);
+    var accentRgb = hexToRgbString(accent);
+    var names = splitSpeakerName(s.name);
+    var role = speakerPublicRole(s);
+    var narrative = compactText(speakerPublicNarrative(s) || speakerPublicFocus(s), 200);
+    var weekCode = (s.session && s.session.code) || s.week || '';
+    var photoFilter = useBW
+        ? 'filter:grayscale(1) brightness(0.86) contrast(1.06);'
+        : 'filter:grayscale(1) brightness(0.78) contrast(1.1);';
+    return '<div class="banner carousel-vertical" id="bc">' + carouselBaseHTML() +
+        // Photo zone — top ~720px, full width
+        '<div style="position:absolute;left:0;right:0;top:0;height:720px;overflow:hidden;z-index:5;">' +
+            mediaSurface(s, {
+                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + photoFilter,
+                wrapperStyle: 'width:100%;height:100%;',
+                monogramSize: 168,
+                note: 'add a portrait via upload',
+                accent: accent,
+                accentRgb: accentRgb
+            }) +
+            // Subtle gradient only at the bottom edge so the photo stays visible
+            '<div style="position:absolute;left:0;right:0;bottom:0;height:160px;background:linear-gradient(180deg,transparent 0%,rgba(7,14,10,0.55) 60%,rgba(7,14,10,0.92) 100%);pointer-events:none;"></div>' +
+            // Eyebrow over photo (top-left)
+            '<div style="position:absolute;left:72px;top:54px;z-index:6;">' +
+                '<div class="eyebrow" contenteditable="true" spellcheck="false" style="font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.92);text-shadow:0 1px 12px rgba(0,0,0,0.6);">' + escapeHtml(dotJoin([LAB.name, role])) + '</div>' +
+            '</div>' +
+        '</div>' +
+        // Text zone — bottom ~630px
+        '<div style="position:absolute;left:72px;right:72px;top:760px;bottom:120px;z-index:12;display:flex;flex-direction:column;justify-content:flex-start;gap:24px;">' +
+            '<h1 contenteditable="true" spellcheck="false" style="font-size:128px;line-height:0.86;letter-spacing:-0.06em;color:#ededf0;font-weight:700;margin:0;">' +
+                escapeHtml(names.first || s.name) + '<br>' +
+                '<span style="color:' + accent + ';">' + escapeHtml(names.last || '') + '</span>' +
+            '</h1>' +
+            '<div style="display:flex;gap:12px;flex-wrap:wrap;">' +
+                '<span class="tag-pill" contenteditable="true" spellcheck="false" style="border-color:rgba(' + accentRgb + ',0.42);background:rgba(' + accentRgb + ',0.10);color:' + accent + ';">' + escapeHtml(role) + '</span>' +
+                (weekCode ? '<span class="tag-pill" contenteditable="true" spellcheck="false">' + escapeHtml(weekCode) + '</span>' : '') +
+            '</div>' +
+            '<div contenteditable="true" spellcheck="false" style="font-size:22px;line-height:1.46;color:rgba(229,239,232,0.86);max-width:880px;">' + escapeHtml(narrative) + '</div>' +
+        '</div>' +
+        // Footer
+        '<div style="position:absolute;left:72px;right:72px;bottom:54px;z-index:12;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:rgba(' + accentRgb + ',0.6);letter-spacing:0.18em;text-transform:uppercase;">' +
+            '<span contenteditable="true" spellcheck="false">' + escapeHtml(speakerPublicDate(s) || LAB.dates || '') + '</span>' +
+            '<span contenteditable="true" spellcheck="false">' + escapeHtml(LAB.footer || 'aimindset.org') + '</span>' +
+        '</div>' +
+    '</div>';
+}
+
+function renderSpeakerCarouselHeadline(s) {
+    var accent = speakerAccent(s);
+    var accentRgb = hexToRgbString(accent);
+    var names = splitSpeakerName(s.name);
+    var role = speakerPublicRole(s);
+    var surname = (names.last || names.first || s.name || '').trim();
+    var photoFilter = useBW
+        ? 'filter:grayscale(1) brightness(0.6) contrast(1.04);opacity:0.32;'
+        : 'filter:grayscale(0.8) brightness(0.62) contrast(1.06);opacity:0.36;';
+    return '<div class="banner carousel-vertical" id="bc">' + carouselBaseHTML() +
+        // Photo as faint watermark — full bleed
+        '<div style="position:absolute;inset:0;overflow:hidden;z-index:4;">' +
+            mediaSurface(s, {
+                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + photoFilter,
+                wrapperStyle: 'width:100%;height:100%;',
+                monogramSize: 200,
+                note: '',
+                accent: accent,
+                accentRgb: accentRgb
+            }) +
+            '<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(7,14,10,0.32) 0%,rgba(7,14,10,0.86) 78%);"></div>' +
+        '</div>' +
+        // Eyebrow top
+        '<div style="position:absolute;left:72px;right:72px;top:96px;z-index:12;">' +
+            '<div class="eyebrow" contenteditable="true" spellcheck="false" style="font-size:14px;color:rgba(' + accentRgb + ',0.72);letter-spacing:0.22em;text-transform:uppercase;">' + escapeHtml(dotJoin([LAB.name, role])) + '</div>' +
+        '</div>' +
+        // Centered surname
+        '<div style="position:absolute;left:72px;right:72px;top:0;bottom:0;z-index:11;display:flex;align-items:center;justify-content:center;">' +
+            '<h1 contenteditable="true" spellcheck="false" style="font-size:240px;line-height:0.84;letter-spacing:-0.08em;color:' + accent + ';font-weight:700;margin:0;text-align:center;text-shadow:0 4px 30px rgba(0,0,0,0.4);">' + escapeHtml(surname) + '</h1>' +
+        '</div>' +
+        // First name + role above the surname (small, centered)
+        (names.last && names.first ? '<div style="position:absolute;left:72px;right:72px;top:480px;z-index:12;text-align:center;">' +
+            '<div contenteditable="true" spellcheck="false" style="font-size:36px;line-height:1;color:rgba(237,237,240,0.78);letter-spacing:-0.03em;">' + escapeHtml(names.first) + '</div>' +
+        '</div>' : '') +
+        // Footer
+        '<div style="position:absolute;left:72px;right:72px;bottom:96px;z-index:12;text-align:center;">' +
+            '<div contenteditable="true" spellcheck="false" style="font-size:18px;line-height:1.5;color:rgba(229,239,232,0.78);max-width:760px;margin:0 auto;">' + escapeHtml(compactText(speakerPublicFocus(s), 140)) + '</div>' +
+            '<div style="margin-top:18px;display:flex;justify-content:center;gap:14px;font-size:12px;color:rgba(' + accentRgb + ',0.55);letter-spacing:0.18em;text-transform:uppercase;">' +
+                '<span contenteditable="true" spellcheck="false">' + escapeHtml(speakerPublicDate(s) || LAB.dates || '') + '</span>' +
+                '<span style="color:rgba(' + accentRgb + ',0.3);">·</span>' +
+                '<span contenteditable="true" spellcheck="false">' + escapeHtml(LAB.footer || 'aimindset.org') + '</span>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+}
+
+function renderSpeakerCarouselSplash(s) {
+    var accent = speakerAccent(s);
+    var accentRgb = hexToRgbString(accent);
+    var names = splitSpeakerName(s.name);
+    var role = speakerPublicRole(s);
+    var weekCode = (s.session && s.session.code) || s.week || '';
+    var photoFilter = useBW
+        ? 'filter:grayscale(1) brightness(0.94) contrast(1.04);'
+        : 'filter:grayscale(0.18) brightness(0.92) contrast(1.04);';
+    var fact1 = compactText(speakerPublicFocus(s), 60);
+    var fact2 = speakerStatusText(s) || (s.short || '');
+    return '<div class="banner carousel-vertical" id="bc">' + carouselBaseHTML() +
+        // Photo top 60% — minimal overlay
+        '<div style="position:absolute;left:0;right:0;top:0;height:810px;overflow:hidden;z-index:5;">' +
+            mediaSurface(s, {
+                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + photoFilter,
+                wrapperStyle: 'width:100%;height:100%;',
+                monogramSize: 180,
+                note: 'add a portrait via upload',
+                accent: accent,
+                accentRgb: accentRgb
+            }) +
+            // Soft gradient only at bottom for text legibility
+            '<div style="position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(180deg,transparent 0%,rgba(7,14,10,0.7) 100%);pointer-events:none;"></div>' +
+            // Eyebrow over photo
+            '<div style="position:absolute;left:72px;top:54px;right:72px;z-index:6;display:flex;justify-content:space-between;align-items:center;">' +
+                '<div class="eyebrow" contenteditable="true" spellcheck="false" style="font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.92);text-shadow:0 1px 12px rgba(0,0,0,0.6);">' + escapeHtml(LAB.name || '') + '</div>' +
+                (weekCode ? '<div contenteditable="true" spellcheck="false" style="font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:' + accent + ';background:rgba(7,14,10,0.6);padding:6px 12px;border-radius:999px;border:1px solid rgba(' + accentRgb + ',0.4);">' + escapeHtml(weekCode) + '</div>' : '') +
+            '</div>' +
+        '</div>' +
+        // Text zone — bottom 40% (~540px)
+        '<div style="position:absolute;left:72px;right:72px;top:850px;bottom:96px;z-index:12;display:flex;flex-direction:column;justify-content:space-between;">' +
+            '<div>' +
+                '<h1 contenteditable="true" spellcheck="false" style="font-size:96px;line-height:0.88;letter-spacing:-0.05em;color:#ededf0;font-weight:700;margin:0;">' +
+                    escapeHtml(names.first || s.name) + ' <span style="color:' + accent + ';">' + escapeHtml(names.last || '') + '</span>' +
+                '</h1>' +
+                '<div contenteditable="true" spellcheck="false" style="margin-top:18px;font-size:20px;letter-spacing:0.16em;text-transform:uppercase;color:' + accent + ';">' + escapeHtml(role) + '</div>' +
+            '</div>' +
+            '<div style="display:flex;gap:14px;flex-wrap:wrap;">' +
+                (fact1 ? '<span class="tag-pill" contenteditable="true" spellcheck="false" style="border-color:rgba(' + accentRgb + ',0.36);background:rgba(' + accentRgb + ',0.08);color:#dde7df;font-size:14px;">' + escapeHtml(fact1) + '</span>' : '') +
+                (fact2 ? '<span class="tag-pill" contenteditable="true" spellcheck="false" style="border-color:rgba(' + accentRgb + ',0.36);background:rgba(' + accentRgb + ',0.08);color:#dde7df;font-size:14px;">' + escapeHtml(fact2) + '</span>' : '') +
+            '</div>' +
+        '</div>' +
+        // Footer
+        '<div style="position:absolute;left:72px;right:72px;bottom:48px;z-index:12;display:flex;justify-content:space-between;font-size:12px;color:rgba(' + accentRgb + ',0.55);letter-spacing:0.18em;text-transform:uppercase;">' +
+            '<span contenteditable="true" spellcheck="false">' + escapeHtml(speakerPublicDate(s) || LAB.dates || '') + '</span>' +
+            '<span contenteditable="true" spellcheck="false">' + escapeHtml(LAB.footer || 'aimindset.org') + '</span>' +
+        '</div>' +
+    '</div>';
+}
+
 function renderSpeaker(idx) {
     var s = SPEAKERS[idx];
     if (!s) return renderGeneric();
@@ -3879,6 +4031,11 @@ function renderSpeaker(idx) {
         if (speakerStyle === 'quote') return renderSpeakerSquareQuote(s);
         if (speakerStyle === 'signal') return renderSpeakerSquareSignal(s);
         return renderSpeakerSquarePortrait(s);
+    }
+    if (frameFormat === 'carousel') {
+        if (speakerStyle === 'headline' || speakerStyle === 'carousel-headline') return renderSpeakerCarouselHeadline(s);
+        if (speakerStyle === 'splash' || speakerStyle === 'carousel-splash') return renderSpeakerCarouselSplash(s);
+        return renderSpeakerCarouselManifesto(s);
     }
     if (frameFormat === 'story' || isStoryStyle(speakerStyle)) {
         return renderSpeakerStory(s);

@@ -53,7 +53,7 @@
       "wide": ["aimnative", "surname"],
       "square": ["portrait", "quote", "signal"],
       "story": ["story", "story-card", "story-poster"],
-      "carousel": ["manifesto"]
+      "carousel": ["manifesto", "headline", "splash"]
     },
     "org": {
       "wide": ["plaque", "poster", "rail", "digest"],
@@ -61,6 +61,6 @@
     }
   },
   "genericStyles": ["field", "mosaic", "roster", "dense", "strips", "cards"],
-  "speakerStyles": ["aimnative", "surname", "portrait", "quote", "signal", "story", "story-card", "story-poster"],
+  "speakerStyles": ["aimnative", "surname", "portrait", "quote", "signal", "story", "story-card", "story-poster", "manifesto", "headline", "splash"],
   "orgStyles": ["plaque", "poster", "rail", "digest", "panel", "orbit"]
 }
