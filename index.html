@@ -157,18 +157,18 @@
 
         /* ── SPEAKER BANNER ─── */
         .banner .photo-zone {
-            position: absolute; right: 0; top: 0; width: 520px; height: 600px; overflow: hidden;
+            position: absolute; right: 0; top: 0; width: 620px; height: 600px; overflow: hidden;
         }
         .banner .photo-zone img {
             width: 100%; height: 100%; object-fit: cover; object-position: center 15%;
-            filter: grayscale(1) brightness(0.64) contrast(1.08);
+            filter: grayscale(1) brightness(0.85) contrast(1.05);
         }
         .banner .photo-overlay {
             position: absolute; inset: 0;
             background:
-                linear-gradient(90deg, rgba(5,10,7,0.97) 0%, rgba(7,14,10,0.94) 26%, rgba(7,14,10,0.74) 64%, rgba(7,14,10,0.58) 100%),
-                radial-gradient(circle at 82% 18%, rgba(var(--accent-rgb),0.16), transparent 24%),
-                linear-gradient(180deg, rgba(4,8,6,0.12), rgba(4,8,6,0.42));
+                linear-gradient(90deg, rgba(5,10,7,0.97) 0%, rgba(7,14,10,0.92) 22%, rgba(7,14,10,0.45) 50%, rgba(7,14,10,0.15) 80%, transparent 100%),
+                radial-gradient(circle at 82% 18%, rgba(var(--accent-rgb),0.08), transparent 24%),
+                linear-gradient(180deg, rgba(4,8,6,0.0), rgba(4,8,6,0.18));
         }
         .banner .photo-grid-ov {
             position: absolute; inset: 0;
@@ -178,11 +178,11 @@
             background-size: 40px 40px; mix-blend-mode: screen;
         }
         .banner .circle-d1 {
-            position: absolute; right: 380px; top: 50%; transform: translateY(-50%);
+            position: absolute; right: 440px; top: 50%; transform: translateY(-50%);
             width: 300px; height: 300px; border: 1px solid rgba(var(--accent-rgb),0.12); border-radius: 50%; z-index: 5;
         }
         .banner .circle-d2 {
-            position: absolute; right: 420px; top: 50%; transform: translateY(-50%);
+            position: absolute; right: 480px; top: 50%; transform: translateY(-50%);
             width: 200px; height: 200px; border: 1px solid rgba(var(--accent-rgb),0.06); border-radius: 50%; z-index: 5;
         }
         .banner .content {
@@ -3473,22 +3473,22 @@ function renderSpeakerAimnative(s) {
         '</div>' +
         '<div style="position:absolute;right:0;top:0;width:610px;height:600px;overflow:hidden;z-index:6;">' +
             mediaSurface(s, {
-                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + (useBW ? 'filter:grayscale(1) brightness(0.58) contrast(1.08);' : 'filter:grayscale(0.22) brightness(0.72) contrast(1.04);'),
+                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + (useBW ? 'filter:grayscale(1) brightness(0.85) contrast(1.05);' : 'filter:grayscale(0.22) brightness(0.88) contrast(1.02);'),
                 wrapperStyle: 'width:100%;height:100%;',
                 monogramSize: 132,
                 note: 'add a portrait via upload',
                 accent: accent,
                 accentRgb: accentRgb
             }) +
-            '<div style="position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(7,14,10,0.96) 28%,rgba(7,14,10,0.76) 66%,rgba(7,14,10,0.56) 100%),radial-gradient(circle at 84% 18%,rgba(' + accentRgb + ',0.18),transparent 24%),linear-gradient(180deg,rgba(6,11,8,0.12),rgba(6,11,8,0.44));"></div>' +
+            '<div style="position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(7,14,10,0.92) 22%,rgba(7,14,10,0.45) 50%,rgba(7,14,10,0.15) 80%,transparent 100%),radial-gradient(circle at 84% 18%,rgba(' + accentRgb + ',0.08),transparent 24%),linear-gradient(180deg,rgba(6,11,8,0.0),rgba(6,11,8,0.18));"></div>' +
             '<div class="photo-grid-ov"></div>' +
             '<div style="position:absolute;right:40px;bottom:52px;z-index:3;max-width:300px;text-align:right;">' +
                 '<div style="font-size:30px;line-height:1.04;font-weight:700;color:#ededf0;" contenteditable="true" spellcheck="false">' + s.name.toLowerCase() + '</div>' +
                 '<div style="margin-top:8px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:' + accent + ';" contenteditable="true" spellcheck="false">' + speakerPublicRole(s) + '</div>' +
             '</div>' +
         '</div>' +
-        '<div style="position:absolute;right:404px;top:50%;transform:translateY(-50%);width:316px;height:316px;border-radius:50%;border:1px solid rgba(' + accentRgb + ',0.16);z-index:5;"></div>' +
-        '<div style="position:absolute;right:450px;top:50%;transform:translateY(-50%);width:220px;height:220px;border-radius:50%;border:1px solid rgba(' + accentRgb + ',0.08);z-index:5;"></div>' +
+        '<div style="position:absolute;right:464px;top:50%;transform:translateY(-50%);width:316px;height:316px;border-radius:50%;border:1px solid rgba(' + accentRgb + ',0.16);z-index:5;"></div>' +
+        '<div style="position:absolute;right:510px;top:50%;transform:translateY(-50%);width:220px;height:220px;border-radius:50%;border:1px solid rgba(' + accentRgb + ',0.08);z-index:5;"></div>' +
         '<div class="fl">' + (LAB.footer || 'aimindset.org') + '</div>' +
     '</div>';
 }
@@ -3530,7 +3530,7 @@ function renderSpeakerSurname(s) {
         '</div>' +
         '<div class="photo-zone">' +
             mediaSurface(s, {
-                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + (useBW ? 'filter:grayscale(1) brightness(0.60) contrast(1.08);' : 'filter:grayscale(0.34) brightness(0.72) contrast(1.05);'),
+                imgStyle: 'width:100%;height:100%;object-fit:cover;object-position:' + speakerPhotoPosition(s, 'speaker') + ';' + (useBW ? 'filter:grayscale(1) brightness(0.85) contrast(1.05);' : 'filter:grayscale(0.34) brightness(0.88) contrast(1.02);'),
                 wrapperStyle: 'width:100%;height:100%;',
                 monogramSize: 132,
                 note: 'upload portrait via the photo control',
