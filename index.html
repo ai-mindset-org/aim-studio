@@ -1134,21 +1134,38 @@ function speakerAccent(s) {
 }
 
 function featuredSpeakers(limit) {
+    // Strategy:
+    // 1. Walk LAB.featuredIds in order, but split into two passes:
+    //    a. featured speakers WITH a photo file declared (priority)
+    //    b. featured speakers without a photo file (back of pinned line)
+    // 2. Then back-fill from SPEAKERS, again photo-first.
+    //
+    // We use s.photo as the static signal (set in data/speakers.js).
+    // imageCache may not be populated on first render; s.photo === string is
+    // the durable contract that "a face is expected here".
     var ordered = [];
     var seen = {};
-    (LAB.featuredIds || []).forEach(function(id) {
-        var found = SPEAKERS.find(function(s) { return s.id === id; });
-        if (found && !seen[found.id]) {
-            seen[found.id] = true;
-            ordered.push(found);
-        }
-    });
-    SPEAKERS.forEach(function(s) {
-        if (!seen[s.id]) {
+    function consider(s) {
+        if (s && !seen[s.id]) {
             seen[s.id] = true;
             ordered.push(s);
         }
+    }
+    var featuredIds = LAB.featuredIds || [];
+    var pinnedWithPhoto = [];
+    var pinnedNoPhoto = [];
+    featuredIds.forEach(function(id) {
+        var found = SPEAKERS.find(function(s) { return s.id === id; });
+        if (!found) return;
+        if (found.photo) pinnedWithPhoto.push(found);
+        else pinnedNoPhoto.push(found);
     });
+    pinnedWithPhoto.forEach(consider);
+    var restWithPhoto = SPEAKERS.filter(function(s) { return s.photo && !seen[s.id]; });
+    var restNoPhoto = SPEAKERS.filter(function(s) { return !s.photo && !seen[s.id]; });
+    restWithPhoto.forEach(consider);
+    pinnedNoPhoto.forEach(consider);
+    restNoPhoto.forEach(consider);
     return ordered.slice(0, limit);
 }
 
