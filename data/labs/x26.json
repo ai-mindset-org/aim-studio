@@ -26,17 +26,17 @@
     "W4": "#4ade80"
   },
   "featuredIds": [
-    "anca-stavenski",
     "arseny-popov",
-    "olya-eremina",
-    "tonya-zhukova",
+    "anca-stavenski",
     "ilya-gindin",
     "sereja-ris",
-    "nomusicians",
-    "oleg-tserbaev",
+    "olya-eremina",
+    "alexander-povaliaev",
     "evgeniy-volnov",
     "stanislav-glazov",
-    "alexander-povaliaev"
+    "nomusicians",
+    "tonya-zhukova",
+    "oleg-tserbaev"
   ],
   "defaultFormats": {
     "generic": "wide",

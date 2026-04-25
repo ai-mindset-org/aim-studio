@@ -343,15 +343,20 @@ function accentForRecord(record) {
 }
 
 function featuredSpeakers(limit) {
+  // Prioritise speakers with a declared photo file. featuredIds order is
+  // preserved within the photo-first bucket; ids without `photo` get pushed
+  // to the end so cover/field layouts don't surface placeholder tiles.
   const speakers = currentSpeakers().slice();
   const featuredIds = Array.isArray(currentLab().featuredIds) ? currentLab().featuredIds : [];
   const pinned = featuredIds
     .map((id) => speakers.find((speaker) => speaker.id === id))
     .filter(Boolean);
   const pinnedIds = new Set(pinned.map((speaker) => speaker.id));
-  const preferred = speakers.filter((speaker) => !pinnedIds.has(speaker.id) && !['host', 'co-author'].includes(speaker.type));
-  const fallback = speakers.filter((speaker) => !pinnedIds.has(speaker.id) && ['host', 'co-author'].includes(speaker.type));
-  return pinned.concat(preferred, fallback).slice(0, limit);
+  const pinnedWithPhoto = pinned.filter((speaker) => !!speaker.photo);
+  const pinnedNoPhoto = pinned.filter((speaker) => !speaker.photo);
+  const restWithPhoto = speakers.filter((speaker) => !pinnedIds.has(speaker.id) && !!speaker.photo);
+  const restNoPhoto = speakers.filter((speaker) => !pinnedIds.has(speaker.id) && !speaker.photo);
+  return pinnedWithPhoto.concat(restWithPhoto, pinnedNoPhoto, restNoPhoto).slice(0, limit);
 }
 
 function editField(tag, className, field, value) {

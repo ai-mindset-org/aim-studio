@@ -132,11 +132,14 @@
       "W4": "#fcbb00"
     },
     "featuredIds": [
-      "sereja-ris",
       "stepan-gershuni",
-      "denis-smirnov",
+      "alexander-povaliaev",
       "seva-ustinov",
-      "alexander-povaliaev"
+      "sereja-ris",
+      "denis-smirnov",
+      "bayram-annakov",
+      "vitaly-kleban",
+      "roma-buzko"
     ],
     "heroId": "sereja-ris",
     "defaultFormats": {
@@ -240,17 +243,17 @@
       "W4": "#4ade80"
     },
     "featuredIds": [
-      "anca-stavenski",
       "arseny-popov",
-      "olya-eremina",
-      "tonya-zhukova",
+      "anca-stavenski",
       "ilya-gindin",
       "sereja-ris",
-      "nomusicians",
-      "oleg-tserbaev",
+      "olya-eremina",
+      "alexander-povaliaev",
       "evgeniy-volnov",
       "stanislav-glazov",
-      "alexander-povaliaev"
+      "nomusicians",
+      "tonya-zhukova",
+      "oleg-tserbaev"
     ],
     "defaultFormats": {
       "generic": "wide",
