@@ -1297,3 +1297,164 @@ body {
     border-top: 1px solid var(--border, rgba(77, 201, 212, 0.12));
   }
 }
+
+/* -------------------------------------------------------------------------
+   BG picker (Wave J3) — AI background prompt panel.
+   Top-left fixed panel; doesn't compete with #edit-sidebar at right.
+   ------------------------------------------------------------------------- */
+#bg-picker {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 280px;
+  background: var(--bg-card, #1c1c2e);
+  border: 1px solid var(--border, rgba(77, 201, 212, 0.18));
+  padding: 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  z-index: 99;
+  color: var(--text, #ededf0);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+#bg-picker .bg-picker-header {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+#bg-picker .bg-picker-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+#bg-picker .bg-picker-label {
+  font-size: 10px;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#bg-picker .bg-picker-select,
+#bg-picker .bg-picker-textarea,
+#bg-picker .bg-picker-seed {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: inherit;
+  padding: 7px 9px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#bg-picker .bg-picker-textarea {
+  resize: vertical;
+  min-height: 64px;
+  line-height: 1.4;
+}
+
+#bg-picker .bg-picker-select:focus,
+#bg-picker .bg-picker-textarea:focus,
+#bg-picker .bg-picker-seed:focus {
+  outline: none;
+  border-color: var(--accent, #4dc9d4);
+}
+
+#bg-picker .bg-picker-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+#bg-picker .bg-picker-button {
+  flex: 1;
+  padding: 9px 10px;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#bg-picker .bg-picker-button--primary {
+  border: 1px solid var(--accent, #4dc9d4);
+  background: color-mix(in srgb, var(--accent, #4dc9d4) 14%, transparent);
+  color: var(--accent, #4dc9d4);
+}
+
+#bg-picker .bg-picker-button--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent, #4dc9d4) 24%, transparent);
+}
+
+#bg-picker .bg-picker-button--secondary {
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text, #ededf0);
+  opacity: 0.75;
+}
+
+#bg-picker .bg-picker-button--secondary:hover:not(:disabled) {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#bg-picker .bg-picker-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#bg-picker .bg-picker-error {
+  padding: 7px 9px;
+  background: rgba(220, 80, 80, 0.1);
+  border: 1px solid rgba(220, 80, 80, 0.3);
+  color: #ff8a8a;
+  font-size: 11px;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
+#bg-picker .bg-picker-notice {
+  padding: 7px 9px;
+  background: color-mix(in srgb, var(--accent, #4dc9d4) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #4dc9d4) 22%, transparent);
+  color: var(--dim, #6d7d73);
+  font-size: 11px;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
+#bg-picker .bg-picker-spinner {
+  text-align: center;
+  font-size: 11px;
+  color: var(--accent, #4dc9d4);
+  letter-spacing: 0.1em;
+  padding: 8px 0;
+  animation: bg-picker-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes bg-picker-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 1100px) {
+  #bg-picker {
+    position: static;
+    width: 100%;
+    margin-bottom: 12px;
+    box-shadow: none;
+  }
+}
+
