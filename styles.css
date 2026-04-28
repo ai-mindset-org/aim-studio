@@ -278,6 +278,30 @@ input[type="file"]::file-selector-button {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Wave I6 — backdrop layer primitive. Lowest z-index inside .banner-root. */
+.bg-plain,
+.bg-mesh,
+.bg-ai {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-plain {
+  background: var(--bg-deep, #0a0a0f);
+}
+
+.bg-mesh {
+  background: radial-gradient(ellipse at center, rgba(77, 201, 212, 0.06), transparent 70%);
+}
+
+.bg-ai {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 [contenteditable="true"] {
   outline: none;
 }
