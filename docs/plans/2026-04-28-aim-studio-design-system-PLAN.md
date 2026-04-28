@@ -18,16 +18,7 @@
 
 **Before Wave H starts, verify these exist (~5 min):**
 
-1. OpenRouter API key with FLUX.2 Pro access. Test:
-   ```bash
-   curl -sS -X POST https://openrouter.ai/api/v1/chat/completions \
-     -H "Authorization: Bearer $(cat ~/.config/openrouter/api_key)" \
-     -H "Content-Type: application/json" \
-     -d '{"model":"black-forest-labs/flux-2-pro","messages":[{"role":"user","content":"test"}],"modalities":["image"],"max_tokens":1}' \
-     | head -c 200
-   ```
-   Expected: 200/400 with model recognized (not 404 "model not found").
-   If 404 → fall back to `flux-1.1-pro` or `flux-pro-1.1` (model ID may differ); update `MODEL_MAP` in Wave J.
+1. ~~OpenRouter API key with FLUX.2 Pro access.~~ **Resolved 2026-04-28**: pre-flight confirmed FLUX not provisioned on this account. Pivoted to `google/gemini-3-pro-image-preview` (verified accessible). Pricing ≈ $0.04/img matches FLUX.2 Pro tier.
 
 2. AIM-ain-visuals canonical prompts readable:
    ```bash
@@ -546,19 +537,19 @@ git push origin main
 **Files:**
 - Modify: `netlify/functions/generate-bg.mjs`
 
-**Step 1.** Add model map at top:
+**Step 1.** Add model map at top (reflects 2026-04-28 OpenRouter availability — FLUX not provisioned):
 ```js
 const MODEL_MAP = {
-  'flux-pro':     'black-forest-labs/flux-2-pro',
-  'flux-klein':   'black-forest-labs/flux-2-klein-4b',
-  'gemini-flash': 'google/gemini-2.5-flash-image-preview',
+  'gemini-3-pro':  'google/gemini-3-pro-image-preview',
+  'gpt-5-image':   'openai/gpt-5-image',
+  'gemini-flash':  'google/gemini-2.5-flash-image',
 };
-const COST_USD = { 'flux-pro': 0.04, 'flux-klein': 0.015, 'gemini-flash': 0.003 };
+const COST_USD = { 'gemini-3-pro': 0.04, 'gpt-5-image': 0.04, 'gemini-flash': 0.003 };
 ```
 
-**Step 2.** Accept `model` from request body, default `'flux-pro'`. Build OpenRouter request with `modalities: ["image"]` and parse base64 from `choices[0].message.content[0].image_url.url` (FLUX) OR existing Gemini envelope.
+**Step 2.** Accept `model` from request body, default `'gemini-3-pro'`. Build OpenRouter request with `modalities: ["image"]`. Parse response — both Gemini and GPT-5 Image use the standard chat-completion shape; image returned as base64 in `choices[0].message.content` array OR `choices[0].message.images[0]` depending on model. Handle both envelopes.
 
-**Step 3.** Add fallback chain: `flux-pro` 5xx → `flux-klein` → `gemini-flash` → throw.
+**Step 3.** Add fallback chain: `gemini-3-pro` 5xx → `gpt-5-image` → `gemini-flash` → throw.
 
 **Step 4.** Return `{ dataUrl, prompt, model, costUsd, cacheKey }` where `cacheKey = sha256(prompt|model|seed)`.
 
@@ -706,7 +697,7 @@ git checkout main && git merge --no-ff wave-j-ai-and-edit -m "merge wave-j: AI b
 git push origin main
 ```
 
-**Wave J Gate:** Generate s3 banner with circuit backdrop end-to-end via UI; verify visual is teal-monochrome plate, post-processed, < $0.05 per generation in console log.
+**Wave J Gate:** Generate s3 banner with circuit backdrop end-to-end via UI using Gemini 3 Pro Image; verify visual is teal-monochrome plate, post-processed, < $0.05 per generation in console log.
 
 ---
 

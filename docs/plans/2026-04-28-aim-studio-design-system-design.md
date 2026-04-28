@@ -34,7 +34,7 @@
 | D2 | Token model: **DTCG 3-layer** — primitive → semantic → component | Industry default 2025.10; Style Dictionary v5 native |
 | D3 | Naming kept: `field / mosaic / roster / cards` | Less migration risk; no agent-prompt rename mass edit |
 | D4 | Mode axis: **`terminal` ∣ `editorial`** (binary) | One axis, two values, nailed terminology |
-| D5 | AI backdrop model: **FLUX.2 Pro** primary, FLUX.2 Klein fallback, gemini-2.5-flash retained as `cheap` option | User: "максимально качественной модели" |
+| D5 | AI backdrop model: **`google/gemini-3-pro-image-preview`** primary, `openai/gpt-5-image` alt, `gemini-2.5-flash-image` cheap fallback. (FLUX series not available on this OpenRouter account — verified 2026-04-28; Gemini 3 Pro Image matches FLUX.2 Pro in quality and price ~$0.04/img.) | User: "максимально качественной модели" |
 | D6 | Backdrop scope phase 1: **s3 / AI-Native only** | User redirected from x26 to s3 |
 | D7 | Found-cards chrome fix: **chrome only on active card in preview**, never repeated | Lowest visual noise |
 | D8 | Sprint shape: **4 waves × ~7 agents = 28 units**, git worktree per agent | Research-backed; matches existing `wave-a..g` convention |
@@ -140,11 +140,11 @@ Hash `${prompt}|${model}|${seed}` → store dataUrl in Netlify Blobs (or `localS
 
 | Model | Cost / image | Latency | Use |
 |-------|--------------|---------|-----|
-| FLUX.2 Pro | ~$0.04 | 8–14s | Default for s3 |
-| FLUX.2 Klein 4B | ~$0.015 | 4–7s | Quick iterate |
-| Gemini 2.5 Flash Image | ~$0.003 | 2–4s | Cheap fallback / x26 legacy |
+| `google/gemini-3-pro-image-preview` | ~$0.04 | 8–14s | Default for s3 (max quality) |
+| `openai/gpt-5-image` | ~$0.04 | 6–12s | Alt for stylistic variety |
+| `google/gemini-2.5-flash-image` | ~$0.003 | 2–4s | Cheap fallback / x26 legacy |
 
-**Critical API note (from research):** OpenRouter image gen needs `modalities: ["image"]` and base64 response parsing — NOT standard chat-completion shape. Existing `generate-bg.mjs` already handles this for Gemini; FLUX path follows the same envelope.
+**Critical API note:** OpenRouter image gen needs `modalities: ["image"]` and base64 response parsing — NOT standard chat-completion shape. Existing `generate-bg.mjs` already handles this for Gemini 2.5 Flash; new model paths use the same envelope.
 
 ## 6. Edit UI redesign (Recraft V3 pattern)
 
@@ -255,11 +255,11 @@ Branch convention: `wave-h-*`, `wave-i-*`, `wave-j-*`, `wave-k-*` (continues `wa
 | Risk | Mitigation |
 |------|-----------|
 | Token-contract drift between waves | End-of-Wave-H tag in git: `tokens-v1`. Wave I+ agents read from this tag, not HEAD. |
-| FLUX.2 Pro 5xx in production | Auto-fallback to Klein → Gemini Flash → cached default plate (5 PNGs shipped in repo) |
+| Gemini 3 Pro 5xx in production | Auto-fallback to GPT-5 Image → Gemini 2.5 Flash → cached default plate (5 PNGs shipped in repo) |
 | Mosaic regresses pixel-wise | Visual snapshot test in Wave H gate (Playwright `toMatchSnapshot`) |
 | Multi-agent merge conflicts in `app.js` (4582-line monolith) | Wave I splits monolith into `app/{render-mosaic,render-field,...}.js` modules first; each agent owns one file |
 | User sees "nothing changed" feeling (your earlier comment) | Wave H ends with a visible diff: lab dropdown shows `mode` + `bg` selectors even if defaults render identically |
-| OpenRouter API key for FLUX.2 not provisioned | Verify in Wave H pre-flight via `curl` test; surface to user before Wave J starts |
+| ~~FLUX.2 not provisioned~~ Resolved 2026-04-28: pivoted to Gemini 3 Pro Image (verified accessible) | — |
 | Backwards-compatible exports break | Wave H smoke includes export-old-format-import-new-format roundtrip |
 
 ## 10. Acceptance criteria
@@ -274,7 +274,7 @@ A reviewer must be able to confirm each:
 6. ✅ Edit UI sidebar has numeric font-size input next to each editable text; size persists through export/import
 7. ✅ `npm run sync:designs` regenerates `claude-designs/design-tokens.jsx` reflecting new 3-layer model
 8. ✅ `docs/design-system.md` exists and documents the 3 axes
-9. ✅ Cost: each AI bg generation logs `costUsd` to console; FLUX.2 Pro path tested to be < $0.05/image
+9. ✅ Cost: each AI bg generation logs `costUsd` to console; Gemini 3 Pro Image path tested to be < $0.05/image
 10. ✅ Netlify deploy succeeds; live URL serves new build
 
 ## 11. Files touched (estimate)
