@@ -317,7 +317,9 @@ input[type="file"]::file-selector-button {
   align-items: center;
   gap: 10px;
   color: color-mix(in srgb, var(--accent) 34%, white 66%);
-  font-size: 12px;
+  /* Wave K6: live-bound to edit-sidebar font-size input via
+     `--copy-eyebrow-fs` set on .banner-root. Fallback = legacy size. */
+  font-size: var(--copy-eyebrow-fs, 12px);
 }
 
 .banner-eyebrow::before {
@@ -330,19 +332,25 @@ input[type="file"]::file-selector-button {
 .banner-title {
   margin: 14px 0 0;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 74px;
+  /* Wave K6: live-bound to `--copy-title-fs` from edit-sidebar. */
+  font-size: var(--copy-title-fs, 74px);
   line-height: 0.92;
   letter-spacing: -0.045em;
 }
 
 .banner-title-accent {
   color: color-mix(in srgb, var(--accent) 62%, white 38%);
+  /* Wave K6: separate `--copy-accentTitle-fs` knob; falls back to inheriting
+     parent .banner-title size via `1em` so the accent line tracks the title
+     unless explicitly overridden. */
+  font-size: var(--copy-accentTitle-fs, 1em);
 }
 
 .banner-subtitle {
   margin: 16px 0 0;
   color: var(--muted);
-  font-size: 19px;
+  /* Wave K6: live-bound to `--copy-subtitle-fs`. */
+  font-size: var(--copy-subtitle-fs, 19px);
   line-height: 1.55;
 }
 
@@ -356,7 +364,10 @@ input[type="file"]::file-selector-button {
   gap: 8px;
   border-radius: 999px;
   padding: 8px 12px;
-  font-size: 11px;
+  /* Wave K6: dates/footer chips read `--copy-dates-fs` and `--copy-footer-fs`
+     when set. Two vars cascade — last wins, so footer overrides dates if both
+     happen to be on the same element. Practical layouts only set one. */
+  font-size: var(--copy-footer-fs, var(--copy-dates-fs, 11px));
 }
 
 .meta-chip,
@@ -456,7 +467,9 @@ input[type="file"]::file-selector-button {
 .analysis-box {
   max-width: 720px;
   color: #dbe7de;
-  font-size: 15px;
+  /* Wave K6: live-bound to `--copy-sub-fs` (covers `note`/`sub`/`hook` text
+     paragraphs that all funnel through .analysis-box). */
+  font-size: var(--copy-sub-fs, 15px);
   line-height: 1.7;
 }
 
@@ -661,7 +674,9 @@ input[type="file"]::file-selector-button {
 
 .mosaic-copy .banner-title {
   max-width: 520px;
-  font-size: 76px;
+  /* Wave K6: respect `--copy-title-fs` override before the 76px mosaic-tuned
+     fallback (otherwise the more-specific selector would beat the override). */
+  font-size: var(--copy-title-fs, 76px);
 }
 
 .mosaic-copy .banner-subtitle {
@@ -945,7 +960,10 @@ input[type="file"]::file-selector-button {
   margin: 0;
   font-family: 'Space Grotesk', system-ui, sans-serif;
   font-weight: 700;
-  font-size: 64px;
+  /* Wave K6: live-bound to `--copy-title-fs`; cards size is intentionally
+     smaller than the terminal-mode 130px default — the editorial layout
+     wants tighter typography. */
+  font-size: var(--copy-title-fs, 64px);
   line-height: 1.05;
   letter-spacing: -0.012em;
   color: var(--cards-v2-ink);
@@ -959,7 +977,9 @@ input[type="file"]::file-selector-button {
 .cards-v2__lede {
   margin: 0;
   font-family: 'Space Grotesk', system-ui, sans-serif;
-  font-size: 21px;
+  /* Wave K6: live-bound to `--copy-subtitle-fs` (cards lede is the subtitle
+     equivalent in editorial mode). */
+  font-size: var(--copy-subtitle-fs, 21px);
   line-height: 1.5;
   letter-spacing: 0.005em;
   color: var(--cards-v2-ink-soft);
@@ -1052,7 +1072,8 @@ input[type="file"]::file-selector-button {
   align-items: center;
   gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  /* Wave K6: live-bound to `--copy-eyebrow-fs`. */
+  font-size: var(--copy-eyebrow-fs, 11px);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cards-v2-ink-dim);
