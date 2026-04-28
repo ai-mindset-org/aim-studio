@@ -1,3 +1,5 @@
+import { mount as mountEditSidebar } from './app/edit-sidebar.js';
+
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
 if (!DATA) {
@@ -1068,4 +1070,11 @@ window.addEventListener('popstate', () => {
 });
 
 readQuery();
+
+mountEditSidebar({
+  root: document.getElementById('edit-sidebar'),
+  state: { ...state, copy: currentCopy() },
+  onChange: updateCopyField,
+});
+
 render();
