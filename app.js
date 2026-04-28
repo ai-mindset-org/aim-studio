@@ -3,6 +3,7 @@ import { render as renderField } from './app/render-field.js';
 import { render as renderCards } from './app/render-cards.js';
 import { wrap as wrapChrome } from './app/render-chrome.js';
 import { mount as mountEditSidebar } from './app/edit-sidebar.js';
+import { mount as mountBgPicker } from './app/bg-picker.js';
 
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
@@ -46,6 +47,9 @@ const state = {
   selectedId: null,
   copyOverrides: {},
   photoOverrides: {},
+  // Wave J3: AI-generated background overrides lab default when set.
+  // Shape: { type: 'ai-generated', src: <dataUrl>, opacity: 0.85 } | null
+  bg: null,
 };
 
 window.__X26_BANNER_READY__ = false;
@@ -950,7 +954,8 @@ async function render() {
   // (chrome container). z-order: backdrop (lowest) → chrome border → content.
   // Resolution: lab.axes.defaultBg (Wave H tokens) is the source of truth for
   // now. Wave J will plug AI-generated `src` into this same slot.
-  const bg = currentLab().axes?.defaultBg || { type: 'plain' };
+  // Wave J3: state.bg (set by bg-picker) overrides lab default.
+  const bg = state.bg || currentLab().axes?.defaultBg || { type: 'plain' };
   const bgHtml = renderBg(bg);
 
   if (bgHtml) {
@@ -1103,5 +1108,17 @@ function remountEditSidebar() {
 }
 
 remountEditSidebar();
+
+// Wave J3: BG picker — prompt selector + model + generate.
+// prompts is empty: bg-picker.js fetches data/backdrops/s3-prompts.json itself.
+mountBgPicker({
+  root: document.getElementById('bg-picker'),
+  state,
+  prompts: [],
+  onBgChange: (bg) => {
+    state.bg = bg;
+    render();
+  },
+});
 
 render();
