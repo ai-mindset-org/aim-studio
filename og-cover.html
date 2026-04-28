@@ -4,118 +4,142 @@
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body {
     width: 1200px; height: 630px; overflow: hidden;
-    background: #0a0a0f;
-    font-family: 'Space Mono', monospace; color: #ededf0;
+    /* Editorial mode: paper surface, off-white cream wash */
+    background:
+        radial-gradient(1200px 900px at 18% 10%, rgba(167,139,250,0.10), transparent 60%),
+        radial-gradient(900px 700px at 90% 95%, rgba(141,223,242,0.10), transparent 55%),
+        linear-gradient(180deg, #f4f1ec 0%, #ece7df 100%);
+    font-family: 'IBM Plex Mono', monospace; color: #1a1a1f;
 }
-.wrap { width: 1200px; height: 630px; position: relative; overflow: hidden; }
-.grid {
-    position: absolute; inset: 0;
-    background-image:
-        linear-gradient(rgba(167,139,250,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(167,139,250,0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.7;
-}
-.glow1 {
-    position: absolute; left: -120px; top: -120px;
-    width: 520px; height: 520px;
-    background: radial-gradient(circle, rgba(167,139,250,0.18), transparent 60%);
-    z-index: 1;
-}
-.glow2 {
-    position: absolute; right: -80px; bottom: -120px;
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(141,223,242,0.10), transparent 60%);
-    z-index: 1;
-}
-.bracket { position: absolute; width: 36px; height: 36px; opacity: 0.4; z-index: 20; }
-.tl { top: 32px; left: 32px; border-top: 2px solid #a78bfa; border-left: 2px solid #a78bfa; }
-.tr { top: 32px; right: 32px; border-top: 2px solid #a78bfa; border-right: 2px solid #a78bfa; }
-.bl { bottom: 32px; left: 32px; border-bottom: 2px solid #a78bfa; border-left: 2px solid #a78bfa; }
-.br { bottom: 32px; right: 32px; border-bottom: 2px solid #a78bfa; border-right: 2px solid #a78bfa; }
+.wrap { width: 1200px; height: 630px; position: relative; overflow: hidden; padding: 64px; }
 
-.eyebrow {
-    position: absolute; top: 80px; left: 80px;
-    font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: rgba(167,139,250,0.7);
-    z-index: 5;
+/* Editorial axis chips: layout × mode × bg, three soft pill rows */
+.axes {
+    position: absolute; top: 64px; left: 64px;
+    display: flex; gap: 10px;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    z-index: 6;
 }
+.axes .axis {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 999px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(26,26,31,0.10);
+    color: #4a4a55;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 4px 12px rgba(26,26,31,0.06);
+    backdrop-filter: blur(6px);
+}
+.axes .dot { width: 7px; height: 7px; border-radius: 50%; }
+.axes .dot.layout { background: #16a34a; }
+.axes .dot.mode { background: #a78bfa; }
+.axes .dot.bg { background: #8ddff2; }
+
 .title {
-    position: absolute; top: 130px; left: 80px;
+    position: absolute; top: 156px; left: 64px;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 96px; line-height: 0.92; letter-spacing: -0.04em;
-    font-weight: 700;
-    color: #ededf0;
+    font-size: 108px; line-height: 0.92; letter-spacing: -0.045em;
+    font-weight: 600;
+    color: #15151a;
     z-index: 5;
+    max-width: 1080px;
 }
-.title .accent { color: #a78bfa; }
-.subtitle {
-    position: absolute; top: 360px; left: 80px;
-    font-size: 18px; line-height: 1.5;
-    color: rgba(229,239,232,0.78);
-    max-width: 760px;
-    z-index: 5;
+.title .accent {
+    color: #a78bfa;
+    font-style: italic;
+    font-weight: 500;
 }
 
-.swatches {
-    position: absolute; bottom: 80px; left: 80px;
-    display: flex; gap: 14px; align-items: center;
+.subtitle {
+    position: absolute; top: 380px; left: 64px;
+    font-size: 19px; line-height: 1.55;
+    color: rgba(26,26,31,0.62);
+    max-width: 800px;
+    z-index: 5;
+    font-weight: 400;
+}
+
+/* Three lab cards — editorial paper surfaces, soft shadow */
+.cards {
+    position: absolute; bottom: 64px; left: 64px;
+    display: flex; gap: 14px;
     z-index: 5;
 }
-.sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.18); }
-.sw-x26   { background: #16a34a; }
-.sw-s3    { background: #8ddff2; }
-.sw-core  { background: #a78bfa; }
-.swatches .label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(167,139,250,0.55); margin-left: 6px; }
+.card {
+    padding: 14px 18px;
+    background: #ffffff;
+    border: 1px solid rgba(26,26,31,0.08);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(26,26,31,0.06), 0 1px 0 rgba(255,255,255,0.9) inset;
+    display: flex; flex-direction: column; gap: 4px;
+    min-width: 168px;
+}
+.card .lab-id {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(26,26,31,0.45);
+}
+.card .lab-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 600;
+    color: #15151a;
+    display: flex; align-items: center; gap: 8px;
+}
+.card .swatch { width: 12px; height: 12px; border-radius: 50%; }
+.card.x26  .swatch { background: #16a34a; }
+.card.s3   .swatch { background: #8ddff2; border: 1px solid rgba(0,0,0,0.05); }
+.card.core .swatch { background: #a78bfa; }
 
 .url {
-    position: absolute; bottom: 80px; right: 80px;
+    position: absolute; bottom: 64px; right: 64px;
     font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(167,139,250,0.55);
+    color: rgba(26,26,31,0.45);
     z-index: 5;
+    font-weight: 500;
 }
-.formats {
-    position: absolute; top: 96px; right: 80px;
-    display: flex; gap: 8px; flex-direction: column; align-items: flex-end;
-    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    z-index: 5;
+
+/* Subtle paper grain via SVG noise */
+.grain {
+    position: absolute; inset: 0;
+    background-image:
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 2px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 2px);
+    z-index: 1;
+    pointer-events: none;
 }
-.formats span { padding: 4px 9px; border: 1px solid rgba(167,139,250,0.22); }
 </style>
 </head>
 <body>
 <div class="wrap">
-    <div class="glow1"></div>
-    <div class="glow2"></div>
-    <div class="grid"></div>
-    <div class="bracket tl"></div>
-    <div class="bracket tr"></div>
-    <div class="bracket bl"></div>
-    <div class="bracket br"></div>
+    <div class="grain"></div>
 
-    <div class="eyebrow">AI MINDSET · BANNER STUDIO</div>
-    <div class="title">aim studio<br><span class="accent">{x26 · s3 · core}</span></div>
-    <div class="subtitle">multi-lab banner generator · 3:1 wide · square · story · carousel · click any text to edit · drag photos · ✨ generate AI backgrounds via OpenRouter</div>
-
-    <div class="formats">
-        <span>3:1 wide</span>
-        <span>square</span>
-        <span>carousel 4:5</span>
-        <span>story 9:16</span>
+    <div class="axes">
+        <span class="axis"><span class="dot layout"></span>4 layouts</span>
+        <span class="axis"><span class="dot mode"></span>2 modes</span>
+        <span class="axis"><span class="dot bg"></span>AI backdrops</span>
     </div>
 
-    <div class="swatches">
-        <span class="sw sw-x26"></span>
-        <span class="sw sw-s3"></span>
-        <span class="sw sw-core"></span>
-        <span class="label">three labs · one design system</span>
+    <h1 class="title">aim studio<br><span class="accent">design system</span></h1>
+    <p class="subtitle">multi-lab banner generator · field · mosaic · roster · cards · terminal & editorial · plain · mesh · Gemini 3 Pro AI backdrops · click any text to edit, drag photos to replace.</p>
+
+    <div class="cards">
+        <div class="card x26">
+            <span class="lab-id">spring lab</span>
+            <span class="lab-name"><span class="swatch"></span>x26</span>
+        </div>
+        <div class="card s3">
+            <span class="lab-id">ai-native</span>
+            <span class="lab-name"><span class="swatch"></span>s3</span>
+        </div>
+        <div class="card core">
+            <span class="lab-id">evergreen</span>
+            <span class="lab-name"><span class="swatch"></span>core</span>
+        </div>
     </div>
+
     <div class="url">aim-studio.netlify.app</div>
 </div>
 </body>
