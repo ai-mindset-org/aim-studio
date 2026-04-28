@@ -885,3 +885,243 @@ input[type="file"]::file-selector-button {
     grid-template-columns: 1fr;
   }
 }
+
+/* === cards layout (editorial mode) === */
+/*
+ * Editorial-mode-locked layout (Wave I4):
+ * - 16px radius (override of component.card.radius's terminal default).
+ * - Soft, two-tier shadow on paper-tinted card surfaces.
+ * - No corner brackets, no grid overlay; whitespace-heavy.
+ * - Mono kept for kickers/eyebrows/meta; body looser-tracked.
+ * Class prefix .cards-v2__* — never piggybacks on shared .layout-* / .photo-card.
+ */
+.cards-v2 {
+  --cards-v2-radius: 16px;
+  --cards-v2-paper: #f6f1e7;
+  --cards-v2-paper-deep: #ede5d3;
+  --cards-v2-ink: #1f1d18;
+  --cards-v2-ink-soft: rgba(31, 29, 24, 0.62);
+  --cards-v2-ink-dim: rgba(31, 29, 24, 0.38);
+  --cards-v2-line: rgba(31, 29, 24, 0.12);
+  --cards-v2-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 252, 244, 0.9), transparent 55%),
+    linear-gradient(180deg, var(--cards-v2-paper) 0%, var(--cards-v2-paper-deep) 100%);
+  color: var(--cards-v2-ink);
+}
+
+.cards-v2__shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 40px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.cards-v2__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.cards-v2__kicker {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__title {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  color: var(--cards-v2-ink);
+}
+
+.cards-v2__title-accent {
+  display: block;
+  color: var(--accent, #16a34a);
+}
+
+.cards-v2__lede {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 21px;
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+  color: var(--cards-v2-ink-soft);
+  max-width: 720px;
+}
+
+/* Two-up by default; fall back to a calmer three-up only when 5–6 cards. */
+.cards-v2__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  align-content: start;
+}
+
+.cards-v2__grid[data-count="5"],
+.cards-v2__grid[data-count="6"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cards-v2__grid[data-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cards-v2__card {
+  border-radius: var(--cards-v2-radius);
+  padding: 32px;
+  background: rgba(255, 253, 247, 0.94);
+  box-shadow: var(--cards-v2-shadow);
+  border: 1px solid var(--cards-v2-line);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  /* No corner brackets, no grid overlay — explicit reset for any inherited
+   * decorative rules from terminal-mode layouts. */
+  overflow: hidden;
+}
+
+.cards-v2__portrait {
+  position: relative;
+  margin: 0;
+  border-radius: calc(var(--cards-v2-radius) - 4px);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--cards-v2-paper-deep);
+}
+
+.cards-v2__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  /* Editorial portrait — keep natural color, no duotone teal-pine. */
+  display: block;
+}
+
+.cards-v2__portrait-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.18) 100%);
+  mix-blend-mode: multiply;
+}
+
+.cards-v2__portrait--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(31, 29, 24, 0.06), rgba(31, 29, 24, 0.02));
+}
+
+.cards-v2__monogram {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 56px;
+  letter-spacing: 0.04em;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cards-v2__eyebrow {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cards-v2-ink-dim);
+}
+
+.cards-v2__sep {
+  color: var(--cards-v2-ink-dim);
+}
+
+.cards-v2__name {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--cards-v2-ink);
+}
+
+.cards-v2__summary {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__foot {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.cards-v2__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent, #16a34a) 14%, transparent);
+  color: color-mix(in srgb, var(--accent, #16a34a) 60%, var(--cards-v2-ink) 40%);
+  border: 1px solid color-mix(in srgb, var(--accent, #16a34a) 30%, transparent);
+}
+
+.cards-v2__chip--ghost {
+  background: transparent;
+  color: var(--cards-v2-ink-soft);
+  border-color: var(--cards-v2-line);
+}
+
+.cards-v2__foot-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--cards-v2-line);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__meta--right {
+  margin-left: auto;
+}
