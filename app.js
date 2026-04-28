@@ -45,6 +45,10 @@ const state = {
   designMode: 'terminal',
   selectedId: null,
   copyOverrides: {},
+  // Per-record numeric font-sizes for editable fields. Wave J6 binds inputs
+  // here ({ title: 130, eyebrow: 22, ... }), Wave J7 round-trips through
+  // URL `fs` param + window.aimStudioExport/Import.
+  copyFontSizes: {},
   photoOverrides: {},
   copy: {},
 };
@@ -306,6 +310,28 @@ function currentCopy() {
   };
 }
 
+// Wave J6/J7: per-record numeric font-sizes. Wave J6 mutates this via
+// edit-sidebar inputs, Wave J7 round-trips it. Returns plain `{ field: px }`.
+function currentFontSizes() {
+  return { ...(state.copyFontSizes[recordKey()] || {}) };
+}
+
+// Wave J7: apply persisted/imported font-sizes to CSS custom properties on
+// the active canvas root. Called after every render so newly mounted DOM
+// inherits the right --copy-<field>-fs vars (renderers consume them via
+// `font-size: var(--copy-title-fs, 130px)` etc per Wave J6 design).
+function applyFontSizesToCanvas() {
+  const root = document.querySelector('.banner-root');
+  if (!root) return;
+  const sizes = state.copyFontSizes[recordKey()];
+  if (!sizes) return;
+  for (const [field, px] of Object.entries(sizes)) {
+    if (typeof px === 'number' && Number.isFinite(px)) {
+      root.style.setProperty(`--copy-${field}-fs`, `${px}px`);
+    }
+  }
+}
+
 function updateCopyField(field, value) {
   state.copyOverrides[recordKey()] = {
     ...(state.copyOverrides[recordKey()] || {}),
@@ -313,8 +339,35 @@ function updateCopyField(field, value) {
   };
 }
 
+// Wave J6/J7: numeric font-size mutator for sidebar inputs. Stores px as a
+// number per (record, field). Caller (Wave J6 sidebar) is expected to clamp
+// and re-render; we still update the CSS var inline for instant feedback so
+// no full re-render is required when only the size changes.
+function updateFontSize(field, px) {
+  const key = recordKey();
+  const next = { ...(state.copyFontSizes[key] || {}) };
+  if (px === null || px === undefined || px === '') {
+    delete next[field];
+  } else {
+    const num = Number(px);
+    if (!Number.isFinite(num)) return;
+    next[field] = num;
+  }
+  state.copyFontSizes[key] = next;
+  const root = document.querySelector('.banner-root');
+  if (root) {
+    if (field in next) {
+      root.style.setProperty(`--copy-${field}-fs`, `${next[field]}px`);
+    } else {
+      root.style.removeProperty(`--copy-${field}-fs`);
+    }
+  }
+  syncQuery();
+}
+
 function resetCurrentCopy() {
   delete state.copyOverrides[recordKey()];
+  delete state.copyFontSizes[recordKey()];
   render();
 }
 
@@ -861,6 +914,33 @@ function readQuery() {
   // Mirror the style→designMode rule (Wave I4): cards locks editorial.
   state.designMode = state.style === 'cards' ? 'editorial' : 'terminal';
   state.selectedId = params.get('id') || null;
+
+  // Wave J7: hydrate per-record font-sizes from `fs` query param. Encoded as
+  // a JSON object of `{ field: px }` for the *current* record. Defensive
+  // parse — malformed JSON falls back to empty.
+  const fsRaw = params.get('fs');
+  if (fsRaw) {
+    try {
+      const parsed = JSON.parse(decodeURIComponent(fsRaw));
+      if (parsed && typeof parsed === 'object') {
+        state.copyFontSizes[recordKey()] = parsed;
+      }
+    } catch (err) {
+      console.warn('[aim-studio] ignored malformed fs param', err);
+    }
+  }
+
+  // Wave J7: optional full-state import via `state` query param (base64 JSON).
+  // Used by aimStudioImport() shareable links.
+  const stateRaw = params.get('state');
+  if (stateRaw) {
+    try {
+      const decoded = JSON.parse(atob(decodeURIComponent(stateRaw)));
+      applyImportedState(decoded);
+    } catch (err) {
+      console.warn('[aim-studio] ignored malformed state param', err);
+    }
+  }
 }
 
 function syncQuery() {
@@ -874,10 +954,63 @@ function syncQuery() {
     params.set('id', state.selectedId);
   }
 
+  // Wave J7: persist per-record font-sizes in URL. Skip when empty so the
+  // common case stays clean.
+  const fontSizes = state.copyFontSizes[recordKey()];
+  if (fontSizes && Object.keys(fontSizes).length) {
+    params.set('fs', encodeURIComponent(JSON.stringify(fontSizes)));
+  }
+
   const next = params.toString();
   const url = next ? `${window.location.pathname}?${next}` : window.location.pathname;
   window.history.replaceState({}, '', url);
 }
+
+// Wave J7: full-state export/import for shareable JSON or links. Round-trips
+// every override so a recipient sees identical text + font-sizes + photos +
+// selection. Exposed on window for the edit-sidebar (Wave J6) or any future
+// "copy share link" / "download JSON" button.
+function exportState() {
+  return {
+    version: 1,
+    labId: state.labId,
+    mode: state.mode,
+    style: state.style,
+    selectedId: state.selectedId,
+    copyOverrides: state.copyOverrides,
+    copyFontSizes: state.copyFontSizes,
+    photoOverrides: state.photoOverrides,
+  };
+}
+
+function applyImportedState(snapshot) {
+  if (!snapshot || typeof snapshot !== 'object') {
+    return;
+  }
+  if (snapshot.labId) state.labId = aliasLab(snapshot.labId);
+  if (snapshot.mode) state.mode = aliasMode(snapshot.mode);
+  if (snapshot.style) {
+    state.style = normalizeId(snapshot.style);
+    state.designMode = state.style === 'cards' ? 'editorial' : 'terminal';
+  }
+  if ('selectedId' in snapshot) state.selectedId = snapshot.selectedId || null;
+  if (snapshot.copyOverrides && typeof snapshot.copyOverrides === 'object') {
+    state.copyOverrides = { ...snapshot.copyOverrides };
+  }
+  if (snapshot.copyFontSizes && typeof snapshot.copyFontSizes === 'object') {
+    state.copyFontSizes = { ...snapshot.copyFontSizes };
+  }
+  if (snapshot.photoOverrides && typeof snapshot.photoOverrides === 'object') {
+    state.photoOverrides = { ...snapshot.photoOverrides };
+  }
+}
+
+window.aimStudioExport = exportState;
+window.aimStudioImport = (snapshot) => {
+  applyImportedState(snapshot);
+  remountEditSidebar();
+  render();
+};
 
 function fitPreview() {
   const available = UI.previewFrame.clientWidth - 36;
@@ -976,6 +1109,7 @@ async function render() {
   });
 
   UI.bannerMount.innerHTML = chromedMarkup;
+  applyFontSizesToCanvas();
   bindEditableFields(UI.bannerMount);
   UI.previewLabel.textContent = `${DATA.design.size.width} × ${DATA.design.size.height}`;
   await waitForVisuals(UI.bannerMount);
@@ -1101,8 +1235,12 @@ readQuery();
 function remountEditSidebar() {
   mountEditSidebar({
     root: document.getElementById('edit-sidebar'),
-    state: { ...state, copy: currentCopy() },
+    // Wave J7: surface fontSizes to the sidebar (Wave J6 binds inputs here).
+    // Reading via `state.copy.fontSizes` matches the design-doc shape; the
+    // map is the per-record slice, not the full keyed structure.
+    state: { ...state, copy: { ...currentCopy(), fontSizes: currentFontSizes() } },
     onChange: updateCopyField,
+    onFontSizeChange: updateFontSize,
   });
 }
 
