@@ -1125,3 +1125,90 @@ input[type="file"]::file-selector-button {
 .cards-v2__meta--right {
   margin-left: auto;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   CHROME — single outer wrapper (Wave I-5 dedup fix)
+   ────────────────────────────────────────────────────────────────────
+   `.chrome-outer` is the ONE place corner brackets + PREVIEW header
+   live. Per-card chrome is forbidden — see app/render-chrome.js and
+   docs/plans/2026-04-28-aim-studio-design-system-PLAN.md Task I5.
+   `.chrome-corner` is intentionally scoped under `.chrome-outer` so
+   any leftover per-card markup that slips through gets no styling.
+   ════════════════════════════════════════════════════════════════════ */
+
+.chrome-outer {
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+
+.chrome-outer .chrome-header {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(166, 183, 170, 0.55);
+  padding: 0 0 8px 2px;
+}
+
+.chrome-outer .chrome-header-tag {
+  color: var(--accent, var(--lab));
+  font-weight: 600;
+}
+
+.chrome-outer .chrome-frame {
+  position: relative;
+  width: var(--chrome-banner-w, 1800px);
+  min-height: var(--chrome-banner-h, 600px);
+}
+
+.chrome-outer .chrome-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Corner brackets — scoped to .chrome-outer ONLY. If anything else
+   in the DOM emits .chrome-corner (it shouldn't), it gets no styling. */
+.chrome-outer .chrome-corner {
+  position: absolute;
+  width: var(--chrome-corner-size, 20px);
+  height: var(--chrome-corner-size, 20px);
+  pointer-events: none;
+  z-index: 25;
+  opacity: 0.42;
+}
+
+.chrome-outer .chrome-corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid var(--accent, var(--lab));
+  border-left: 1.5px solid var(--accent, var(--lab));
+}
+
+.chrome-outer .chrome-corner-tr {
+  top: 0;
+  right: 0;
+  border-top: 1.5px solid var(--accent, var(--lab));
+  border-right: 1.5px solid var(--accent, var(--lab));
+}
+
+.chrome-outer .chrome-corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1.5px solid var(--accent, var(--lab));
+  border-left: 1.5px solid var(--accent, var(--lab));
+}
+
+.chrome-outer .chrome-corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid var(--accent, var(--lab));
+  border-right: 1.5px solid var(--accent, var(--lab));
+}
+
+/* Bypass mode (chrome.show === false): no decoration, just pass through. */
+.chrome-bypass {
+  display: contents;
+}
+
