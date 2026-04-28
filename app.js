@@ -1,6 +1,7 @@
 import { renderBg } from './app/bg-layer.js';
 import { render as renderField } from './app/render-field.js';
 import { render as renderCards } from './app/render-cards.js';
+import { wrap as wrapChrome } from './app/render-chrome.js';
 
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
@@ -911,6 +912,19 @@ function waitForVisuals(root) {
   );
 }
 
+function chromeLabel() {
+  // Compact tag for the single-source-of-truth chrome header: "<LAB> · <MODE> · <STYLE-or-SELECTION>"
+  const lab = (currentLab().short || currentLab().name || state.labId || '').toString().toUpperCase();
+  const mode = state.mode.toUpperCase();
+  const tail =
+    state.mode === 'generic' ? state.style.toUpperCase() :
+    state.mode === 'speaker' ? (selectedSpeaker()?.short || selectedSpeaker()?.name || '').toString().toUpperCase() :
+    state.mode === 'creator' ? (selectedCreator()?.speaker?.short || selectedCreator()?.speaker?.name || '').toString().toUpperCase() :
+                               (selectedParticipant()?.short || selectedParticipant()?.name || '').toString().toUpperCase();
+  const dims = `${DATA.design.size.width}×${DATA.design.size.height}`;
+  return [lab, mode, tail, dims].filter(Boolean).join(' · ');
+}
+
 async function render() {
   ensureStyle();
   ensureSelection();
@@ -945,7 +959,18 @@ async function render() {
     );
   }
 
-  UI.bannerMount.innerHTML = markup;
+  // Hoist terminal chrome (corner brackets + PREVIEW header) to a SINGLE
+  // outer wrapper around the active card stack. Per-card chrome is forbidden
+  // — see Task I5 in 2026-04-28-aim-studio-design-system-PLAN.md.
+  // Renderers must NOT emit their own corner-bracket SVG / .chrome-* markup.
+  const chromedMarkup = wrapChrome(markup, {
+    show: true,
+    position: 'outer',
+    label: chromeLabel(),
+    dimensions: { w: DATA.design.size.width, h: DATA.design.size.height },
+  });
+
+  UI.bannerMount.innerHTML = chromedMarkup;
   bindEditableFields(UI.bannerMount);
   UI.previewLabel.textContent = `${DATA.design.size.width} × ${DATA.design.size.height}`;
   await waitForVisuals(UI.bannerMount);
