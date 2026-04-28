@@ -363,6 +363,18 @@ function editField(tag, className, field, value) {
   return `<${tag} class="${className}" contenteditable="true" spellcheck="false" data-edit-field="${field}">${escapeHtml(value || '')}</${tag}>`;
 }
 
+// Expose shared helpers for app/render-*.js modules (Wave I extraction). These
+// modules are non-module classic scripts (matching app.js) that read helpers
+// from window.aimStudioHelpers instead of `import`. Keep this in sync with the
+// helpers actually consumed by the renderers (currently only mosaic).
+window.aimStudioHelpers = {
+  escapeHtml,
+  accentForRecord,
+  portraitSurface: (speaker, options) => portraitSurface(speaker, options),
+  speakerStatus,
+  editField,
+};
+
 function portraitSurface(speaker, options = {}) {
   const photo = resolvePhoto(speaker);
   const largeClass = options.large ? ' is-large' : '';
@@ -458,68 +470,34 @@ function fieldCoverMarkup(copy) {
   `;
 }
 
-function mosaicTileMarkup(speaker, index) {
-  const pattern = [
-    'is-wide is-tall',
-    'is-tall',
-    '',
-    '',
-    'is-wide',
-    '',
-    'is-wide',
-    '',
-    '',
-  ];
-  const classes = pattern[index] || '';
-
-  return `
-    <article class="mosaic-tile ${classes}" style="--accent:${escapeHtml(accentForRecord(speaker))}">
-      ${portraitSurface(speaker)}
-      <div class="mosaic-label">
-        <strong>${escapeHtml(speaker.short || speaker.name)}</strong>
-        <p>${escapeHtml(speakerStatus(speaker.status))}</p>
-      </div>
-    </article>
-  `;
-}
-
+// Mosaic markup is implemented by app/render-mosaic.js (Wave I task I1 extraction).
+// The renderer reads helpers from window.aimStudioHelpers (set up below in this file)
+// and is invoked through window.renderMosaic. Keeping this thin shim preserves the
+// existing callsite shape (mosaicCoverMarkup(copy)) so genericMarkup stays untouched.
 function mosaicCoverMarkup(copy) {
-  const program = currentProgram();
-  const speakers = featuredSpeakers(9);
+  if (typeof window.renderMosaic !== 'function') {
+    throw new Error('renderMosaic is not loaded — include app/render-mosaic.js after app.js helpers are exposed');
+  }
 
-  return `
-    <main id="currentBanner" class="banner-root" data-banner-root="true" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <section class="layout-mosaic">
-        <div class="mosaic-copy">
-          <div>
-            ${editField('p', 'banner-eyebrow', 'eyebrow', copy.eyebrow)}
-            <h1 class="banner-title">
-              <span contenteditable="true" spellcheck="false" data-edit-field="title">${escapeHtml(copy.title)}</span><br>
-              <span class="banner-title-accent" contenteditable="true" spellcheck="false" data-edit-field="accentTitle">${escapeHtml(copy.accentTitle)}</span>
-            </h1>
-            ${editField('p', 'banner-subtitle', 'subtitle', copy.subtitle)}
-          </div>
+  const lab = currentLab();
+  const labContext = {
+    ...lab,
+    program: currentProgram(),
+    speakers: currentSpeakers(),
+    accent: lab.accent || '#16a34a',
+    name: lab.name || '',
+  };
 
-          <div>
-            ${editField('div', 'analysis-box', 'note', copy.note)}
-            <div class="banner-footer" style="margin-top:14px;">
-              <div class="banner-footer-meta">
-                <span class="stat-chip">${escapeHtml(`${currentSpeakers().length} records`)}</span>
-                <span class="stat-chip">${escapeHtml(program.dates?.display || '')}</span>
-              </div>
-              <span class="meta-chip">${escapeHtml(program.footerRight || currentLab().name || '')}</span>
-            </div>
-          </div>
-        </div>
+  const result = window.renderMosaic({
+    copy,
+    speakers: featuredSpeakers(9),
+    lab: labContext,
+    mode: 'terminal',
+    bg: { type: 'none', opacity: 1 },
+    chrome: { show: true, position: 'corners' },
+  });
 
-        <div class="mosaic-wall">
-          <div class="mosaic-grid">
-            ${speakers.map((speaker, index) => mosaicTileMarkup(speaker, index)).join('')}
-          </div>
-        </div>
-      </section>
-    </main>
-  `;
+  return result.html;
 }
 
 function rosterListMarkup() {
