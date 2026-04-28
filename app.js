@@ -1072,6 +1072,7 @@ UI.labSelector.addEventListener('change', () => {
   state.labId = aliasLab(UI.labSelector.value);
   state.selectedId = null;
   state.style = currentLab().defaultStyle || 'field';
+  remountEditSidebar();
   render();
 });
 
@@ -1093,10 +1094,14 @@ window.addEventListener('popstate', () => {
 
 readQuery();
 
-mountEditSidebar({
-  root: document.getElementById('edit-sidebar'),
-  state: { ...state, copy: currentCopy() },
-  onChange: updateCopyField,
-});
+function remountEditSidebar() {
+  mountEditSidebar({
+    root: document.getElementById('edit-sidebar'),
+    state: { ...state, copy: currentCopy() },
+    onChange: updateCopyField,
+  });
+}
+
+remountEditSidebar();
 
 render();
