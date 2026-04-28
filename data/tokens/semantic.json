@@ -1,0 +1,34 @@
+{
+  "bg": {
+    "deep":     { "$value": "{color.neutral-950}", "$type": "color" },
+    "default":  { "$value": "{color.neutral-800}", "$type": "color" },
+    "card":     { "$value": "{color.neutral-700}", "$type": "color" },
+    "terminal": { "$value": "{color.neutral-850}", "$type": "color" }
+  },
+  "text": {
+    "default":  { "$value": "{color.neutral-100}", "$type": "color" },
+    "hero":     { "$value": "{color.neutral-050}", "$type": "color" },
+    "subtle":   { "$value": "rgba(230,237,243,0.5)", "$type": "color" }
+  },
+  "accent": {
+    "ainative": { "$value": "{color.teal-500}",  "$type": "color" },
+    "x26":      { "$value": "{color.green-x26}", "$type": "color" },
+    "core":     { "$value": "{color.mauve-core}", "$type": "color" }
+  },
+  "grid": {
+    "size":    { "$value": "{size.grid}", "$type": "dimension" },
+    "color":   { "$value": "rgba(77,201,212,0.06)", "$type": "color" }
+  },
+  "mode": {
+    "terminal": {
+      "chrome-show":   { "$value": true,  "$type": "other" },
+      "corner-marks":  { "$value": true,  "$type": "other" },
+      "card-radius":   { "$value": "{size.radius-md}", "$type": "dimension" }
+    },
+    "editorial": {
+      "chrome-show":   { "$value": false, "$type": "other" },
+      "corner-marks":  { "$value": false, "$type": "other" },
+      "card-radius":   { "$value": "{size.radius-xl}", "$type": "dimension" }
+    }
+  }
+}

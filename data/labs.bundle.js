@@ -3,12 +3,228 @@
 (function (root) {
   const tokens = {
   "core": {
+    "$schema": "https://design-tokens.github.io/community-group/format/draft-2025-10/",
+    "color": {
+      "neutral-950": {
+        "$value": "#0a0a0f",
+        "$type": "color"
+      },
+      "neutral-900": {
+        "$value": "#0d1117",
+        "$type": "color"
+      },
+      "neutral-850": {
+        "$value": "#141419",
+        "$type": "color"
+      },
+      "neutral-800": {
+        "$value": "#161620",
+        "$type": "color"
+      },
+      "neutral-700": {
+        "$value": "#1c1c2e",
+        "$type": "color"
+      },
+      "neutral-100": {
+        "$value": "#e6edf3",
+        "$type": "color"
+      },
+      "neutral-050": {
+        "$value": "#f1f5f9",
+        "$type": "color"
+      },
+      "teal-500": {
+        "$value": "#4dc9d4",
+        "$type": "color"
+      },
+      "teal-pine": {
+        "$value": "#0f3d38",
+        "$type": "color"
+      },
+      "blue-s3": {
+        "$value": "#8ddff2",
+        "$type": "color"
+      },
+      "amber-s3": {
+        "$value": "#f0b84b",
+        "$type": "color"
+      },
+      "green-x26": {
+        "$value": "#16a34a",
+        "$type": "color"
+      },
+      "mauve-core": {
+        "$value": "#a78bfa",
+        "$type": "color"
+      },
+      "pink-w3": {
+        "$value": "#ff3b8b",
+        "$type": "color"
+      },
+      "amber-w4": {
+        "$value": "#fcbb00",
+        "$type": "color"
+      }
+    },
+    "font-family": {
+      "mono": {
+        "$value": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+        "$type": "fontFamily"
+      },
+      "display": {
+        "$value": "'Space Grotesk', system-ui, sans-serif",
+        "$type": "fontFamily"
+      },
+      "code": {
+        "$value": "'JetBrains Mono', ui-monospace, monospace",
+        "$type": "fontFamily"
+      }
+    },
+    "size": {
+      "grid": {
+        "$value": "60px",
+        "$type": "dimension"
+      },
+      "corner-mark": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "radius-md": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "radius-lg": {
+        "$value": "8px",
+        "$type": "dimension"
+      },
+      "radius-xl": {
+        "$value": "16px",
+        "$type": "dimension"
+      }
+    },
+    "bg": {
+      "deep": {
+        "$value": "#0a0a0f",
+        "$type": "color"
+      },
+      "default": {
+        "$value": "#161620",
+        "$type": "color"
+      },
+      "card": {
+        "$value": "#1c1c2e",
+        "$type": "color"
+      },
+      "terminal": {
+        "$value": "#141419",
+        "$type": "color"
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "#e6edf3",
+        "$type": "color"
+      },
+      "hero": {
+        "$value": "#f1f5f9",
+        "$type": "color"
+      },
+      "subtle": {
+        "$value": "rgba(230,237,243,0.5)",
+        "$type": "color"
+      }
+    },
+    "accent": "#a78bfa",
+    "grid": {
+      "size": {
+        "$value": "60px",
+        "$type": "dimension"
+      },
+      "color": {
+        "$value": "rgba(77,201,212,0.06)",
+        "$type": "color"
+      }
+    },
+    "mode": {
+      "terminal": {
+        "chrome-show": {
+          "$value": true,
+          "$type": "other"
+        },
+        "corner-marks": {
+          "$value": true,
+          "$type": "other"
+        },
+        "card-radius": {
+          "$value": "4px",
+          "$type": "dimension"
+        }
+      },
+      "editorial": {
+        "chrome-show": {
+          "$value": false,
+          "$type": "other"
+        },
+        "corner-marks": {
+          "$value": false,
+          "$type": "other"
+        },
+        "card-radius": {
+          "$value": "16px",
+          "$type": "dimension"
+        }
+      }
+    },
+    "card": {
+      "radius": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "padding": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "shadow": {
+        "$value": "0 4px 18px rgba(0,0,0,0.45)",
+        "$type": "shadow"
+      }
+    },
+    "chrome": {
+      "corner-size": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "padding": {
+        "$value": "28px",
+        "$type": "dimension"
+      },
+      "border": {
+        "$value": "1px solid rgba(77,201,212,0.18)",
+        "$type": "border"
+      }
+    },
+    "edit-sidebar": {
+      "width": {
+        "$value": "320px",
+        "$type": "dimension"
+      },
+      "row-gap": {
+        "$value": "12px",
+        "$type": "dimension"
+      }
+    },
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "editorial",
+      "defaultBg": {
+        "type": "plain"
+      }
+    },
     "id": "core",
     "name": "AI Mindset {core}",
     "eyebrow": "AI MINDSET · EVERGREEN",
     "title": "ai mindset",
     "accentTitle": "{core}",
-    "accent": "#a78bfa",
     "accentRgb": "167,139,250",
     "accentName": "core mauve",
     "secondaryAccent": "#fbbf24",
@@ -109,12 +325,230 @@
     ]
   },
   "s3": {
+    "$schema": "https://design-tokens.github.io/community-group/format/draft-2025-10/",
+    "color": {
+      "neutral-950": {
+        "$value": "#0a0a0f",
+        "$type": "color"
+      },
+      "neutral-900": {
+        "$value": "#0d1117",
+        "$type": "color"
+      },
+      "neutral-850": {
+        "$value": "#141419",
+        "$type": "color"
+      },
+      "neutral-800": {
+        "$value": "#161620",
+        "$type": "color"
+      },
+      "neutral-700": {
+        "$value": "#1c1c2e",
+        "$type": "color"
+      },
+      "neutral-100": {
+        "$value": "#e6edf3",
+        "$type": "color"
+      },
+      "neutral-050": {
+        "$value": "#f1f5f9",
+        "$type": "color"
+      },
+      "teal-500": {
+        "$value": "#4dc9d4",
+        "$type": "color"
+      },
+      "teal-pine": {
+        "$value": "#0f3d38",
+        "$type": "color"
+      },
+      "blue-s3": {
+        "$value": "#8ddff2",
+        "$type": "color"
+      },
+      "amber-s3": {
+        "$value": "#f0b84b",
+        "$type": "color"
+      },
+      "green-x26": {
+        "$value": "#16a34a",
+        "$type": "color"
+      },
+      "mauve-core": {
+        "$value": "#a78bfa",
+        "$type": "color"
+      },
+      "pink-w3": {
+        "$value": "#ff3b8b",
+        "$type": "color"
+      },
+      "amber-w4": {
+        "$value": "#fcbb00",
+        "$type": "color"
+      }
+    },
+    "font-family": {
+      "mono": {
+        "$value": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+        "$type": "fontFamily"
+      },
+      "display": {
+        "$value": "'Space Grotesk', system-ui, sans-serif",
+        "$type": "fontFamily"
+      },
+      "code": {
+        "$value": "'JetBrains Mono', ui-monospace, monospace",
+        "$type": "fontFamily"
+      }
+    },
+    "size": {
+      "grid": {
+        "$value": "60px",
+        "$type": "dimension"
+      },
+      "corner-mark": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "radius-md": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "radius-lg": {
+        "$value": "8px",
+        "$type": "dimension"
+      },
+      "radius-xl": {
+        "$value": "16px",
+        "$type": "dimension"
+      }
+    },
+    "bg": {
+      "deep": {
+        "$value": "#0a0a0f",
+        "$type": "color"
+      },
+      "default": {
+        "$value": "#161620",
+        "$type": "color"
+      },
+      "card": {
+        "$value": "#1c1c2e",
+        "$type": "color"
+      },
+      "terminal": {
+        "$value": "#141419",
+        "$type": "color"
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "#e6edf3",
+        "$type": "color"
+      },
+      "hero": {
+        "$value": "#f1f5f9",
+        "$type": "color"
+      },
+      "subtle": {
+        "$value": "rgba(230,237,243,0.5)",
+        "$type": "color"
+      }
+    },
+    "accent": "#8ddff2",
+    "grid": {
+      "size": {
+        "$value": "60px",
+        "$type": "dimension"
+      },
+      "color": {
+        "$value": "rgba(77,201,212,0.06)",
+        "$type": "color"
+      }
+    },
+    "mode": {
+      "terminal": {
+        "chrome-show": {
+          "$value": true,
+          "$type": "other"
+        },
+        "corner-marks": {
+          "$value": true,
+          "$type": "other"
+        },
+        "card-radius": {
+          "$value": "4px",
+          "$type": "dimension"
+        }
+      },
+      "editorial": {
+        "chrome-show": {
+          "$value": false,
+          "$type": "other"
+        },
+        "corner-marks": {
+          "$value": false,
+          "$type": "other"
+        },
+        "card-radius": {
+          "$value": "16px",
+          "$type": "dimension"
+        }
+      }
+    },
+    "card": {
+      "radius": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "padding": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "shadow": {
+        "$value": "0 4px 18px rgba(0,0,0,0.45)",
+        "$type": "shadow"
+      }
+    },
+    "chrome": {
+      "corner-size": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "padding": {
+        "$value": "28px",
+        "$type": "dimension"
+      },
+      "border": {
+        "$value": "1px solid rgba(77,201,212,0.18)",
+        "$type": "border"
+      }
+    },
+    "edit-sidebar": {
+      "width": {
+        "$value": "320px",
+        "$type": "dimension"
+      },
+      "row-gap": {
+        "$value": "12px",
+        "$type": "dimension"
+      }
+    },
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "terminal",
+      "defaultBg": {
+        "type": "ai-generated",
+        "style": "circuit",
+        "model": "flux-pro"
+      }
+    },
     "id": "s3",
     "name": "AI-Native Sprint S3",
     "eyebrow": "AI Mindset × CybOS",
     "title": "ai-native sprint",
     "accentTitle": "{s3}",
-    "accent": "#8ddff2",
     "accentRgb": "141,223,242",
     "accentName": "s3 blue",
     "secondaryAccent": "#f0b84b",
@@ -226,12 +660,228 @@
     ]
   },
   "x26": {
+    "$schema": "https://design-tokens.github.io/community-group/format/draft-2025-10/",
+    "color": {
+      "neutral-950": {
+        "$value": "#0a0a0f",
+        "$type": "color"
+      },
+      "neutral-900": {
+        "$value": "#0d1117",
+        "$type": "color"
+      },
+      "neutral-850": {
+        "$value": "#141419",
+        "$type": "color"
+      },
+      "neutral-800": {
+        "$value": "#161620",
+        "$type": "color"
+      },
+      "neutral-700": {
+        "$value": "#1c1c2e",
+        "$type": "color"
+      },
+      "neutral-100": {
+        "$value": "#e6edf3",
+        "$type": "color"
+      },
+      "neutral-050": {
+        "$value": "#f1f5f9",
+        "$type": "color"
+      },
+      "teal-500": {
+        "$value": "#4dc9d4",
+        "$type": "color"
+      },
+      "teal-pine": {
+        "$value": "#0f3d38",
+        "$type": "color"
+      },
+      "blue-s3": {
+        "$value": "#8ddff2",
+        "$type": "color"
+      },
+      "amber-s3": {
+        "$value": "#f0b84b",
+        "$type": "color"
+      },
+      "green-x26": {
+        "$value": "#16a34a",
+        "$type": "color"
+      },
+      "mauve-core": {
+        "$value": "#a78bfa",
+        "$type": "color"
+      },
+      "pink-w3": {
+        "$value": "#ff3b8b",
+        "$type": "color"
+      },
+      "amber-w4": {
+        "$value": "#fcbb00",
+        "$type": "color"
+      }
+    },
+    "font-family": {
+      "mono": {
+        "$value": "'IBM Plex Mono', ui-monospace, Menlo, monospace",
+        "$type": "fontFamily"
+      },
+      "display": {
+        "$value": "'Space Grotesk', system-ui, sans-serif",
+        "$type": "fontFamily"
+      },
+      "code": {
+        "$value": "'JetBrains Mono', ui-monospace, monospace",
+        "$type": "fontFamily"
+      }
+    },
+    "size": {
+      "grid": {
+        "$value": "60px",
+        "$type": "dimension"
+      },
+      "corner-mark": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "radius-md": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "radius-lg": {
+        "$value": "8px",
+        "$type": "dimension"
+      },
+      "radius-xl": {
+        "$value": "16px",
+        "$type": "dimension"
+      }
+    },
+    "bg": {
+      "deep": {
+        "$value": "#0a0a0f",
+        "$type": "color"
+      },
+      "default": {
+        "$value": "#161620",
+        "$type": "color"
+      },
+      "card": {
+        "$value": "#1c1c2e",
+        "$type": "color"
+      },
+      "terminal": {
+        "$value": "#141419",
+        "$type": "color"
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "#e6edf3",
+        "$type": "color"
+      },
+      "hero": {
+        "$value": "#f1f5f9",
+        "$type": "color"
+      },
+      "subtle": {
+        "$value": "rgba(230,237,243,0.5)",
+        "$type": "color"
+      }
+    },
+    "accent": "#16a34a",
+    "grid": {
+      "size": {
+        "$value": "60px",
+        "$type": "dimension"
+      },
+      "color": {
+        "$value": "rgba(77,201,212,0.06)",
+        "$type": "color"
+      }
+    },
+    "mode": {
+      "terminal": {
+        "chrome-show": {
+          "$value": true,
+          "$type": "other"
+        },
+        "corner-marks": {
+          "$value": true,
+          "$type": "other"
+        },
+        "card-radius": {
+          "$value": "4px",
+          "$type": "dimension"
+        }
+      },
+      "editorial": {
+        "chrome-show": {
+          "$value": false,
+          "$type": "other"
+        },
+        "corner-marks": {
+          "$value": false,
+          "$type": "other"
+        },
+        "card-radius": {
+          "$value": "16px",
+          "$type": "dimension"
+        }
+      }
+    },
+    "card": {
+      "radius": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "padding": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "shadow": {
+        "$value": "0 4px 18px rgba(0,0,0,0.45)",
+        "$type": "shadow"
+      }
+    },
+    "chrome": {
+      "corner-size": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "padding": {
+        "$value": "28px",
+        "$type": "dimension"
+      },
+      "border": {
+        "$value": "1px solid rgba(77,201,212,0.18)",
+        "$type": "border"
+      }
+    },
+    "edit-sidebar": {
+      "width": {
+        "$value": "320px",
+        "$type": "dimension"
+      },
+      "row-gap": {
+        "$value": "12px",
+        "$type": "dimension"
+      }
+    },
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "terminal",
+      "defaultBg": {
+        "type": "mesh-token"
+      }
+    },
     "id": "x26",
     "name": "Spring Lab {x26}",
     "eyebrow": "AI MINDSET · SPRING LAB X26",
     "title": "spring lab",
     "accentTitle": "{x26}",
-    "accent": "#16a34a",
     "accentRgb": "22,163,74",
     "accentName": "x26 green",
     "secondaryAccent": "#fbbf24",

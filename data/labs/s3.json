@@ -1,4 +1,9 @@
 {
+  "axes": {
+    "defaultLayout": "mosaic",
+    "defaultMode": "terminal",
+    "defaultBg": { "type": "ai-generated", "style": "circuit", "model": "flux-pro" }
+  },
   "id": "s3",
   "name": "AI-Native Sprint S3",
   "eyebrow": "AI Mindset × CybOS",
