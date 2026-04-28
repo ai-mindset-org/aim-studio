@@ -1,5 +1,6 @@
 import { renderBg } from './app/bg-layer.js';
 import { render as renderField } from './app/render-field.js';
+import { render as renderCards } from './app/render-cards.js';
 
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
@@ -37,6 +38,9 @@ const state = {
   labId: DATA.defaultLab || 'x26',
   mode: 'generic',
   style: 'field',
+  // Design-system mode: 'terminal' | 'editorial'.
+  // Wave I4: layouts may force this (e.g. cards locks to editorial).
+  designMode: 'terminal',
   selectedId: null,
   copyOverrides: {},
   photoOverrides: {},
@@ -554,6 +558,18 @@ function genericMarkup() {
     return rosterCoverMarkup(copy);
   }
 
+  if (state.style === 'cards') {
+    const { html } = renderCards({
+      copy,
+      speakers: featuredSpeakers(6),
+      lab: currentLab(),
+      mode: state.designMode,
+      bg: { type: 'paper' },
+      chrome: { show: false },
+    });
+    return html;
+  }
+
   return fieldCoverMarkup(copy);
 }
 
@@ -733,6 +749,13 @@ function syncControls() {
 
   renderButtonRow(UI.styleButtons, currentStyleOptions(), state.style, (style) => {
     state.style = style;
+    // Cards layout is editorial-mode-locked (Wave I4 contract): no terminal
+    // chrome, soft shadows, paper surfaces. Other layouts default to terminal.
+    if (style === 'cards') {
+      state.designMode = 'editorial';
+    } else {
+      state.designMode = 'terminal';
+    }
     render();
   });
 
@@ -829,6 +852,8 @@ function readQuery() {
   state.labId = aliasLab(params.get('lab') || DATA.defaultLab);
   state.mode = aliasMode(params.get('mode'));
   state.style = normalizeId(params.get('style') || currentLab().defaultStyle || 'field');
+  // Mirror the style→designMode rule (Wave I4): cards locks editorial.
+  state.designMode = state.style === 'cards' ? 'editorial' : 'terminal';
   state.selectedId = params.get('id') || null;
 }
 
