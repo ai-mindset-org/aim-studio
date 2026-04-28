@@ -415,6 +415,19 @@ function photoCardMarkup(speaker, options = {}) {
   `;
 }
 
+// Expose shared helpers for app/render-*.js modules (Wave I extraction). These
+// modules are non-module classic scripts (matching app.js) that read helpers
+// from window.aimStudioHelpers instead of `import`. Keep this in sync with the
+// helpers actually consumed by the renderers (currently only roster).
+window.aimStudioHelpers = Object.assign(window.aimStudioHelpers || {}, {
+  escapeHtml,
+  accentForRecord,
+  speakerStatus,
+  editField,
+  photoCardMarkup,
+  portraitSurface: (speaker, options) => portraitSurface(speaker, options),
+});
+
 function modalitySummaryCard() {
   const items = currentModalities()
     .map((item) => `<p><strong>${escapeHtml(item.title || item.label)}</strong><br>${escapeHtml(item.label || item.key)}</p>`)
@@ -498,66 +511,36 @@ function mosaicCoverMarkup(copy) {
   return result.html;
 }
 
-function rosterListMarkup() {
-  const items = currentSpeakers()
-    .map((speaker, index) => `
-      <article class="speaker-list-item" style="--accent:${escapeHtml(accentForRecord(speaker))}">
-        <span class="speaker-list-index">${String(index + 1).padStart(2, '0')}</span>
-        <div>
-          <strong>${escapeHtml(speaker.name)}</strong>
-          <p>${escapeHtml(speaker.focus || speaker.role || '')}</p>
-        </div>
-        <span class="status-chip">${escapeHtml(speakerStatus(speaker.status))}</span>
-      </article>
-    `)
-    .join('');
-
-  return `
-    <article class="list-panel" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <p class="list-label">speaker roster</p>
-      <div class="speaker-list">${items}</div>
-    </article>
-  `;
-}
-
+// Roster markup is implemented by app/render-roster.js (Wave I task I3 extraction).
+// The renderer reads helpers from window.aimStudioHelpers (set up above) and is
+// invoked through window.renderRoster. Per-row badge stack was condensed: the
+// previous separate `01` / `W3` / `GUEST` spans are now a single merged badge
+// (`01 · W3` with ` · G` suffix for guests).
 function rosterCoverMarkup(copy) {
-  const showcase = featuredSpeakers(4);
-  const program = currentProgram();
+  if (typeof window.renderRoster !== 'function') {
+    throw new Error('renderRoster is not loaded — include app/render-roster.js after app.js helpers are exposed');
+  }
 
-  return `
-    <main id="currentBanner" class="banner-root" data-banner-root="true" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <section class="layout-roster">
-        <div class="roster-copy">
-          <div>
-            ${editField('p', 'banner-eyebrow', 'eyebrow', copy.eyebrow)}
-            <h1 class="banner-title">
-              <span contenteditable="true" spellcheck="false" data-edit-field="title">${escapeHtml(copy.title)}</span><br>
-              <span class="banner-title-accent" contenteditable="true" spellcheck="false" data-edit-field="accentTitle">${escapeHtml(copy.accentTitle)}</span>
-            </h1>
-            ${editField('p', 'banner-subtitle', 'subtitle', copy.subtitle)}
-          </div>
+  const lab = currentLab();
+  const labContext = {
+    ...lab,
+    program: currentProgram(),
+    speakers: currentSpeakers(),
+    accent: lab.accent || '#16a34a',
+    name: lab.name || '',
+  };
 
-          <div class="cover-copy-bottom">
-            ${editField('div', 'analysis-box', 'note', copy.note)}
-            <div class="banner-footer">
-              <div class="banner-footer-meta">
-                <span class="stat-chip">${escapeHtml(`${currentSpeakers().length} speakers`)}</span>
-                <span class="stat-chip">${escapeHtml(program.dates?.display || '')}</span>
-              </div>
-              <span class="meta-chip">${escapeHtml(program.footerLeft || currentLab().name || '')}</span>
-            </div>
-          </div>
-        </div>
+  const result = window.renderRoster({
+    copy,
+    speakers: currentSpeakers(),
+    showcase: featuredSpeakers(4),
+    lab: labContext,
+    mode: 'terminal',
+    bg: { type: 'none', opacity: 1 },
+    chrome: { show: true, position: 'corners' },
+  });
 
-        <div class="roster-grid">
-          ${rosterListMarkup()}
-          <div class="thumb-stack">
-            ${showcase.map((speaker) => photoCardMarkup(speaker, { summary: speaker.analysis })).join('')}
-          </div>
-        </div>
-      </section>
-    </main>
-  `;
+  return result.html;
 }
 
 function genericMarkup() {
