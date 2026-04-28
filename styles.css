@@ -1212,3 +1212,88 @@ input[type="file"]::file-selector-button {
   display: contents;
 }
 
+/* -------------------------------------------------------------------------
+   Edit sidebar (Wave I7) — persistent right-docked editor.
+   Token refs (DTCG): component.edit-sidebar.width = 320px,
+                      component.edit-sidebar.row-gap = 12px.
+   ------------------------------------------------------------------------- */
+body {
+  padding-right: 320px;
+}
+
+#edit-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  background: var(--bg-card, #1c1c2e);
+  border-left: 1px solid var(--border, rgba(77, 201, 212, 0.12));
+  padding: 24px 20px;
+  overflow-y: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  z-index: 100;
+  color: var(--text, #ededf0);
+}
+
+#edit-sidebar h2 {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+#edit-sidebar .row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+#edit-sidebar label {
+  font-size: 10px;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#edit-sidebar input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+#edit-sidebar input:focus {
+  outline: none;
+  border-color: var(--accent, #4dc9d4);
+}
+
+#edit-sidebar .edit-sidebar-empty {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+#edit-sidebar .edit-sidebar-future {
+  margin-top: 24px;
+  min-height: 80px;
+  /* Wave J6: font-size controls will mount here. */
+}
+
+@media (max-width: 1100px) {
+  body {
+    padding-right: 0;
+  }
+
+  #edit-sidebar {
+    position: static;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border, rgba(77, 201, 212, 0.12));
+  }
+}

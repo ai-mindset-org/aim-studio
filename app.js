@@ -2,6 +2,7 @@ import { renderBg } from './app/bg-layer.js';
 import { render as renderField } from './app/render-field.js';
 import { render as renderCards } from './app/render-cards.js';
 import { wrap as wrapChrome } from './app/render-chrome.js';
+import { mount as mountEditSidebar } from './app/edit-sidebar.js';
 
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
@@ -1091,4 +1092,11 @@ window.addEventListener('popstate', () => {
 });
 
 readQuery();
+
+mountEditSidebar({
+  root: document.getElementById('edit-sidebar'),
+  state: { ...state, copy: currentCopy() },
+  onChange: updateCopyField,
+});
+
 render();
