@@ -1,0 +1,16 @@
+{
+  "card": {
+    "radius":     { "$value": "{mode.terminal.card-radius}", "$type": "dimension" },
+    "padding":    { "$value": "20px", "$type": "dimension" },
+    "shadow":     { "$value": "0 4px 18px rgba(0,0,0,0.45)", "$type": "shadow" }
+  },
+  "chrome": {
+    "corner-size": { "$value": "{size.corner-mark}", "$type": "dimension" },
+    "padding":     { "$value": "28px", "$type": "dimension" },
+    "border":      { "$value": "1px solid rgba(77,201,212,0.18)", "$type": "border" }
+  },
+  "edit-sidebar": {
+    "width":       { "$value": "320px", "$type": "dimension" },
+    "row-gap":     { "$value": "12px",  "$type": "dimension" }
+  }
+}
