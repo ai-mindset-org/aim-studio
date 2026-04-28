@@ -46,7 +46,11 @@ const state = {
   selectedId: null,
   copyOverrides: {},
   photoOverrides: {},
+  copy: {},
 };
+
+// Wave J6: per-field font-size overrides keyed by field name.
+state.copy.fontSizes = state.copy.fontSizes || {};
 
 window.__X26_BANNER_READY__ = false;
 
