@@ -278,6 +278,30 @@ input[type="file"]::file-selector-button {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Wave I6 — backdrop layer primitive. Lowest z-index inside .banner-root. */
+.bg-plain,
+.bg-mesh,
+.bg-ai {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-plain {
+  background: var(--bg-deep, #0a0a0f);
+}
+
+.bg-mesh {
+  background: radial-gradient(ellipse at center, rgba(77, 201, 212, 0.06), transparent 70%);
+}
+
+.bg-ai {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 [contenteditable="true"] {
   outline: none;
 }
@@ -859,5 +883,417 @@ input[type="file"]::file-selector-button {
 
   .inspector {
     grid-template-columns: 1fr;
+  }
+}
+
+/* === cards layout (editorial mode) === */
+/*
+ * Editorial-mode-locked layout (Wave I4):
+ * - 16px radius (override of component.card.radius's terminal default).
+ * - Soft, two-tier shadow on paper-tinted card surfaces.
+ * - No corner brackets, no grid overlay; whitespace-heavy.
+ * - Mono kept for kickers/eyebrows/meta; body looser-tracked.
+ * Class prefix .cards-v2__* — never piggybacks on shared .layout-* / .photo-card.
+ */
+.cards-v2 {
+  --cards-v2-radius: 16px;
+  --cards-v2-paper: #f6f1e7;
+  --cards-v2-paper-deep: #ede5d3;
+  --cards-v2-ink: #1f1d18;
+  --cards-v2-ink-soft: rgba(31, 29, 24, 0.62);
+  --cards-v2-ink-dim: rgba(31, 29, 24, 0.38);
+  --cards-v2-line: rgba(31, 29, 24, 0.12);
+  --cards-v2-shadow: 0 8px 30px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 252, 244, 0.9), transparent 55%),
+    linear-gradient(180deg, var(--cards-v2-paper) 0%, var(--cards-v2-paper-deep) 100%);
+  color: var(--cards-v2-ink);
+}
+
+.cards-v2__shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 40px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.cards-v2__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.cards-v2__kicker {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__title {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  color: var(--cards-v2-ink);
+}
+
+.cards-v2__title-accent {
+  display: block;
+  color: var(--accent, #16a34a);
+}
+
+.cards-v2__lede {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 21px;
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+  color: var(--cards-v2-ink-soft);
+  max-width: 720px;
+}
+
+/* Two-up by default; fall back to a calmer three-up only when 5–6 cards. */
+.cards-v2__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  align-content: start;
+}
+
+.cards-v2__grid[data-count="5"],
+.cards-v2__grid[data-count="6"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cards-v2__grid[data-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cards-v2__card {
+  border-radius: var(--cards-v2-radius);
+  padding: 32px;
+  background: rgba(255, 253, 247, 0.94);
+  box-shadow: var(--cards-v2-shadow);
+  border: 1px solid var(--cards-v2-line);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  /* No corner brackets, no grid overlay — explicit reset for any inherited
+   * decorative rules from terminal-mode layouts. */
+  overflow: hidden;
+}
+
+.cards-v2__portrait {
+  position: relative;
+  margin: 0;
+  border-radius: calc(var(--cards-v2-radius) - 4px);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: var(--cards-v2-paper-deep);
+}
+
+.cards-v2__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  /* Editorial portrait — keep natural color, no duotone teal-pine. */
+  display: block;
+}
+
+.cards-v2__portrait-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.18) 100%);
+  mix-blend-mode: multiply;
+}
+
+.cards-v2__portrait--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(31, 29, 24, 0.06), rgba(31, 29, 24, 0.02));
+}
+
+.cards-v2__monogram {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 56px;
+  letter-spacing: 0.04em;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cards-v2__eyebrow {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cards-v2-ink-dim);
+}
+
+.cards-v2__sep {
+  color: var(--cards-v2-ink-dim);
+}
+
+.cards-v2__name {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--cards-v2-ink);
+}
+
+.cards-v2__summary {
+  margin: 0;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__foot {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.cards-v2__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent, #16a34a) 14%, transparent);
+  color: color-mix(in srgb, var(--accent, #16a34a) 60%, var(--cards-v2-ink) 40%);
+  border: 1px solid color-mix(in srgb, var(--accent, #16a34a) 30%, transparent);
+}
+
+.cards-v2__chip--ghost {
+  background: transparent;
+  color: var(--cards-v2-ink-soft);
+  border-color: var(--cards-v2-line);
+}
+
+.cards-v2__foot-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--cards-v2-line);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cards-v2-ink-soft);
+}
+
+.cards-v2__meta--right {
+  margin-left: auto;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   CHROME — single outer wrapper (Wave I-5 dedup fix)
+   ────────────────────────────────────────────────────────────────────
+   `.chrome-outer` is the ONE place corner brackets + PREVIEW header
+   live. Per-card chrome is forbidden — see app/render-chrome.js and
+   docs/plans/2026-04-28-aim-studio-design-system-PLAN.md Task I5.
+   `.chrome-corner` is intentionally scoped under `.chrome-outer` so
+   any leftover per-card markup that slips through gets no styling.
+   ════════════════════════════════════════════════════════════════════ */
+
+.chrome-outer {
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+
+.chrome-outer .chrome-header {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(166, 183, 170, 0.55);
+  padding: 0 0 8px 2px;
+}
+
+.chrome-outer .chrome-header-tag {
+  color: var(--accent, var(--lab));
+  font-weight: 600;
+}
+
+.chrome-outer .chrome-frame {
+  position: relative;
+  width: var(--chrome-banner-w, 1800px);
+  min-height: var(--chrome-banner-h, 600px);
+}
+
+.chrome-outer .chrome-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Corner brackets — scoped to .chrome-outer ONLY. If anything else
+   in the DOM emits .chrome-corner (it shouldn't), it gets no styling. */
+.chrome-outer .chrome-corner {
+  position: absolute;
+  width: var(--chrome-corner-size, 20px);
+  height: var(--chrome-corner-size, 20px);
+  pointer-events: none;
+  z-index: 25;
+  opacity: 0.42;
+}
+
+.chrome-outer .chrome-corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid var(--accent, var(--lab));
+  border-left: 1.5px solid var(--accent, var(--lab));
+}
+
+.chrome-outer .chrome-corner-tr {
+  top: 0;
+  right: 0;
+  border-top: 1.5px solid var(--accent, var(--lab));
+  border-right: 1.5px solid var(--accent, var(--lab));
+}
+
+.chrome-outer .chrome-corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1.5px solid var(--accent, var(--lab));
+  border-left: 1.5px solid var(--accent, var(--lab));
+}
+
+.chrome-outer .chrome-corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid var(--accent, var(--lab));
+  border-right: 1.5px solid var(--accent, var(--lab));
+}
+
+/* Bypass mode (chrome.show === false): no decoration, just pass through. */
+.chrome-bypass {
+  display: contents;
+}
+
+/* -------------------------------------------------------------------------
+   Edit sidebar (Wave I7) — persistent right-docked editor.
+   Token refs (DTCG): component.edit-sidebar.width = 320px,
+                      component.edit-sidebar.row-gap = 12px.
+   ------------------------------------------------------------------------- */
+body {
+  padding-right: 320px;
+}
+
+#edit-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  background: var(--bg-card, #1c1c2e);
+  border-left: 1px solid var(--border, rgba(77, 201, 212, 0.12));
+  padding: 24px 20px;
+  overflow-y: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  z-index: 100;
+  color: var(--text, #ededf0);
+}
+
+#edit-sidebar h2 {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+#edit-sidebar .row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+#edit-sidebar label {
+  font-size: 10px;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#edit-sidebar input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+#edit-sidebar input:focus {
+  outline: none;
+  border-color: var(--accent, #4dc9d4);
+}
+
+#edit-sidebar .edit-sidebar-empty {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+#edit-sidebar .edit-sidebar-future {
+  margin-top: 24px;
+  min-height: 80px;
+  /* Wave J6: font-size controls will mount here. */
+}
+
+@media (max-width: 1100px) {
+  body {
+    padding-right: 0;
+  }
+
+  #edit-sidebar {
+    position: static;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border, rgba(77, 201, 212, 0.12));
   }
 }

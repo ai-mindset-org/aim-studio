@@ -1,3 +1,9 @@
+import { renderBg } from './app/bg-layer.js';
+import { render as renderField } from './app/render-field.js';
+import { render as renderCards } from './app/render-cards.js';
+import { wrap as wrapChrome } from './app/render-chrome.js';
+import { mount as mountEditSidebar } from './app/edit-sidebar.js';
+
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
 if (!DATA) {
@@ -34,6 +40,9 @@ const state = {
   labId: DATA.defaultLab || 'x26',
   mode: 'generic',
   style: 'field',
+  // Design-system mode: 'terminal' | 'editorial'.
+  // Wave I4: layouts may force this (e.g. cards locks to editorial).
+  designMode: 'terminal',
   selectedId: null,
   copyOverrides: {},
   photoOverrides: {},
@@ -363,6 +372,18 @@ function editField(tag, className, field, value) {
   return `<${tag} class="${className}" contenteditable="true" spellcheck="false" data-edit-field="${field}">${escapeHtml(value || '')}</${tag}>`;
 }
 
+// Expose shared helpers for app/render-*.js modules (Wave I extraction). These
+// modules are non-module classic scripts (matching app.js) that read helpers
+// from window.aimStudioHelpers instead of `import`. Keep this in sync with the
+// helpers actually consumed by the renderers (currently only mosaic).
+window.aimStudioHelpers = {
+  escapeHtml,
+  accentForRecord,
+  portraitSurface: (speaker, options) => portraitSurface(speaker, options),
+  speakerStatus,
+  editField,
+};
+
 function portraitSurface(speaker, options = {}) {
   const photo = resolvePhoto(speaker);
   const largeClass = options.large ? ' is-large' : '';
@@ -400,6 +421,19 @@ function photoCardMarkup(speaker, options = {}) {
   `;
 }
 
+// Expose shared helpers for app/render-*.js modules (Wave I extraction). These
+// modules are non-module classic scripts (matching app.js) that read helpers
+// from window.aimStudioHelpers instead of `import`. Keep this in sync with the
+// helpers actually consumed by the renderers (currently only roster).
+window.aimStudioHelpers = Object.assign(window.aimStudioHelpers || {}, {
+  escapeHtml,
+  accentForRecord,
+  speakerStatus,
+  editField,
+  photoCardMarkup,
+  portraitSurface: (speaker, options) => portraitSurface(speaker, options),
+});
+
 function modalitySummaryCard() {
   const items = currentModalities()
     .map((item) => `<p><strong>${escapeHtml(item.title || item.label)}</strong><br>${escapeHtml(item.label || item.key)}</p>`)
@@ -414,174 +448,105 @@ function modalitySummaryCard() {
   `;
 }
 
+// Field cover now lives in app/render-field.js (Wave I2 — refactor + density
+// reduction). We assemble the lab context here (closures for resolvePhoto /
+// accentForRecord) and inject the renderer's CSS once on first call.
+let fieldStylesInjected = false;
+function injectFieldStyles(css) {
+  if (fieldStylesInjected || !css || typeof document === 'undefined') return;
+  const tag = document.createElement('style');
+  tag.setAttribute('data-render-field', 'v2');
+  tag.textContent = css;
+  document.head.appendChild(tag);
+  fieldStylesInjected = true;
+}
+
 function fieldCoverMarkup(copy) {
-  const featureSet = featuredSpeakers(2);
-  const hero = featureSet[0];
-  const secondary = featureSet[1];
-  const program = currentProgram();
+  const lab = currentLab();
+  const allSpeakers = currentSpeakers();
+  const speakers = featuredSpeakers(2);
+  const labCtx = {
+    ...lab,
+    program: currentProgram(),
+    modalities: currentModalities(),
+    allSpeakers,
+    resolvePhoto,
+    accentForRecord,
+  };
 
-  return `
-    <main id="currentBanner" class="banner-root" data-banner-root="true" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <section class="layout-field">
-        <div class="cover-copy">
-          <div class="cover-copy-main">
-            ${editField('p', 'banner-eyebrow', 'eyebrow', copy.eyebrow)}
-            <h1 class="banner-title">
-              <span contenteditable="true" spellcheck="false" data-edit-field="title">${escapeHtml(copy.title)}</span><br>
-              <span class="banner-title-accent" contenteditable="true" spellcheck="false" data-edit-field="accentTitle">${escapeHtml(copy.accentTitle)}</span>
-            </h1>
-            ${editField('p', 'banner-subtitle', 'subtitle', copy.subtitle)}
-          </div>
+  const { html, css } = renderField({
+    copy,
+    speakers,
+    lab: labCtx,
+    mode: lab.mode || 'terminal',
+    bg: lab.bg || { type: 'plain', opacity: 1 },
+    chrome: lab.chrome || { show: true, position: 'outer' },
+  });
 
-          <div class="cover-copy-bottom">
-            ${editField('div', 'analysis-box', 'note', copy.note)}
-            <div class="banner-footer">
-              <div class="banner-footer-meta">
-                <span class="stat-chip">${escapeHtml(`${currentSpeakers().length} speakers`)}</span>
-                <span class="stat-chip">${escapeHtml(`${currentModalities().length} arcs`)}</span>
-                <span class="stat-chip">${escapeHtml(program.dates?.display || '')}</span>
-              </div>
-              <span class="meta-chip">${escapeHtml(program.footerRight || currentLab().name || '')}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-grid">
-          ${hero ? photoCardMarkup(hero, { large: true }) : ''}
-          <div class="feature-stack">
-            ${secondary ? photoCardMarkup(secondary, { summary: secondary.analysis }) : ''}
-            ${modalitySummaryCard()}
-          </div>
-        </div>
-      </section>
-    </main>
-  `;
+  injectFieldStyles(css);
+  return html;
 }
 
-function mosaicTileMarkup(speaker, index) {
-  const pattern = [
-    'is-wide is-tall',
-    'is-tall',
-    '',
-    '',
-    'is-wide',
-    '',
-    'is-wide',
-    '',
-    '',
-  ];
-  const classes = pattern[index] || '';
-
-  return `
-    <article class="mosaic-tile ${classes}" style="--accent:${escapeHtml(accentForRecord(speaker))}">
-      ${portraitSurface(speaker)}
-      <div class="mosaic-label">
-        <strong>${escapeHtml(speaker.short || speaker.name)}</strong>
-        <p>${escapeHtml(speakerStatus(speaker.status))}</p>
-      </div>
-    </article>
-  `;
-}
-
+// Mosaic markup is implemented by app/render-mosaic.js (Wave I task I1 extraction).
+// The renderer reads helpers from window.aimStudioHelpers (set up below in this file)
+// and is invoked through window.renderMosaic. Keeping this thin shim preserves the
+// existing callsite shape (mosaicCoverMarkup(copy)) so genericMarkup stays untouched.
 function mosaicCoverMarkup(copy) {
-  const program = currentProgram();
-  const speakers = featuredSpeakers(9);
+  if (typeof window.renderMosaic !== 'function') {
+    throw new Error('renderMosaic is not loaded — include app/render-mosaic.js after app.js helpers are exposed');
+  }
 
-  return `
-    <main id="currentBanner" class="banner-root" data-banner-root="true" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <section class="layout-mosaic">
-        <div class="mosaic-copy">
-          <div>
-            ${editField('p', 'banner-eyebrow', 'eyebrow', copy.eyebrow)}
-            <h1 class="banner-title">
-              <span contenteditable="true" spellcheck="false" data-edit-field="title">${escapeHtml(copy.title)}</span><br>
-              <span class="banner-title-accent" contenteditable="true" spellcheck="false" data-edit-field="accentTitle">${escapeHtml(copy.accentTitle)}</span>
-            </h1>
-            ${editField('p', 'banner-subtitle', 'subtitle', copy.subtitle)}
-          </div>
+  const lab = currentLab();
+  const labContext = {
+    ...lab,
+    program: currentProgram(),
+    speakers: currentSpeakers(),
+    accent: lab.accent || '#16a34a',
+    name: lab.name || '',
+  };
 
-          <div>
-            ${editField('div', 'analysis-box', 'note', copy.note)}
-            <div class="banner-footer" style="margin-top:14px;">
-              <div class="banner-footer-meta">
-                <span class="stat-chip">${escapeHtml(`${currentSpeakers().length} records`)}</span>
-                <span class="stat-chip">${escapeHtml(program.dates?.display || '')}</span>
-              </div>
-              <span class="meta-chip">${escapeHtml(program.footerRight || currentLab().name || '')}</span>
-            </div>
-          </div>
-        </div>
+  const result = window.renderMosaic({
+    copy,
+    speakers: featuredSpeakers(9),
+    lab: labContext,
+    mode: 'terminal',
+    bg: { type: 'none', opacity: 1 },
+    chrome: { show: true, position: 'corners' },
+  });
 
-        <div class="mosaic-wall">
-          <div class="mosaic-grid">
-            ${speakers.map((speaker, index) => mosaicTileMarkup(speaker, index)).join('')}
-          </div>
-        </div>
-      </section>
-    </main>
-  `;
+  return result.html;
 }
 
-function rosterListMarkup() {
-  const items = currentSpeakers()
-    .map((speaker, index) => `
-      <article class="speaker-list-item" style="--accent:${escapeHtml(accentForRecord(speaker))}">
-        <span class="speaker-list-index">${String(index + 1).padStart(2, '0')}</span>
-        <div>
-          <strong>${escapeHtml(speaker.name)}</strong>
-          <p>${escapeHtml(speaker.focus || speaker.role || '')}</p>
-        </div>
-        <span class="status-chip">${escapeHtml(speakerStatus(speaker.status))}</span>
-      </article>
-    `)
-    .join('');
-
-  return `
-    <article class="list-panel" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <p class="list-label">speaker roster</p>
-      <div class="speaker-list">${items}</div>
-    </article>
-  `;
-}
-
+// Roster markup is implemented by app/render-roster.js (Wave I task I3 extraction).
+// The renderer reads helpers from window.aimStudioHelpers (set up above) and is
+// invoked through window.renderRoster. Per-row badge stack was condensed: the
+// previous separate `01` / `W3` / `GUEST` spans are now a single merged badge
+// (`01 · W3` with ` · G` suffix for guests).
 function rosterCoverMarkup(copy) {
-  const showcase = featuredSpeakers(4);
-  const program = currentProgram();
+  if (typeof window.renderRoster !== 'function') {
+    throw new Error('renderRoster is not loaded — include app/render-roster.js after app.js helpers are exposed');
+  }
 
-  return `
-    <main id="currentBanner" class="banner-root" data-banner-root="true" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <section class="layout-roster">
-        <div class="roster-copy">
-          <div>
-            ${editField('p', 'banner-eyebrow', 'eyebrow', copy.eyebrow)}
-            <h1 class="banner-title">
-              <span contenteditable="true" spellcheck="false" data-edit-field="title">${escapeHtml(copy.title)}</span><br>
-              <span class="banner-title-accent" contenteditable="true" spellcheck="false" data-edit-field="accentTitle">${escapeHtml(copy.accentTitle)}</span>
-            </h1>
-            ${editField('p', 'banner-subtitle', 'subtitle', copy.subtitle)}
-          </div>
+  const lab = currentLab();
+  const labContext = {
+    ...lab,
+    program: currentProgram(),
+    speakers: currentSpeakers(),
+    accent: lab.accent || '#16a34a',
+    name: lab.name || '',
+  };
 
-          <div class="cover-copy-bottom">
-            ${editField('div', 'analysis-box', 'note', copy.note)}
-            <div class="banner-footer">
-              <div class="banner-footer-meta">
-                <span class="stat-chip">${escapeHtml(`${currentSpeakers().length} speakers`)}</span>
-                <span class="stat-chip">${escapeHtml(program.dates?.display || '')}</span>
-              </div>
-              <span class="meta-chip">${escapeHtml(program.footerLeft || currentLab().name || '')}</span>
-            </div>
-          </div>
-        </div>
+  const result = window.renderRoster({
+    copy,
+    speakers: currentSpeakers(),
+    showcase: featuredSpeakers(4),
+    lab: labContext,
+    mode: 'terminal',
+    bg: { type: 'none', opacity: 1 },
+    chrome: { show: true, position: 'corners' },
+  });
 
-        <div class="roster-grid">
-          ${rosterListMarkup()}
-          <div class="thumb-stack">
-            ${showcase.map((speaker) => photoCardMarkup(speaker, { summary: speaker.analysis })).join('')}
-          </div>
-        </div>
-      </section>
-    </main>
-  `;
+  return result.html;
 }
 
 function genericMarkup() {
@@ -593,6 +558,18 @@ function genericMarkup() {
 
   if (state.style === 'roster') {
     return rosterCoverMarkup(copy);
+  }
+
+  if (state.style === 'cards') {
+    const { html } = renderCards({
+      copy,
+      speakers: featuredSpeakers(6),
+      lab: currentLab(),
+      mode: state.designMode,
+      bg: { type: 'paper' },
+      chrome: { show: false },
+    });
+    return html;
   }
 
   return fieldCoverMarkup(copy);
@@ -774,6 +751,13 @@ function syncControls() {
 
   renderButtonRow(UI.styleButtons, currentStyleOptions(), state.style, (style) => {
     state.style = style;
+    // Cards layout is editorial-mode-locked (Wave I4 contract): no terminal
+    // chrome, soft shadows, paper surfaces. Other layouts default to terminal.
+    if (style === 'cards') {
+      state.designMode = 'editorial';
+    } else {
+      state.designMode = 'terminal';
+    }
     render();
   });
 
@@ -870,6 +854,8 @@ function readQuery() {
   state.labId = aliasLab(params.get('lab') || DATA.defaultLab);
   state.mode = aliasMode(params.get('mode'));
   state.style = normalizeId(params.get('style') || currentLab().defaultStyle || 'field');
+  // Mirror the style→designMode rule (Wave I4): cards locks editorial.
+  state.designMode = state.style === 'cards' ? 'editorial' : 'terminal';
   state.selectedId = params.get('id') || null;
 }
 
@@ -927,6 +913,19 @@ function waitForVisuals(root) {
   );
 }
 
+function chromeLabel() {
+  // Compact tag for the single-source-of-truth chrome header: "<LAB> · <MODE> · <STYLE-or-SELECTION>"
+  const lab = (currentLab().short || currentLab().name || state.labId || '').toString().toUpperCase();
+  const mode = state.mode.toUpperCase();
+  const tail =
+    state.mode === 'generic' ? state.style.toUpperCase() :
+    state.mode === 'speaker' ? (selectedSpeaker()?.short || selectedSpeaker()?.name || '').toString().toUpperCase() :
+    state.mode === 'creator' ? (selectedCreator()?.speaker?.short || selectedCreator()?.speaker?.name || '').toString().toUpperCase() :
+                               (selectedParticipant()?.short || selectedParticipant()?.name || '').toString().toUpperCase();
+  const dims = `${DATA.design.size.width}×${DATA.design.size.height}`;
+  return [lab, mode, tail, dims].filter(Boolean).join(' · ');
+}
+
 async function render() {
   ensureStyle();
   ensureSelection();
@@ -947,7 +946,32 @@ async function render() {
     markup = participantMarkup(selectedParticipant());
   }
 
-  UI.bannerMount.innerHTML = markup;
+  // Wave I6: backdrop layer — inject bg as the first child of .banner-root
+  // (chrome container). z-order: backdrop (lowest) → chrome border → content.
+  // Resolution: lab.axes.defaultBg (Wave H tokens) is the source of truth for
+  // now. Wave J will plug AI-generated `src` into this same slot.
+  const bg = currentLab().axes?.defaultBg || { type: 'plain' };
+  const bgHtml = renderBg(bg);
+
+  if (bgHtml) {
+    markup = markup.replace(
+      /(<main[^>]*class="[^"]*banner-root[^"]*"[^>]*>)/,
+      `$1${bgHtml}`
+    );
+  }
+
+  // Hoist terminal chrome (corner brackets + PREVIEW header) to a SINGLE
+  // outer wrapper around the active card stack. Per-card chrome is forbidden
+  // — see Task I5 in 2026-04-28-aim-studio-design-system-PLAN.md.
+  // Renderers must NOT emit their own corner-bracket SVG / .chrome-* markup.
+  const chromedMarkup = wrapChrome(markup, {
+    show: true,
+    position: 'outer',
+    label: chromeLabel(),
+    dimensions: { w: DATA.design.size.width, h: DATA.design.size.height },
+  });
+
+  UI.bannerMount.innerHTML = chromedMarkup;
   bindEditableFields(UI.bannerMount);
   UI.previewLabel.textContent = `${DATA.design.size.width} × ${DATA.design.size.height}`;
   await waitForVisuals(UI.bannerMount);
@@ -1048,6 +1072,7 @@ UI.labSelector.addEventListener('change', () => {
   state.labId = aliasLab(UI.labSelector.value);
   state.selectedId = null;
   state.style = currentLab().defaultStyle || 'field';
+  remountEditSidebar();
   render();
 });
 
@@ -1068,4 +1093,15 @@ window.addEventListener('popstate', () => {
 });
 
 readQuery();
+
+function remountEditSidebar() {
+  mountEditSidebar({
+    root: document.getElementById('edit-sidebar'),
+    state: { ...state, copy: currentCopy() },
+    onChange: updateCopyField,
+  });
+}
+
+remountEditSidebar();
+
 render();
