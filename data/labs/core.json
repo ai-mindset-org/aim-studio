@@ -1,4 +1,9 @@
 {
+  "axes": {
+    "defaultLayout": "mosaic",
+    "defaultMode": "editorial",
+    "defaultBg": { "type": "plain" }
+  },
   "id": "core",
   "name": "AI Mindset {core}",
   "eyebrow": "AI MINDSET · EVERGREEN",

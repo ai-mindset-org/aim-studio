@@ -1,4 +1,9 @@
 {
+  "axes": {
+    "defaultLayout": "mosaic",
+    "defaultMode": "terminal",
+    "defaultBg": { "type": "mesh-token" }
+  },
   "id": "x26",
   "name": "Spring Lab {x26}",
   "eyebrow": "AI MINDSET · SPRING LAB X26",

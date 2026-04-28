@@ -213,6 +213,13 @@
         "$type": "dimension"
       }
     },
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "editorial",
+      "defaultBg": {
+        "type": "plain"
+      }
+    },
     "id": "core",
     "name": "AI Mindset {core}",
     "eyebrow": "AI MINDSET · EVERGREEN",
@@ -526,6 +533,15 @@
       "row-gap": {
         "$value": "12px",
         "$type": "dimension"
+      }
+    },
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "terminal",
+      "defaultBg": {
+        "type": "ai-generated",
+        "style": "circuit",
+        "model": "flux-pro"
       }
     },
     "id": "s3",
@@ -852,6 +868,13 @@
       "row-gap": {
         "$value": "12px",
         "$type": "dimension"
+      }
+    },
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "terminal",
+      "defaultBg": {
+        "type": "mesh-token"
       }
     },
     "id": "x26",
