@@ -57,8 +57,10 @@ const state = {
   bg: null,
 };
 
-// Wave J6: per-field font-size overrides keyed by field name.
-state.copy.fontSizes = state.copy.fontSizes || {};
+// Wave J6/J7 reconciliation: per-field font-size overrides are stored
+// canonically on `state.copyFontSizes[recordKey()]` (J7). The `state.copy`
+// shape is a *transient projection* synthesized at edit-sidebar mount via
+// `currentCopy()` + `currentFontSizes()`; no separate init needed here.
 
 window.__X26_BANNER_READY__ = false;
 

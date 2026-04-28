@@ -94,7 +94,7 @@ function fieldLabel(key) {
     .toUpperCase();
 }
 
-function buildRow(key, value, onChange, fontSizeStore) {
+function buildRow(key, value, onChange, fontSizeStore, onFontSizeChange) {
   const row = document.createElement('div');
   row.className = 'row';
   row.dataset.field = key;
@@ -158,6 +158,12 @@ function buildRow(key, value, onChange, fontSizeStore) {
     if (fontSizeStore) {
       fontSizeStore[key] = next;
     }
+    // Wave J7: persist via callback so per-record state.copyFontSizes survives
+    // re-render and export/import. Without this, the mutation only lives on the
+    // synthesized fontSizes object passed at mount time.
+    if (typeof onFontSizeChange === 'function') {
+      onFontSizeChange(key, next);
+    }
     applyFontSizeVar(key, next);
   });
 
@@ -183,7 +189,7 @@ function buildRow(key, value, onChange, fontSizeStore) {
   return row;
 }
 
-export function mount({ root, state, onChange } = {}) {
+export function mount({ root, state, onChange, onFontSizeChange } = {}) {
   if (!root) return null;
 
   root.innerHTML = '';
@@ -207,7 +213,7 @@ export function mount({ root, state, onChange } = {}) {
     rows.appendChild(empty);
   } else {
     keys.forEach((key) => {
-      rows.appendChild(buildRow(key, copy[key], onChange, fontSizeStore));
+      rows.appendChild(buildRow(key, copy[key], onChange, fontSizeStore, onFontSizeChange));
     });
   }
 
