@@ -1,0 +1,32 @@
+[
+  {
+    "id": "botanical",
+    "name": "Botanical Plate",
+    "subject": "Victorian botanical plate engraving, detailed ferns, leaves, cross-hatching, vine tendrils, highly detailed line art, scientific illustration aesthetic, dense detail edges with some breathing room mid-frame",
+    "negation": "no text, no humans, no faces"
+  },
+  {
+    "id": "circuit",
+    "name": "Circuit × Botanical",
+    "subject": "Architectural blueprint and circuit board diagrams overlaid with Victorian botanical plant forms, engineering grid lines, circuit traces connecting with plant stems and leaves, technical schematic meets organic growth, fine cross-hatching, halftone dots, dense on sides lighter in center",
+    "negation": "no text, no humans, no faces"
+  },
+  {
+    "id": "radar",
+    "name": "Radar Scope",
+    "subject": "Technical radar scope diagram, concentric thin teal circles and sweep lines, geometric satellite-ops terminal aesthetic, subtle Victorian botanical silhouettes faded in corners, schematic readouts, detailed line art, radial composition, center focal point",
+    "negation": "no text, no humans, no faces"
+  },
+  {
+    "id": "cellular",
+    "name": "Cellular Microscopy",
+    "subject": "Microscopy plate of biological cells and organic tissue structures, dense halftone dot patterns, micrography aesthetic, cellular textures with nuclei and membranes, scientific illustration, dense organic pattern distributed",
+    "negation": "no text, no humans, no faces"
+  },
+  {
+    "id": "topo",
+    "name": "Topo × Mycelium",
+    "subject": "Topographic contour lines meeting mycelium branching network patterns, fine line-art cartography textures fused with root and fungal threads, dense detail on edges, scientific plate",
+    "negation": "no text, no humans, no faces"
+  }
+]
