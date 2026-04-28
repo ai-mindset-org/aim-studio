@@ -1,4 +1,5 @@
 import { renderBg } from './app/bg-layer.js';
+import { render as renderField } from './app/render-field.js';
 
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
@@ -428,48 +429,43 @@ function modalitySummaryCard() {
   `;
 }
 
+// Field cover now lives in app/render-field.js (Wave I2 — refactor + density
+// reduction). We assemble the lab context here (closures for resolvePhoto /
+// accentForRecord) and inject the renderer's CSS once on first call.
+let fieldStylesInjected = false;
+function injectFieldStyles(css) {
+  if (fieldStylesInjected || !css || typeof document === 'undefined') return;
+  const tag = document.createElement('style');
+  tag.setAttribute('data-render-field', 'v2');
+  tag.textContent = css;
+  document.head.appendChild(tag);
+  fieldStylesInjected = true;
+}
+
 function fieldCoverMarkup(copy) {
-  const featureSet = featuredSpeakers(2);
-  const hero = featureSet[0];
-  const secondary = featureSet[1];
-  const program = currentProgram();
+  const lab = currentLab();
+  const allSpeakers = currentSpeakers();
+  const speakers = featuredSpeakers(2);
+  const labCtx = {
+    ...lab,
+    program: currentProgram(),
+    modalities: currentModalities(),
+    allSpeakers,
+    resolvePhoto,
+    accentForRecord,
+  };
 
-  return `
-    <main id="currentBanner" class="banner-root" data-banner-root="true" style="--accent:${escapeHtml(currentLab().accent || '#16a34a')}">
-      <section class="layout-field">
-        <div class="cover-copy">
-          <div class="cover-copy-main">
-            ${editField('p', 'banner-eyebrow', 'eyebrow', copy.eyebrow)}
-            <h1 class="banner-title">
-              <span contenteditable="true" spellcheck="false" data-edit-field="title">${escapeHtml(copy.title)}</span><br>
-              <span class="banner-title-accent" contenteditable="true" spellcheck="false" data-edit-field="accentTitle">${escapeHtml(copy.accentTitle)}</span>
-            </h1>
-            ${editField('p', 'banner-subtitle', 'subtitle', copy.subtitle)}
-          </div>
+  const { html, css } = renderField({
+    copy,
+    speakers,
+    lab: labCtx,
+    mode: lab.mode || 'terminal',
+    bg: lab.bg || { type: 'plain', opacity: 1 },
+    chrome: lab.chrome || { show: true, position: 'outer' },
+  });
 
-          <div class="cover-copy-bottom">
-            ${editField('div', 'analysis-box', 'note', copy.note)}
-            <div class="banner-footer">
-              <div class="banner-footer-meta">
-                <span class="stat-chip">${escapeHtml(`${currentSpeakers().length} speakers`)}</span>
-                <span class="stat-chip">${escapeHtml(`${currentModalities().length} arcs`)}</span>
-                <span class="stat-chip">${escapeHtml(program.dates?.display || '')}</span>
-              </div>
-              <span class="meta-chip">${escapeHtml(program.footerRight || currentLab().name || '')}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-grid">
-          ${hero ? photoCardMarkup(hero, { large: true }) : ''}
-          <div class="feature-stack">
-            ${secondary ? photoCardMarkup(secondary, { summary: secondary.analysis }) : ''}
-            ${modalitySummaryCard()}
-          </div>
-        </div>
-      </section>
-    </main>
-  `;
+  injectFieldStyles(css);
+  return html;
 }
 
 // Mosaic markup is implemented by app/render-mosaic.js (Wave I task I1 extraction).
