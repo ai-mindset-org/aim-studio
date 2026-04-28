@@ -24,5 +24,11 @@
     "test:smoke:x26": "node ./scripts/smoke-download.mjs --lab x26",
     "test:smoke:s3": "node ./scripts/smoke-download.mjs --lab s3",
     "test:ui": "node ./scripts/smoke-ui.mjs --all"
+  },
+  "dependencies": {
+    "@sentry/serverless": "^7.120.0",
+    "@sparticuz/chromium": "^131.0.1",
+    "puppeteer": "^24.42.0",
+    "puppeteer-core": "^23.10.4"
   }
 }

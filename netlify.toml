@@ -6,6 +6,20 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# render-banner pulls in @sparticuz/chromium which ships chromium binaries —
+# esbuild must NOT try to bundle them. external_node_modules leaves these as
+# runtime require()s; included_files ensures the chromium pack is uploaded
+# alongside the function bundle.
+[functions."render-banner"]
+  external_node_modules = ["@sparticuz/chromium", "puppeteer-core", "@sentry/serverless"]
+  included_files = ["node_modules/@sparticuz/chromium/bin/**"]
+
+[[redirects]]
+  from = "/api/v1/render-banner"
+  to = "/.netlify/functions/render-banner"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
