@@ -1,3 +1,5 @@
+import { renderBg } from './app/bg-layer.js';
+
 const DATA = window.X26BannerData || window.X26BannerGeneratorData;
 
 if (!DATA) {
@@ -945,6 +947,20 @@ async function render() {
     markup = creatorMarkup(selectedCreator());
   } else if (state.mode === 'participant' && selectedParticipant()) {
     markup = participantMarkup(selectedParticipant());
+  }
+
+  // Wave I6: backdrop layer — inject bg as the first child of .banner-root
+  // (chrome container). z-order: backdrop (lowest) → chrome border → content.
+  // Resolution: lab.axes.defaultBg (Wave H tokens) is the source of truth for
+  // now. Wave J will plug AI-generated `src` into this same slot.
+  const bg = currentLab().axes?.defaultBg || { type: 'plain' };
+  const bgHtml = renderBg(bg);
+
+  if (bgHtml) {
+    markup = markup.replace(
+      /(<main[^>]*class="[^"]*banner-root[^"]*"[^>]*>)/,
+      `$1${bgHtml}`
+    );
   }
 
   UI.bannerMount.innerHTML = markup;
