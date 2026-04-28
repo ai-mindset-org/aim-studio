@@ -3,6 +3,13 @@
 // Re-upload this file to your Claude Designs project after each sync.
 export const DESIGN_TOKENS = {
   "core": {
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "editorial",
+      "defaultBg": {
+        "type": "plain"
+      }
+    },
     "id": "core",
     "name": "AI Mindset {core}",
     "eyebrow": "AI MINDSET · EVERGREEN",
@@ -70,7 +77,9 @@ export const DESIGN_TOKENS = {
           "story-poster"
         ],
         "carousel": [
-          "manifesto"
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "org": {
@@ -94,7 +103,10 @@ export const DESIGN_TOKENS = {
     ],
     "speakerStyles": [
       "aimnative",
-      "surname"
+      "surname",
+      "manifesto",
+      "headline",
+      "splash"
     ],
     "orgStyles": [
       "plaque",
@@ -104,6 +116,15 @@ export const DESIGN_TOKENS = {
     ]
   },
   "s3": {
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "terminal",
+      "defaultBg": {
+        "type": "ai-generated",
+        "style": "circuit",
+        "model": "flux-pro"
+      }
+    },
     "id": "s3",
     "name": "AI-Native Sprint S3",
     "eyebrow": "AI Mindset × CybOS",
@@ -132,11 +153,14 @@ export const DESIGN_TOKENS = {
       "W4": "#fcbb00"
     },
     "featuredIds": [
-      "sereja-ris",
       "stepan-gershuni",
-      "denis-smirnov",
+      "alexander-povaliaev",
       "seva-ustinov",
-      "alexander-povaliaev"
+      "sereja-ris",
+      "denis-smirnov",
+      "bayram-annakov",
+      "vitaly-kleban",
+      "roma-buzko"
     ],
     "heroId": "sereja-ris",
     "defaultFormats": {
@@ -179,7 +203,9 @@ export const DESIGN_TOKENS = {
           "story-poster"
         ],
         "carousel": [
-          "manifesto"
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "org": {
@@ -203,7 +229,10 @@ export const DESIGN_TOKENS = {
     ],
     "speakerStyles": [
       "aimnative",
-      "surname"
+      "surname",
+      "manifesto",
+      "headline",
+      "splash"
     ],
     "orgStyles": [
       "plaque",
@@ -213,6 +242,13 @@ export const DESIGN_TOKENS = {
     ]
   },
   "x26": {
+    "axes": {
+      "defaultLayout": "mosaic",
+      "defaultMode": "terminal",
+      "defaultBg": {
+        "type": "mesh-token"
+      }
+    },
     "id": "x26",
     "name": "Spring Lab {x26}",
     "eyebrow": "AI MINDSET · SPRING LAB X26",
@@ -240,17 +276,17 @@ export const DESIGN_TOKENS = {
       "W4": "#4ade80"
     },
     "featuredIds": [
-      "anca-stavenski",
       "arseny-popov",
-      "olya-eremina",
-      "tonya-zhukova",
+      "anca-stavenski",
       "ilya-gindin",
       "sereja-ris",
-      "nomusicians",
-      "oleg-tserbaev",
+      "olya-eremina",
+      "alexander-povaliaev",
       "evgeniy-volnov",
       "stanislav-glazov",
-      "alexander-povaliaev"
+      "nomusicians",
+      "tonya-zhukova",
+      "oleg-tserbaev"
     ],
     "defaultFormats": {
       "generic": "wide",
@@ -294,7 +330,9 @@ export const DESIGN_TOKENS = {
           "story-poster"
         ],
         "carousel": [
-          "manifesto"
+          "manifesto",
+          "headline",
+          "splash"
         ]
       },
       "org": {
@@ -326,7 +364,10 @@ export const DESIGN_TOKENS = {
       "signal",
       "story",
       "story-card",
-      "story-poster"
+      "story-poster",
+      "manifesto",
+      "headline",
+      "splash"
     ],
     "orgStyles": [
       "plaque",

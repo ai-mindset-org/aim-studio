@@ -2,7 +2,21 @@
 
 Paste-ready folder for mirroring the **aim-studio** banner generator design system inside **Claude Designs** (the claude.ai canvas product).
 
-This is a **manual mirror**, not a deploy. Claude Designs has no public CLI / API, so we sync via file upload. Tokens stay authoritative in `data/labs/*.json` of this repo; the `.jsx` artifact below is regenerated and re-uploaded whenever those JSONs change.
+This is a **manual mirror**, not a deploy. Claude Designs has no public CLI / API, so we sync via file upload. Tokens stay authoritative in **`data/tokens/*.json`** (DTCG primitive → semantic → component layer cake, regenerated with the lab overlays from `data/labs/*.json`); the `.jsx` artifact below is regenerated and re-uploaded whenever those JSONs change.
+
+---
+
+## **3-axis design system**
+
+Every artifact in this pack — and every banner the live studio renders — is parameterised on three orthogonal axes:
+
+| Axis | Values | Source |
+|------|--------|--------|
+| **layout** | `field` · `mosaic` · `roster` · `cards` | `app/render-{field,mosaic,roster,cards}.js` |
+| **mode** | `terminal` · `editorial` (cards locks editorial) | `state.designMode` derived from layout |
+| **decorative-bg** | `plain` · `mesh-token` · `ai-generated:<style>` | `app/bg-layer.js` + `netlify/functions/generate-bg` |
+
+`DESIGN_TOKENS` in `design-tokens.jsx` resolves the **lab overlay** (axes defaults + accent + fonts + speakers + program copy). The DTCG layer cake — primitive → semantic → component — sits underneath and is built from `data/tokens/{primitive,semantic,component}.json` via `scripts/build-labs.mjs`. **`data/tokens/` is the canonical source for shared design primitives**; lab JSONs only override what differs.
 
 ---
 
