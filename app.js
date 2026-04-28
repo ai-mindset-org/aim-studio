@@ -121,11 +121,23 @@ function currentModalities() {
   return currentLab().modalities || DATA.modalities || [];
 }
 
+// Wave K0 switchover: expose canonical 4-layout palette by default for the
+// design-system 3-axis UI (layout × mode × bg). Labs may still override
+// `lab.styles` with a tighter set, but the legacy single-`field` fallback
+// no longer matches the production contract — cards / mosaic / roster must
+// be reachable for every lab unless explicitly suppressed.
+const DEFAULT_LAYOUT_OPTIONS = [
+  { id: 'field', label: 'field' },
+  { id: 'mosaic', label: 'mosaic' },
+  { id: 'roster', label: 'roster' },
+  { id: 'cards', label: 'cards' },
+];
+
 function currentStyleOptions() {
   const lab = currentLab();
   return Array.isArray(lab.styles) && lab.styles.length
     ? lab.styles
-    : [{ id: 'field', label: 'field system' }];
+    : DEFAULT_LAYOUT_OPTIONS;
 }
 
 function ensureStyle() {
