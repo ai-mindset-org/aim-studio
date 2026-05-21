@@ -72,14 +72,17 @@ jobs:
       - name: node --check data/speakers.js
         run: node --check data/speakers.js
 
-      - name: Enable auto-merge
+      - name: Merge PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUM: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
-          gh pr merge "$PR_NUM" --squash --auto
-          echo "OK: auto-merge enabled для PR #$PR_NUM"
+          # Direct merge (без --auto): aim-studio не имеет других CI checks,
+          # все gates прошли в предыдущих steps этого workflow. --auto требует
+          # auto-merge enabled в repo settings + extended permissions.
+          gh pr merge "$PR_NUM" --squash --delete-branch
+          echo "OK: PR #$PR_NUM merged"
 
       - name: TG notify on failure
         if: failure()
