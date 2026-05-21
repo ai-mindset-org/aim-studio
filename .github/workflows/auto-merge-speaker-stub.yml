@@ -74,13 +74,12 @@ jobs:
 
       - name: Merge PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Default GITHUB_TOKEN read-only — org policy locks write permissions
+          # на repo-level. Используем contributor PAT (OXI-717) через secret.
+          GH_TOKEN: ${{ secrets.AUTO_MERGE_PAT }}
           PR_NUM: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
-          # Direct merge (без --auto): aim-studio не имеет других CI checks,
-          # все gates прошли в предыдущих steps этого workflow. --auto требует
-          # auto-merge enabled в repo settings + extended permissions.
           gh pr merge "$PR_NUM" --squash --delete-branch
           echo "OK: PR #$PR_NUM merged"
 
@@ -101,4 +100,5 @@ jobs:
           msg=$(printf '🔴 aim-studio speaker-stub auto-merge упал\n\nPR #%s: %s\nRun: %s\n\nНужен manual review — либо PR не append-only, либо trogает другие файлы, либо broken JS.' "$PR_NUM" "$PR_TITLE" "$RUN_URL")
           curl -sS -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${CHAT_ID}" \
-            --data-urlencode "text=${msg}" >/dev/null || true
+            --data-urlencode "text=${msg}" \
+            --data-urlencode "disable_web_page_preview=true" >/dev/null || true
