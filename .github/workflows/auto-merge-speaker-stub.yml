@@ -95,12 +95,7 @@ jobs:
             echo "WARN: TG secrets не сконфигурированы — skip notification"
             exit 0
           fi
-          msg="🔴 aim-studio speaker-stub auto-merge упал
-
-PR #${PR_NUM}: ${PR_TITLE}
-Run: ${RUN_URL}
-
-Нужен manual review — либо PR не append-only, либо trogает другие файлы, либо broken JS."
+          msg=$(printf '🔴 aim-studio speaker-stub auto-merge упал\n\nPR #%s: %s\nRun: %s\n\nНужен manual review — либо PR не append-only, либо trogает другие файлы, либо broken JS.' "$PR_NUM" "$PR_TITLE" "$RUN_URL")
           curl -sS -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${CHAT_ID}" \
             --data-urlencode "text=${msg}" >/dev/null || true
