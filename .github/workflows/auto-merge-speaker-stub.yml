@@ -1,0 +1,106 @@
+name: Auto-merge speaker-stub PRs
+
+# Triggered when /workshop-full skill в aim-lms открывает mirror PR
+# с новым speaker entry в data/speakers.js. Gates проверяют что diff
+# действительно append-only к speakers/s3Speakers array, и автоматически
+# мерджат — иначе TG notify в triage thread.
+#
+# Setup (одноразовый, owner action):
+#   - Repository secrets: AIM_OPS_TELEGRAM_BOT_TOKEN, AIM_OPS_TELEGRAM_CHAT_ID
+#   - Label "speaker-stub" должен существовать в репо
+
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+
+concurrency:
+  group: speakers-update
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: contains(github.event.pull_request.labels.*.name, 'speaker-stub')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Verify только data/speakers.js изменён
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          changed=$(git diff --name-only "$BASE_SHA"..."$HEAD_SHA")
+          if [[ "$changed" != "data/speakers.js" ]]; then
+            echo "FAIL: PR touches files other than data/speakers.js"
+            echo "Changed files:"
+            echo "$changed"
+            exit 1
+          fi
+          echo "OK: only data/speakers.js changed"
+
+      - name: Verify append-only diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          deletions=$(git diff --no-color "$BASE_SHA"..."$HEAD_SHA" -- data/speakers.js \
+            | grep -cE '^-[^-]' || true)
+          if [ "$deletions" -gt 0 ]; then
+            echo "FAIL: PR has $deletions deletion lines — gate enforces append-only"
+            git diff --no-color "$BASE_SHA"..."$HEAD_SHA" -- data/speakers.js | grep -E '^-[^-]' | head -10
+            exit 1
+          fi
+          echo "OK: append-only diff verified"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: node --check data/speakers.js
+        run: node --check data/speakers.js
+
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR_NUM" --squash --auto
+          echo "OK: auto-merge enabled для PR #$PR_NUM"
+
+      - name: TG notify on failure
+        if: failure()
+        env:
+          BOT_TOKEN: ${{ secrets.AIM_OPS_TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.AIM_OPS_TELEGRAM_CHAT_ID }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set +e
+          if [ -z "$BOT_TOKEN" ] || [ -z "$CHAT_ID" ]; then
+            echo "WARN: TG secrets не сконфигурированы — skip notification"
+            exit 0
+          fi
+          msg="🔴 aim-studio speaker-stub auto-merge упал
+
+PR #${PR_NUM}: ${PR_TITLE}
+Run: ${RUN_URL}
+
+Нужен manual review — либо PR не append-only, либо trogает другие файлы, либо broken JS."
+          curl -sS -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${CHAT_ID}" \
+            --data-urlencode "text=${msg}" >/dev/null || true
