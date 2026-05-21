@@ -669,6 +669,7 @@
     },
     {
       id: 'bayram-annakov',
+      aimLmsId: 'annakov',
       name: 'Байрам Аннаков',
       short: 'Аннаков',
       photo: 'bayram-annakov.jpg',
