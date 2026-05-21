@@ -464,6 +464,13 @@
           notes: 'guest session confirmed',
         },
       },
+      {
+        id: 'smoketest_p1_5b',
+        aimLmsId: 'smoketest',
+        name: 'Test User Speaker',
+        role: 'Smoke test role',
+        bio: 'Test bio for P1-5b smoke.',
+      },
     ];
 
   const creatorPages = speakers.map((speaker) => ({
