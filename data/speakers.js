@@ -238,7 +238,7 @@
       },
       {
         id: 'oleg-tserbaev',
-        aimLmsId: null,
+        aimLmsId: 'tserbaev',
         profilePath: null,
         name: 'Олег Цербаев',
         short: 'Цербаев',
