@@ -646,6 +646,7 @@
     },
     {
       id: 'denis-smirnov',
+      aimLmsId: 'smirnov',
       name: 'Денис Смирнов',
       short: 'Смирнов',
       photo: 'denis-smirnov.jpg',
