@@ -762,6 +762,7 @@
     },
     {
       id: 'dima-khanarin',
+      aimLmsId: 'khanarin',
       name: 'Дима Ханарин',
       short: 'Ханарин',
       photo: 'dima-khanarin.jpg',
