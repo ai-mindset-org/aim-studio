@@ -815,6 +815,7 @@
     },
     {
       id: 'egor-egerev',
+      aimLmsId: 'egerev',
       name: 'Егор Егерев',
       short: 'Егерев',
       photo: 'egor-egerev.jpg',
