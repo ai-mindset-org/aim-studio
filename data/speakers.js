@@ -464,6 +464,13 @@
           notes: 'guest session confirmed',
         },
       },
+      {
+        id: 'ivanov',
+        aimLmsId: 'ivanov',
+        name: 'Алексей Иванов',
+        role: 'AI-coaching',
+        bio: 'Executive-коуч для фаундеров и IT-лидеров. ICF PCC, ex-дизайн лид. После 15 лет в UX/продуктах делает то, что дает энергию и драйв. Ведёт advanced-трек: AI-coaching.',
+      },
     ];
 
   const creatorPages = speakers.map((speaker) => ({
