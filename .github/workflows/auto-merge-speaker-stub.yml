@@ -56,7 +56,8 @@ jobs:
         run: |
           set -euo pipefail
           diff_file=$(mktemp)
-          git diff --no-color --unified=0 "$BASE_SHA"..."$HEAD_SHA" -- data/speakers.js >"$diff_file"
+          merge_base=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          git diff --no-color --unified=0 "$merge_base" "$HEAD_SHA" -- data/speakers.js >"$diff_file"
 
           deletions=$(grep -cE '^-[^-]' "$diff_file" || true)
           if [ "$deletions" -gt 0 ]; then
@@ -67,7 +68,7 @@ jobs:
 
           append_anchor() {
             local array_name="$1"
-            git show "$BASE_SHA:data/speakers.js" | awk -v array_name="$array_name" '
+            git show "$merge_base:data/speakers.js" | awk -v array_name="$array_name" '
               $0 ~ "const " array_name " = \\[" { in_array = 1; next }
               in_array && /^[[:space:]]*\];$/ { print NR - 1; found = 1; exit }
               END { if (!found) exit 1 }
