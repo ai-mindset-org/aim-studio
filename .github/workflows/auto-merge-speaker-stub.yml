@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -55,14 +55,47 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
-          deletions=$(git diff --no-color "$BASE_SHA"..."$HEAD_SHA" -- data/speakers.js \
-            | grep -cE '^-[^-]' || true)
+          diff_file=$(mktemp)
+          merge_base=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          git diff --no-color --unified=0 "$merge_base" "$HEAD_SHA" -- data/speakers.js >"$diff_file"
+
+          deletions=$(grep -cE '^-[^-]' "$diff_file" || true)
           if [ "$deletions" -gt 0 ]; then
             echo "FAIL: PR has $deletions deletion lines — gate enforces append-only"
-            git diff --no-color "$BASE_SHA"..."$HEAD_SHA" -- data/speakers.js | grep -E '^-[^-]' | head -10
+            grep -E '^-[^-]' "$diff_file" | head -10
             exit 1
           fi
-          echo "OK: append-only diff verified"
+
+          append_anchor() {
+            local array_name="$1"
+            git show "$merge_base:data/speakers.js" | awk -v array_name="$array_name" '
+              $0 ~ "const " array_name " = \\[" { in_array = 1; next }
+              in_array && /^[[:space:]]*\];$/ { print NR - 1; found = 1; exit }
+              END { if (!found) exit 1 }
+            '
+          }
+
+          speakers_anchor=$(append_anchor speakers)
+          s3_speakers_anchor=$(append_anchor s3Speakers)
+          invalid_hunks=0
+
+          while IFS= read -r header; do
+            old_start=$(printf '%s\n' "$header" | sed -E 's/^@@ -([0-9]+)(,[0-9]+)? \+.*/\1/')
+            old_count=$(printf '%s\n' "$header" | sed -nE 's/^@@ -[0-9]+,([0-9]+) \+.*/\1/p')
+            old_count=${old_count:-1}
+
+            if [ "$old_count" != "0" ] || { [ "$old_start" != "$speakers_anchor" ] && [ "$old_start" != "$s3_speakers_anchor" ]; }; then
+              echo "FAIL: non-append hunk $header"
+              invalid_hunks=$((invalid_hunks + 1))
+            fi
+          done < <(grep '^@@ ' "$diff_file")
+
+          if [ "$invalid_hunks" -gt 0 ]; then
+            echo "FAIL: additions must append to the end of speakers or s3Speakers"
+            exit 1
+          fi
+
+          echo "OK: append-only diff verified for speakers/s3Speakers"
 
       - name: Setup Node
         uses: actions/setup-node@v4
