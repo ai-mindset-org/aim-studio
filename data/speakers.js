@@ -473,7 +473,9 @@
       },
     ];
 
-  const creatorPages = speakers.map((speaker) => ({
+  const creatorPages = speakers
+    .filter((speaker) => !speaker.id.startsWith('smoketest'))
+    .map((speaker) => ({
     id: `${speaker.id}-creator`,
     personId: speaker.id,
     title: `${speaker.name} · creator page`,
@@ -1185,7 +1187,7 @@
       dimensions: { width: 1800, height: 600, scale: 2 },
       timelineSummary: 'W1 AI-first thinking · W2 context engineering · W3 agents + workflows · W4 ship + creative vibe-coding',
     },
-    speakers,
+    speakers: speakers.filter((s) => !s.id.startsWith('smoketest')),
     creatorPages,
     participantTests,
     labAliases: {
@@ -1240,11 +1242,11 @@
       var labs = {
         'x26': Object.assign({}, x26Fallback, externalTokens.x26 || {}, {
           orgCards: x26OrgCards.concat(x26SessionCards),
-          speakers: speakers,
+          speakers: speakers.filter(function (s) { return !s.id.startsWith('smoketest'); }),
         }),
         's3': Object.assign({}, s3Fallback, externalTokens.s3 || {}, {
           orgCards: s3OrgCards,
-          speakers: s3Speakers,
+          speakers: s3Speakers.filter(function (s) { return !s.id.startsWith('smoketest'); }),
         }),
       };
 
