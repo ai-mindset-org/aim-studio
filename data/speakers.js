@@ -471,6 +471,27 @@
         role: 'AI-coaching',
         bio: 'Executive-коуч для фаундеров и IT-лидеров. ICF PCC, ex-дизайн лид. После 15 лет в UX/продуктах делает то, что дает энергию и драйв. Ведёт advanced-трек: AI-coaching.',
       },
+      {
+        id: 'dan-vasiliev',
+        aimLmsId: 'dan-vasiliev',
+        name: 'Даниил Васильев',
+        role: 'LMS, n8n-автоматизации, Telegram-боты',
+        bio: 'Курирует LMS AI Mindset и n8n-инфраструктуру сообщества. Со-спикер бонусной сессии W26.',
+      },
+      {
+        id: 'yurchenko',
+        aimLmsId: 'yurchenko',
+        name: 'Алексей Юрченко',
+        role: 'Workshop host',
+        bio: 'Со-ведущий focus-сессии W26 (FOS18).',
+      },
+      {
+        id: 'vantslav',
+        aimLmsId: 'vantslav',
+        name: 'Карина Ванцлав',
+        role: 'Community',
+        bio: 'Со-ведущая intro-сессии X26.',
+      },
     ];
 
   const creatorPages = speakers
