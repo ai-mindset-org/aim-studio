@@ -38,6 +38,11 @@ function normalizeOrgCardId(value) {
   return normalized === 'curators' ? 'curator' : normalized;
 }
 
+function findSpeaker(speakers, normalizedId) {
+  return speakers.find((item) => normalizeId(item.id) === normalizedId)
+    || speakers.find((item) => normalizeId(item.aimLmsId) === normalizedId);
+}
+
 function normalizeMode(value) {
   const mode = String(value ?? '').trim().toLowerCase();
 
@@ -416,9 +421,7 @@ function buildTargetsForLab(data, labId, options) {
     list.push(...genericTargets(data, labId, options));
   } else if (options.mode === 'speaker') {
     const speakerFormats = resolveFormatStyles(lab, 'speaker', options.format, options.style);
-    const speaker = normalizedId
-      ? speakers.find((item) => normalizeId(item.id) === normalizedId || normalizeId(item.aimLmsId) === normalizedId)
-      : null;
+    const speaker = normalizedId ? findSpeaker(speakers, normalizedId) : null;
 
     if (normalizedId && !speaker) {
       throw new Error(`Speaker not found for lab ${labId}: ${options.id}`);
@@ -462,7 +465,7 @@ function buildTargetsForLab(data, labId, options) {
       (orgCard ? [orgCard] : orgCards).flatMap((item) => styles.map((style) => orgTarget(data, labId, item, format, style)))
     ));
   } else if (options.mode === 'single') {
-    const speaker = speakers.find((item) => normalizeId(item.id) === normalizedId || normalizeId(item.aimLmsId) === normalizedId);
+    const speaker = findSpeaker(speakers, normalizedId);
 
     if (!speaker) {
       throw new Error(`Speaker not found for lab ${labId}: ${options.id}`);
