@@ -520,8 +520,8 @@
         bio: 'Исследователь операционных систем для знаний. Работает с персональным контекстом, архивами и структурированием 6000+ сообщений. Тестирует платформы для мультиагентных систем.',
       },
       {
-        id: 'glazov',
-        aimLmsId: 'glazov',
+        id: 'stas-glazov',
+        aimLmsId: null,
         name: 'Стас Глазов',
         telegram: '@prcdrl',
         photo: '/speakers/stanislav-glazov.jpg',
