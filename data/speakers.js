@@ -914,6 +914,7 @@
     },
     {
       id: 'seva-ustinov',
+      aimLmsId: 'ustinov',
       name: 'Всеволод Устинов',
       short: 'Устинов',
       photo: 'seva-ustinov.jpg',
