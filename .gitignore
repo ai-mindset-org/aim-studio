@@ -24,3 +24,4 @@ HANDOFF.md
 CONTEXT-HANDOFF.md
 SESSION-*-HANDOFF.md
 *.backup-*
+.worktrees/
